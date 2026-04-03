@@ -619,7 +619,7 @@
             <div class="progress-panel">
                 <div class="progress-head">
                     <strong>基础级别完成度</strong>
-                    <span><span id="basicDone">0</span> / <span id="basicTotal">14</span></span>
+                    <span><span id="basicDone">0</span> / <span id="basicTotal">21</span></span>
                 </div>
                 <div class="progress-track">
                     <div class="progress-fill" id="basicProgress"></div>
@@ -846,7 +846,7 @@
                     <div class="card-index">3</div>
                     <div>
                         <h2>周报 / 月报数据分析实战</h2>
-                        <p>这一部分用于统一团队的周报、月报分析口径。先按 4 层看问题，再用诊断模板判断“结果、成本、效率、用户、竞品”分别该怎么查。</p>
+                        <p>这一部分改成月报诊断模拟题。先按 4 层看问题，再根据异常项判断优先排查方向和对应动作。</p>
                     </div>
                 </div>
                 <div class="card-body">
@@ -860,92 +860,134 @@
                         </div>
                     </div>
 
+                    <div class="info-panel">
+                        <div class="info-title">月报模拟案例</div>
+                        <div class="hint-list">
+                            <span>门店本月日营收波动：34%</span>
+                            <span>月营收趋势：连续 2 个月下滑</span>
+                            <span>食材成本率：47%</span>
+                            <span>人效：2.4 万 / 月</span>
+                            <span>复购率：18%</span>
+                            <span>客诉率：3.5%</span>
+                            <span>同商圈竞品本月有满减活动和新品上线</span>
+                        </div>
+                    </div>
+
                     <div class="table-wrap">
                         <table>
                             <thead>
                                 <tr>
                                     <th>诊断维度</th>
-                                    <th>检查项</th>
-                                    <th>标准值</th>
-                                    <th>异常阈值</th>
-                                    <th>应对建议</th>
+                                    <th>实战问题</th>
+                                    <th>你的答案</th>
+                                    <th>校验</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>结果</td>
-                                    <td>日营收波动</td>
-                                    <td>±15%</td>
-                                    <td>&gt;30%</td>
-                                    <td>排查外部因素</td>
+                                    <td>日营收波动 34%，当前判断应是：</td>
+                                    <td>
+                                        <select id="e7i1">
+                                            <option value="">请选择</option>
+                                            <option value="正常波动">正常波动</option>
+                                            <option value="进入异常区">进入异常区</option>
+                                            <option value="暂不判断">暂不判断</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s1" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
                                     <td>结果</td>
-                                    <td>月营收趋势</td>
-                                    <td>环比增长</td>
-                                    <td>连续下滑</td>
-                                    <td>分析原因</td>
+                                    <td>正式分析前，最先排除的是哪类因素？</td>
+                                    <td>
+                                        <select id="e7i2">
+                                            <option value="">请选择</option>
+                                            <option value="客观不可抗力因素">客观不可抗力因素</option>
+                                            <option value="会员运营问题">会员运营问题</option>
+                                            <option value="员工情绪问题">员工情绪问题</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s2" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5" style="background:#f4efe7; color:#6a4a39; font-weight:700; text-align:center;">先排除客观不可抗力因素干扰（天气、节日、社会活动、政策）</td>
+                                    <td>结果</td>
+                                    <td>月营收连续 2 个月下滑，优先动作是：</td>
+                                    <td>
+                                        <select id="e7i3">
+                                            <option value="">请选择</option>
+                                            <option value="分析原因">分析原因</option>
+                                            <option value="提客单价">提客单价</option>
+                                            <option value="优化排班">优化排班</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s3" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
                                     <td>成本</td>
-                                    <td>食材成本率</td>
-                                    <td>30%-40%</td>
-                                    <td>&gt;45%</td>
-                                    <td>查采购 / 浪费</td>
-                                </tr>
-                                <tr>
-                                    <td>成本</td>
-                                    <td>人力成本率</td>
-                                    <td>18%-20%</td>
-                                    <td>&gt;25%</td>
-                                    <td>优化排班</td>
-                                </tr>
-                                <tr>
-                                    <td>效率</td>
-                                    <td>人效</td>
-                                    <td>&gt;3 万 / 月</td>
-                                    <td>&lt;2 万</td>
-                                    <td>提客单价</td>
+                                    <td>食材成本率 47%，优先应对建议是：</td>
+                                    <td>
+                                        <select id="e7i4">
+                                            <option value="">请选择</option>
+                                            <option value="查采购/浪费">查采购 / 浪费</option>
+                                            <option value="优化排班">优化排班</option>
+                                            <option value="加强会员运营">加强会员运营</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s4" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
                                     <td>效率</td>
-                                    <td>坪效</td>
-                                    <td>&gt;500 / ㎡</td>
-                                    <td>&lt;300</td>
-                                    <td>优化动线</td>
+                                    <td>人效 2.4 万 / 月，优先动作是：</td>
+                                    <td>
+                                        <select id="e7i5">
+                                            <option value="">请选择</option>
+                                            <option value="提客单价">提客单价</option>
+                                            <option value="查服务流程">查服务流程</option>
+                                            <option value="分析原因">分析原因</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s5" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
                                     <td>用户</td>
-                                    <td>复购率</td>
-                                    <td>&gt;30%</td>
-                                    <td>&lt;20%</td>
-                                    <td>加强会员运营</td>
+                                    <td>复购率 18%，优先动作是：</td>
+                                    <td>
+                                        <select id="e7i6">
+                                            <option value="">请选择</option>
+                                            <option value="加强会员运营">加强会员运营</option>
+                                            <option value="优化动线">优化动线</option>
+                                            <option value="优化排班">优化排班</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s6" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
                                     <td>用户</td>
-                                    <td>客诉率</td>
-                                    <td>&lt;1%</td>
-                                    <td>&gt;3%</td>
-                                    <td>查服务流程</td>
-                                </tr>
-                                <tr>
-                                    <td>竞品</td>
-                                    <td>营销活动</td>
-                                    <td>/</td>
-                                    <td>/</td>
-                                    <td rowspan="2">根据活动 / 上新内容确定是否做相应动作</td>
-                                </tr>
-                                <tr>
-                                    <td>竞品</td>
-                                    <td>上新产品</td>
-                                    <td>/</td>
-                                    <td>/</td>
+                                    <td>客诉率 3.5%，优先动作是：</td>
+                                    <td>
+                                        <select id="e7i7">
+                                            <option value="">请选择</option>
+                                            <option value="查服务流程">查服务流程</option>
+                                            <option value="提客单价">提客单价</option>
+                                            <option value="忽略不看">忽略不看</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s7" class="status-chip">待校验</span></td>
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+
+                    <button class="answer-toggle" type="button" data-answer="answer7">查看参考答案与分析思路</button>
+                    <div class="answer-content" id="answer7">
+                        <div><strong>1.</strong> 日营收波动 34% 已超过异常阈值 30%，应判断为 <strong>进入异常区</strong>。</div>
+                        <div><strong>2.</strong> 正式诊断前先排除 <strong>客观不可抗力因素</strong>，例如天气、节日、社会活动、政策。</div>
+                        <div><strong>3.</strong> 月营收连续下滑时，先做 <strong>分析原因</strong>，不要直接跳动作。</div>
+                        <div><strong>4.</strong> 食材成本率 47% 高于异常阈值，应先查 <strong>采购 / 浪费</strong>。</div>
+                        <div><strong>5.</strong> 人效 2.4 万 / 月偏低，优先动作是 <strong>提客单价</strong>。</div>
+                        <div><strong>6.</strong> 复购率 18% 低于参考线，优先动作是 <strong>加强会员运营</strong>。</div>
+                        <div><strong>7.</strong> 客诉率 3.5% 超过异常阈值，优先动作是 <strong>查服务流程</strong>。</div>
                     </div>
                 </div>
             </article>
@@ -1309,22 +1351,29 @@
     </div>
 
     <script>
-        const basicAnswers = {
-            e1i1: 183750,
-            e1i2: 63.27,
-            e1i3: 36750,
-            e1i4: 1837.5,
-            e1i5: 73.5,
-            e1i6: 15.31,
-            e1i7: 10.2,
-            e2i1: 776,
-            e2i2: 5,
-            e2i3: 180,
-            e2i4: 74.5,
-            e2i5: 128,
-            e2i6: 45,
-            e2i7: 137
-        };
+        const basicChecks = [
+            { inputId: "e1i1", statusId: "e1s1", type: "number", value: 183750 },
+            { inputId: "e1i2", statusId: "e1s2", type: "number", value: 63.27 },
+            { inputId: "e1i3", statusId: "e1s3", type: "number", value: 36750 },
+            { inputId: "e1i4", statusId: "e1s4", type: "number", value: 1837.5 },
+            { inputId: "e1i5", statusId: "e1s5", type: "number", value: 73.5 },
+            { inputId: "e1i6", statusId: "e1s6", type: "number", value: 15.31 },
+            { inputId: "e1i7", statusId: "e1s7", type: "number", value: 10.2 },
+            { inputId: "e2i1", statusId: "e2s1", type: "number", value: 776 },
+            { inputId: "e2i2", statusId: "e2s2", type: "number", value: 5 },
+            { inputId: "e2i3", statusId: "e2s3", type: "number", value: 180 },
+            { inputId: "e2i4", statusId: "e2s4", type: "number", value: 74.5 },
+            { inputId: "e2i5", statusId: "e2s5", type: "number", value: 128 },
+            { inputId: "e2i6", statusId: "e2s6", type: "number", value: 45 },
+            { inputId: "e2i7", statusId: "e2s7", type: "number", value: 137 },
+            { inputId: "e7i1", statusId: "e7s1", type: "select", value: "进入异常区" },
+            { inputId: "e7i2", statusId: "e7s2", type: "select", value: "客观不可抗力因素" },
+            { inputId: "e7i3", statusId: "e7s3", type: "select", value: "分析原因" },
+            { inputId: "e7i4", statusId: "e7s4", type: "select", value: "查采购/浪费" },
+            { inputId: "e7i5", statusId: "e7s5", type: "select", value: "提客单价" },
+            { inputId: "e7i6", statusId: "e7s6", type: "select", value: "加强会员运营" },
+            { inputId: "e7i7", statusId: "e7s7", type: "select", value: "查服务流程" }
+        ];
 
         const paybackPairs = [
             { inputs: ["e3i1", "e3i2"], values: [1, 48], status: "e3s1" },
@@ -1390,19 +1439,35 @@
             return ok;
         }
 
+        function checkSelectInput(inputId, statusId, correctValue) {
+            const input = document.getElementById(inputId);
+            if (!input.value) {
+                input.classList.remove("correct", "wrong");
+                setStatus(statusId, "", "待校验");
+                return false;
+            }
+
+            const ok = input.value === correctValue;
+            input.classList.toggle("correct", ok);
+            input.classList.toggle("wrong", !ok);
+            setStatus(statusId, ok ? "ok" : "bad", ok ? "正确" : "再选");
+            return ok;
+        }
+
         function updateBasicProgress() {
-            const entries = Object.entries(basicAnswers);
             let done = 0;
 
-            entries.forEach(([inputId, correctValue]) => {
-                const statusId = inputId.replace("i", "s");
-                if (checkNumericInput(inputId, statusId, correctValue)) {
+            basicChecks.forEach((item) => {
+                const ok = item.type === "number"
+                    ? checkNumericInput(item.inputId, item.statusId, item.value)
+                    : checkSelectInput(item.inputId, item.statusId, item.value);
+                if (ok) {
                     done += 1;
                 }
             });
 
             document.getElementById("basicDone").textContent = String(done);
-            document.getElementById("basicProgress").style.width = `${done / entries.length * 100}%`;
+            document.getElementById("basicProgress").style.width = `${done / basicChecks.length * 100}%`;
         }
 
         function updatePaybackExercise() {
