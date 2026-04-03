@@ -363,6 +363,12 @@
             background: #fff3ea;
         }
 
+        input.secondary,
+        select.secondary {
+            border-color: #f0b27a;
+            background: #fff8ef;
+        }
+
         input.wrong,
         select.wrong {
             border-color: #e79b58;
@@ -409,6 +415,19 @@
             cursor: pointer;
             font-size: 14px;
             font-weight: 700;
+        }
+
+        .action-button {
+            margin-top: 16px;
+            border: 0;
+            background: linear-gradient(135deg, #ff8a3d 0%, #ff6400 100%);
+            color: #fff;
+            border-radius: 14px;
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 12px 24px rgba(255, 100, 0, 0.18);
         }
 
         .answer-content {
@@ -601,7 +620,7 @@
                     <h3>快速填写指南</h3>
                     <ol>
                         <li>先做基础级别，再切高阶级别。</li>
-                        <li>输入后会即时校验，答案默认折叠。</li>
+                        <li>基础题即时校验，情景题按组校验。</li>
                         <li>手机端表格可左右滑动查看。</li>
                     </ol>
                 </div>
@@ -619,7 +638,7 @@
             <div class="progress-panel">
                 <div class="progress-head">
                     <strong>基础级别完成度</strong>
-                    <span><span id="basicDone">0</span> / <span id="basicTotal">21</span></span>
+                    <span><span id="basicDone">0</span> / <span id="basicTotal">26</span></span>
                 </div>
                 <div class="progress-track">
                     <div class="progress-fill" id="basicProgress"></div>
@@ -846,7 +865,7 @@
                     <div class="card-index">3</div>
                     <div>
                         <h2>周报 / 月报数据分析实战</h2>
-                        <p>这一部分改成月报诊断模拟题。先按 4 层看问题，再根据异常项判断优先排查方向和对应动作。</p>
+                        <p>这一部分改成餐饮经营复盘实战。每个情景都按“先看什么、再查什么、最后怎么改”分步判断，而且会刻意放入“也能做，但不是第一优先”的干扰项。</p>
                     </div>
                 </div>
                 <div class="card-body">
@@ -861,23 +880,30 @@
                     </div>
 
                     <div class="info-panel">
-                        <div class="info-title">月报模拟案例</div>
+                        <div class="info-title">做题说明</div>
                         <div class="hint-list">
-                            <span>门店本月日营收波动：34%</span>
-                            <span>月营收趋势：连续 2 个月下滑</span>
-                            <span>食材成本率：47%</span>
-                            <span>人效：2.4 万 / 月</span>
-                            <span>复购率：18%</span>
-                            <span>客诉率：3.5%</span>
-                            <span>同商圈竞品本月有满减活动和新品上线</span>
+                            <span>每个情景独立校验，先做完一组，再点该情景的校验按钮。</span>
+                            <span>有些选项不是完全错，而是“可以做，但不是第一优先”。</span>
+                            <span>校验结果会区分“优先答案”“次优可行”“偏离重点”。</span>
                         </div>
                     </div>
 
-                    <div class="table-wrap">
+                    <div class="info-panel">
+                        <div class="info-title">情景 1：商场店营收下滑</div>
+                        <div class="hint-list">
+                            <span>门店类型：购物中心轻正餐，面积 110 ㎡，客单 68 元</span>
+                            <span>本月日营收波动：12.8%（超过 10% 即异常）</span>
+                            <span>月营收：连续 2 个月下滑，晚市下滑明显</span>
+                            <span>外卖占比：从 32% 升到 49%，堂食单量下滑</span>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap" data-report-scenario="report1">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>诊断维度</th>
+                                    <th>情景</th>
+                                    <th>步骤</th>
                                     <th>实战问题</th>
                                     <th>你的答案</th>
                                     <th>校验</th>
@@ -885,109 +911,265 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>结果</td>
-                                    <td>日营收波动 34%，当前判断应是：</td>
+                                    <td>情景 1</td>
+                                    <td>先看什么</td>
+                                    <td>日营收波动 12.8%，按当前口径第一判断应是：</td>
                                     <td>
                                         <select id="e7i1">
                                             <option value="">请选择</option>
                                             <option value="正常波动">正常波动</option>
                                             <option value="进入异常区">进入异常区</option>
-                                            <option value="暂不判断">暂不判断</option>
+                                            <option value="先忽略不看">先忽略不看</option>
                                         </select>
                                     </td>
                                     <td><span id="e7s1" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
-                                    <td>结果</td>
-                                    <td>正式分析前，最先排除的是哪类因素？</td>
+                                    <td>情景 1</td>
+                                    <td>再查什么</td>
+                                    <td>正式分析前，最先排除的是：</td>
                                     <td>
                                         <select id="e7i2">
                                             <option value="">请选择</option>
                                             <option value="客观不可抗力因素">客观不可抗力因素</option>
-                                            <option value="会员运营问题">会员运营问题</option>
-                                            <option value="员工情绪问题">员工情绪问题</option>
+                                            <option value="晚市渠道和时段结构">晚市渠道和时段结构</option>
+                                            <option value="员工流失问题">员工流失问题</option>
+                                            <option value="会员权益问题">会员权益问题</option>
                                         </select>
                                     </td>
                                     <td><span id="e7s2" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
-                                    <td>结果</td>
-                                    <td>月营收连续 2 个月下滑，优先动作是：</td>
+                                    <td>情景 1</td>
+                                    <td>最后怎么改</td>
+                                    <td>外卖占比快速升高、堂食单量下滑，下周更优先的动作是：</td>
                                     <td>
                                         <select id="e7i3">
                                             <option value="">请选择</option>
-                                            <option value="分析原因">分析原因</option>
-                                            <option value="提客单价">提客单价</option>
-                                            <option value="优化排班">优化排班</option>
+                                            <option value="先看渠道和时段结构，再调整晚市套餐与引流策略">先看渠道和时段结构，再调整晚市套餐与引流策略</option>
+                                            <option value="先做会员召回并测试晚市套餐">先做会员召回并测试晚市套餐</option>
+                                            <option value="直接全店打折">直接全店打折</option>
+                                            <option value="先砍掉外卖平台">先砍掉外卖平台</option>
                                         </select>
                                     </td>
                                     <td><span id="e7s3" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
-                                    <td>成本</td>
-                                    <td>食材成本率 47%，优先应对建议是：</td>
+                                    <td>情景 1</td>
+                                    <td>最后怎么改</td>
+                                    <td>如果资源只能先做 1 个动作，优先级更高的是：</td>
                                     <td>
                                         <select id="e7i4">
                                             <option value="">请选择</option>
-                                            <option value="查采购/浪费">查采购 / 浪费</option>
-                                            <option value="优化排班">优化排班</option>
-                                            <option value="加强会员运营">加强会员运营</option>
+                                            <option value="修正晚市产品与渠道策略">修正晚市产品与渠道策略</option>
+                                            <option value="补一轮会员召回">补一轮会员召回</option>
+                                            <option value="同步做一次储值促销">同步做一次储值促销</option>
+                                            <option value="先更换店长">先更换店长</option>
                                         </select>
                                     </td>
                                     <td><span id="e7s4" class="status-chip">待校验</span></td>
-                                </tr>
-                                <tr>
-                                    <td>效率</td>
-                                    <td>人效 2.4 万 / 月，优先动作是：</td>
-                                    <td>
-                                        <select id="e7i5">
-                                            <option value="">请选择</option>
-                                            <option value="提客单价">提客单价</option>
-                                            <option value="查服务流程">查服务流程</option>
-                                            <option value="分析原因">分析原因</option>
-                                        </select>
-                                    </td>
-                                    <td><span id="e7s5" class="status-chip">待校验</span></td>
-                                </tr>
-                                <tr>
-                                    <td>用户</td>
-                                    <td>复购率 18%，优先动作是：</td>
-                                    <td>
-                                        <select id="e7i6">
-                                            <option value="">请选择</option>
-                                            <option value="加强会员运营">加强会员运营</option>
-                                            <option value="优化动线">优化动线</option>
-                                            <option value="优化排班">优化排班</option>
-                                        </select>
-                                    </td>
-                                    <td><span id="e7s6" class="status-chip">待校验</span></td>
-                                </tr>
-                                <tr>
-                                    <td>用户</td>
-                                    <td>客诉率 3.5%，优先动作是：</td>
-                                    <td>
-                                        <select id="e7i7">
-                                            <option value="">请选择</option>
-                                            <option value="查服务流程">查服务流程</option>
-                                            <option value="提客单价">提客单价</option>
-                                            <option value="忽略不看">忽略不看</option>
-                                        </select>
-                                    </td>
-                                    <td><span id="e7s7" class="status-chip">待校验</span></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <button class="answer-toggle" type="button" data-answer="answer7">查看参考答案与分析思路</button>
-                    <div class="answer-content" id="answer7">
-                        <div><strong>1.</strong> 日营收波动 34% 已超过异常阈值 30%，应判断为 <strong>进入异常区</strong>。</div>
-                        <div><strong>2.</strong> 正式诊断前先排除 <strong>客观不可抗力因素</strong>，例如天气、节日、社会活动、政策。</div>
-                        <div><strong>3.</strong> 月营收连续下滑时，先做 <strong>分析原因</strong>，不要直接跳动作。</div>
-                        <div><strong>4.</strong> 食材成本率 47% 高于异常阈值，应先查 <strong>采购 / 浪费</strong>。</div>
-                        <div><strong>5.</strong> 人效 2.4 万 / 月偏低，优先动作是 <strong>提客单价</strong>。</div>
-                        <div><strong>6.</strong> 复购率 18% 低于参考线，优先动作是 <strong>加强会员运营</strong>。</div>
-                        <div><strong>7.</strong> 客诉率 3.5% 超过异常阈值，优先动作是 <strong>查服务流程</strong>。</div>
+                    <button class="action-button" type="button" id="validateReport1Btn">校验情景 1</button>
+                    <div class="calc-result" id="report1Summary">请先完成情景 1 的 4 道题，再点击校验。</div>
+                    <button class="answer-toggle" type="button" data-answer="answer7a">查看情景 1 参考答案</button>
+                    <div class="answer-content" id="answer7a">
+                        <div><strong>分析思路：</strong>先确认结果异常，再排除客观因素，接着回到渠道和时段结构，最后落到晚市产品和渠道动作。晚市结构、会员召回这些都不是完全错，但在这组题里属于次优动作。</div>
+                        <div><strong>更优先答案：</strong>进入异常区 → 客观不可抗力因素 → 先看渠道和时段结构，再调整晚市套餐与引流策略 → 修正晚市产品与渠道策略。</div>
+                        <div><strong>次优可行：</strong>晚市渠道和时段结构、先做会员召回并测试晚市套餐、补一轮会员召回。</div>
+                    </div>
+
+                    <div style="height: 16px;"></div>
+
+                    <div class="info-panel">
+                        <div class="info-title">情景 2：成本与效率失衡</div>
+                        <div class="hint-list">
+                            <span>食材成本率：44.6%，高损耗 SKU 主要集中在甜品和饮品</span>
+                            <span>人效：2.3 万 / 月，周末高峰排队，但平峰人力冗余</span>
+                            <span>后厨备料偏多，甜品报损明显</span>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap" data-report-scenario="report2">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>情景</th>
+                                    <th>步骤</th>
+                                    <th>实战问题</th>
+                                    <th>你的答案</th>
+                                    <th>校验</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>情景 2</td>
+                                    <td>先看什么</td>
+                                    <td>面对 44.6% 的食材成本率，第一优先判断应是：</td>
+                                    <td>
+                                        <select id="e7i5">
+                                            <option value="">请选择</option>
+                                            <option value="已经进入异常区">已经进入异常区</option>
+                                            <option value="还在健康区间">还在健康区间</option>
+                                            <option value="只看营业额不看成本">只看营业额不看成本</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s5" class="status-chip">待校验</span></td>
+                                </tr>
+                                <tr>
+                                    <td>情景 2</td>
+                                    <td>再查什么</td>
+                                    <td>甜品和饮品报损高，接下来最该查的是：</td>
+                                    <td>
+                                        <select id="e7i6">
+                                            <option value="">请选择</option>
+                                            <option value="损耗、备料和 SKU 去化">损耗、备料和 SKU 去化</option>
+                                            <option value="甜品饮品销量结构与报损时段">甜品饮品销量结构与报损时段</option>
+                                            <option value="先做会员储值">先做会员储值</option>
+                                            <option value="先上新品">先上新品</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s6" class="status-chip">待校验</span></td>
+                                </tr>
+                                <tr>
+                                    <td>情景 2</td>
+                                    <td>最后怎么改</td>
+                                    <td>周末高峰排队、平峰冗余，最合理的动作是：</td>
+                                    <td>
+                                        <select id="e7i7">
+                                            <option value="">请选择</option>
+                                            <option value="优化排班并重做高峰出餐动线">优化排班并重做高峰出餐动线</option>
+                                            <option value="先按时段微调排班">先按时段微调排班</option>
+                                            <option value="维持原排班不动">维持原排班不动</option>
+                                            <option value="先整体涨价">先整体涨价</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s7" class="status-chip">待校验</span></td>
+                                </tr>
+                                <tr>
+                                    <td>情景 2</td>
+                                    <td>最后怎么改</td>
+                                    <td>如果只能先落 1 个动作，优先级更高的是：</td>
+                                    <td>
+                                        <select id="e7i8">
+                                            <option value="">请选择</option>
+                                            <option value="先控损耗和排班">先控损耗和排班</option>
+                                            <option value="先控损耗再评估是否调价">先控损耗再评估是否调价</option>
+                                            <option value="先上更高价套餐">先上更高价套餐</option>
+                                            <option value="先开更多外卖平台">先开更多外卖平台</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s8" class="status-chip">待校验</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <button class="action-button" type="button" id="validateReport2Btn">校验情景 2</button>
+                    <div class="calc-result" id="report2Summary">请先完成情景 2 的 4 道题，再点击校验。</div>
+                    <button class="answer-toggle" type="button" data-answer="answer7b">查看情景 2 参考答案</button>
+                    <div class="answer-content" id="answer7b">
+                        <div><strong>分析思路：</strong>先判断成本已经异常，再顺着高损耗 SKU 去查损耗和备料，最后把动作落到排班和动线，而不是先做营销或价格动作。销量结构与报损时段、先控损耗后再看调价，也都能做，但顺序靠后。</div>
+                        <div><strong>更优先答案：</strong>已经进入异常区 → 损耗、备料和 SKU 去化 → 优化排班并重做高峰出餐动线 → 先控损耗和排班。</div>
+                        <div><strong>次优可行：</strong>甜品饮品销量结构与报损时段、先按时段微调排班、先控损耗再评估是否调价。</div>
+                    </div>
+
+                    <div style="height: 16px;"></div>
+
+                    <div class="info-panel">
+                        <div class="info-title">情景 3：用户复购与竞品压力</div>
+                        <div class="hint-list">
+                            <span>复购率：19%，会员储值转化低</span>
+                            <span>客诉率：3.2%，集中在“出餐慢、等位久”</span>
+                            <span>同商圈头部竞品本月上新双人套餐并投放短视频团购</span>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap" data-report-scenario="report3">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>情景</th>
+                                    <th>步骤</th>
+                                    <th>实战问题</th>
+                                    <th>你的答案</th>
+                                    <th>校验</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>情景 3</td>
+                                    <td>先看什么</td>
+                                    <td>复购率 19%，按当前口径第一判断应是：</td>
+                                    <td>
+                                        <select id="e7i9">
+                                            <option value="">请选择</option>
+                                            <option value="已经低于健康线">已经低于健康线</option>
+                                            <option value="表现优秀">表现优秀</option>
+                                            <option value="无需跟进">无需跟进</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s9" class="status-chip">待校验</span></td>
+                                </tr>
+                                <tr>
+                                    <td>情景 3</td>
+                                    <td>再查什么</td>
+                                    <td>客诉集中在“出餐慢、等位久”，优先排查：</td>
+                                    <td>
+                                        <select id="e7i10">
+                                            <option value="">请选择</option>
+                                            <option value="服务流程与出餐节点">服务流程与出餐节点</option>
+                                            <option value="等位时段分布与前后场衔接">等位时段分布与前后场衔接</option>
+                                            <option value="先扩店">先扩店</option>
+                                            <option value="先停掉外卖">先停掉外卖</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s10" class="status-chip">待校验</span></td>
+                                </tr>
+                                <tr>
+                                    <td>情景 3</td>
+                                    <td>最后怎么改</td>
+                                    <td>面对竞品套餐上新和团购投流，下周首要动作应是：</td>
+                                    <td>
+                                        <select id="e7i11">
+                                            <option value="">请选择</option>
+                                            <option value="先做会员召回，再同步优化套餐和门店出餐体验">先做会员召回，再同步优化套餐和门店出餐体验</option>
+                                            <option value="先优化套餐并小范围触达老会员">先优化套餐并小范围触达老会员</option>
+                                            <option value="什么都不做继续观察">什么都不做继续观察</option>
+                                            <option value="只发一条朋友圈">只发一条朋友圈</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s11" class="status-chip">待校验</span></td>
+                                </tr>
+                                <tr>
+                                    <td>情景 3</td>
+                                    <td>最后怎么改</td>
+                                    <td>以下两个方向都可以做，哪个更应该先做？</td>
+                                    <td>
+                                        <select id="e7i12">
+                                            <option value="">请选择</option>
+                                            <option value="先修出餐体验再放大营销">先修出餐体验再放大营销</option>
+                                            <option value="先小规模投流测试，同时盯体验指标">先小规模投流测试，同时盯体验指标</option>
+                                            <option value="先重投流量抢曝光">先重投流量抢曝光</option>
+                                            <option value="先取消会员活动">先取消会员活动</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s12" class="status-chip">待校验</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <button class="action-button" type="button" id="validateReport3Btn">校验情景 3</button>
+                    <div class="calc-result" id="report3Summary">请先完成情景 3 的 4 道题，再点击校验。</div>
+                    <button class="answer-toggle" type="button" data-answer="answer7c">查看情景 3 参考答案</button>
+                    <div class="answer-content" id="answer7c">
+                        <div><strong>分析思路：</strong>这组题里有两个方向都不是完全错，但更优先的是先修服务体验，再放大营销和会员动作，否则流量放大后只会继续放大差评。套餐优化和小范围触达可以做，但不该先于体验修复。</div>
+                        <div><strong>更优先答案：</strong>已经低于健康线 → 服务流程与出餐节点 → 先做会员召回，再同步优化套餐和门店出餐体验 → 先修出餐体验再放大营销。</div>
+                        <div><strong>次优可行：</strong>等位时段分布与前后场衔接、先优化套餐并小范围触达老会员、先小规模投流测试，同时盯体验指标。</div>
                     </div>
                 </div>
             </article>
@@ -1365,15 +1547,50 @@
             { inputId: "e2i4", statusId: "e2s4", type: "number", value: 74.5 },
             { inputId: "e2i5", statusId: "e2s5", type: "number", value: 128 },
             { inputId: "e2i6", statusId: "e2s6", type: "number", value: 45 },
-            { inputId: "e2i7", statusId: "e2s7", type: "number", value: 137 },
-            { inputId: "e7i1", statusId: "e7s1", type: "select", value: "进入异常区" },
-            { inputId: "e7i2", statusId: "e7s2", type: "select", value: "客观不可抗力因素" },
-            { inputId: "e7i3", statusId: "e7s3", type: "select", value: "分析原因" },
-            { inputId: "e7i4", statusId: "e7s4", type: "select", value: "查采购/浪费" },
-            { inputId: "e7i5", statusId: "e7s5", type: "select", value: "提客单价" },
-            { inputId: "e7i6", statusId: "e7s6", type: "select", value: "加强会员运营" },
-            { inputId: "e7i7", statusId: "e7s7", type: "select", value: "查服务流程" }
+            { inputId: "e2i7", statusId: "e2s7", type: "number", value: 137 }
         ];
+
+        const reportScenarios = {
+            report1: {
+                summaryId: "report1Summary",
+                initialMessage: "请先完成情景 1 的 4 道题，再点击校验。",
+                checks: [
+                    { inputId: "e7i1", statusId: "e7s1", primaryValue: "进入异常区" },
+                    { inputId: "e7i2", statusId: "e7s2", primaryValue: "客观不可抗力因素", secondaryValues: ["晚市渠道和时段结构"] },
+                    { inputId: "e7i3", statusId: "e7s3", primaryValue: "先看渠道和时段结构，再调整晚市套餐与引流策略", secondaryValues: ["先做会员召回并测试晚市套餐"] },
+                    { inputId: "e7i4", statusId: "e7s4", primaryValue: "修正晚市产品与渠道策略", secondaryValues: ["补一轮会员召回"] }
+                ]
+            },
+            report2: {
+                summaryId: "report2Summary",
+                initialMessage: "请先完成情景 2 的 4 道题，再点击校验。",
+                checks: [
+                    { inputId: "e7i5", statusId: "e7s5", primaryValue: "已经进入异常区" },
+                    { inputId: "e7i6", statusId: "e7s6", primaryValue: "损耗、备料和 SKU 去化", secondaryValues: ["甜品饮品销量结构与报损时段"] },
+                    { inputId: "e7i7", statusId: "e7s7", primaryValue: "优化排班并重做高峰出餐动线", secondaryValues: ["先按时段微调排班"] },
+                    { inputId: "e7i8", statusId: "e7s8", primaryValue: "先控损耗和排班", secondaryValues: ["先控损耗再评估是否调价"] }
+                ]
+            },
+            report3: {
+                summaryId: "report3Summary",
+                initialMessage: "请先完成情景 3 的 4 道题，再点击校验。",
+                checks: [
+                    { inputId: "e7i9", statusId: "e7s9", primaryValue: "已经低于健康线" },
+                    { inputId: "e7i10", statusId: "e7s10", primaryValue: "服务流程与出餐节点", secondaryValues: ["等位时段分布与前后场衔接"] },
+                    { inputId: "e7i11", statusId: "e7s11", primaryValue: "先做会员召回，再同步优化套餐和门店出餐体验", secondaryValues: ["先优化套餐并小范围触达老会员"] },
+                    { inputId: "e7i12", statusId: "e7s12", primaryValue: "先修出餐体验再放大营销", secondaryValues: ["先小规模投流测试，同时盯体验指标"] }
+                ]
+            }
+        };
+
+        const reportScenarioState = Object.fromEntries(
+            Object.keys(reportScenarios).map((key) => [key, {
+                validated: false,
+                acceptedCount: 0,
+                primaryCount: 0,
+                secondaryCount: 0
+            }])
+        );
 
         const paybackPairs = [
             { inputs: ["e3i1", "e3i2"], values: [1, 48], status: "e3s1" },
@@ -1439,35 +1656,118 @@
             return ok;
         }
 
-        function checkSelectInput(inputId, statusId, correctValue) {
+        function evaluateReportSelect(inputId, statusId, primaryValue, secondaryValues = []) {
             const input = document.getElementById(inputId);
             if (!input.value) {
-                input.classList.remove("correct", "wrong");
+                input.classList.remove("correct", "secondary", "wrong");
                 setStatus(statusId, "", "待校验");
-                return false;
+                return "empty";
             }
 
-            const ok = input.value === correctValue;
-            input.classList.toggle("correct", ok);
-            input.classList.toggle("wrong", !ok);
-            setStatus(statusId, ok ? "ok" : "bad", ok ? "正确" : "再选");
-            return ok;
+            if (input.value === primaryValue) {
+                input.classList.add("correct");
+                input.classList.remove("secondary", "wrong");
+                setStatus(statusId, "ok", "优先");
+                return "primary";
+            }
+
+            if (secondaryValues.includes(input.value)) {
+                input.classList.remove("correct", "wrong");
+                input.classList.add("secondary");
+                setStatus(statusId, "warn", "次优");
+                return "secondary";
+            }
+
+            input.classList.remove("correct", "secondary");
+            input.classList.add("wrong");
+            setStatus(statusId, "bad", "偏了");
+            return "wrong";
+        }
+
+        function resetReportScenario(scenarioKey) {
+            const scenario = reportScenarios[scenarioKey];
+            const state = reportScenarioState[scenarioKey];
+
+            state.validated = false;
+            state.acceptedCount = 0;
+            state.primaryCount = 0;
+            state.secondaryCount = 0;
+
+            scenario.checks.forEach((item) => {
+                const input = document.getElementById(item.inputId);
+                input.classList.remove("correct", "secondary", "wrong");
+                setStatus(item.statusId, "", "待校验");
+            });
+
+            document.getElementById(scenario.summaryId).textContent = scenario.initialMessage;
+            updateBasicProgress();
+        }
+
+        function validateReportScenario(scenarioKey) {
+            const scenario = reportScenarios[scenarioKey];
+            const state = reportScenarioState[scenarioKey];
+            const unfilledCount = scenario.checks.filter((item) => !document.getElementById(item.inputId).value).length;
+
+            if (unfilledCount > 0) {
+                state.validated = false;
+                state.acceptedCount = 0;
+                state.primaryCount = 0;
+                state.secondaryCount = 0;
+                document.getElementById(scenario.summaryId).textContent = `还有 ${unfilledCount} 道题没完成，先补齐情景题再校验。`;
+                updateBasicProgress();
+                return;
+            }
+
+            let primaryCount = 0;
+            let secondaryCount = 0;
+            let wrongCount = 0;
+
+            scenario.checks.forEach((item) => {
+                const result = evaluateReportSelect(item.inputId, item.statusId, item.primaryValue, item.secondaryValues || []);
+                if (result === "primary") {
+                    primaryCount += 1;
+                } else if (result === "secondary") {
+                    secondaryCount += 1;
+                } else if (result === "wrong") {
+                    wrongCount += 1;
+                }
+            });
+
+            state.validated = true;
+            state.primaryCount = primaryCount;
+            state.secondaryCount = secondaryCount;
+            state.acceptedCount = primaryCount + secondaryCount;
+
+            const total = scenario.checks.length;
+            if (wrongCount === 0 && secondaryCount === 0) {
+                document.getElementById(scenario.summaryId).innerHTML = `校验完成：<strong>${primaryCount}/${total}</strong> 题命中优先答案，这组经营判断顺序是完整的。`;
+            } else if (wrongCount === 0) {
+                document.getElementById(scenario.summaryId).innerHTML = `校验完成：<strong>${primaryCount + secondaryCount}/${total}</strong> 题都可行，其中 <strong>${primaryCount}</strong> 题是更优先答案，<strong>${secondaryCount}</strong> 题是次优可行动作。`;
+            } else {
+                document.getElementById(scenario.summaryId).innerHTML = `校验完成：可行答案 <strong>${primaryCount + secondaryCount}/${total}</strong>，其中优先答案 <strong>${primaryCount}</strong> 题，次优可行 <strong>${secondaryCount}</strong> 题，另有 <strong>${wrongCount}</strong> 题偏离重点。`;
+            }
+
+            updateBasicProgress();
         }
 
         function updateBasicProgress() {
             let done = 0;
 
             basicChecks.forEach((item) => {
-                const ok = item.type === "number"
-                    ? checkNumericInput(item.inputId, item.statusId, item.value)
-                    : checkSelectInput(item.inputId, item.statusId, item.value);
+                const ok = checkNumericInput(item.inputId, item.statusId, item.value);
                 if (ok) {
                     done += 1;
                 }
             });
 
+            Object.values(reportScenarioState).forEach((state) => {
+                if (state.validated) {
+                    done += state.acceptedCount;
+                }
+            });
+
             document.getElementById("basicDone").textContent = String(done);
-            document.getElementById("basicProgress").style.width = `${done / basicChecks.length * 100}%`;
+            document.getElementById("basicProgress").style.width = `${done / 26 * 100}%`;
         }
 
         function updatePaybackExercise() {
@@ -1693,6 +1993,13 @@
                 input.addEventListener("input", updateBasicProgress);
             });
 
+            document.querySelectorAll("[data-report-scenario] select").forEach((select) => {
+                select.addEventListener("change", (event) => {
+                    const scenarioKey = event.target.closest("[data-report-scenario]").dataset.reportScenario;
+                    resetReportScenario(scenarioKey);
+                });
+            });
+
             document.querySelectorAll("#advanced input, #advanced select").forEach((input) => {
                 input.addEventListener("input", updateAdvancedProgress);
                 input.addEventListener("change", updateAdvancedProgress);
@@ -1700,6 +2007,9 @@
 
             document.getElementById("paybackModel").addEventListener("change", updatePaybackPreview);
             document.getElementById("paybackRevenue").addEventListener("input", updatePaybackPreview);
+            document.getElementById("validateReport1Btn").addEventListener("click", () => validateReportScenario("report1"));
+            document.getElementById("validateReport2Btn").addEventListener("click", () => validateReportScenario("report2"));
+            document.getElementById("validateReport3Btn").addEventListener("click", () => validateReportScenario("report3"));
         }
 
         function bindTabs() {
