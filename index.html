@@ -511,6 +511,69 @@
             line-height: 1.7;
         }
 
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .question-card {
+            background: var(--panel-soft);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 18px;
+        }
+
+        .question-card h3 {
+            font-size: 17px;
+            color: var(--brand-deep);
+            margin-bottom: 8px;
+        }
+
+        .question-card p {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 14px;
+            margin-bottom: 14px;
+        }
+
+        .question-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .reveal-box {
+            display: none;
+            margin-top: 12px;
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px dashed #f2b38a;
+            background: #fffaf6;
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .reveal-box.show {
+            display: block;
+        }
+
+        .reveal-box strong {
+            color: var(--brand-deep);
+        }
+
+        .masked-formula {
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .masked-formula.revealed {
+            color: var(--brand-deep);
+        }
+
         .footer {
             margin-top: 32px;
             text-align: center;
@@ -638,7 +701,7 @@
             <div class="progress-panel">
                 <div class="progress-head">
                     <strong>基础级别完成度</strong>
-                    <span><span id="basicDone">0</span> / <span id="basicTotal">26</span></span>
+                    <span><span id="basicDone">0</span> / <span id="basicTotal">17</span></span>
                 </div>
                 <div class="progress-track">
                     <div class="progress-fill" id="basicProgress"></div>
@@ -650,7 +713,7 @@
                     <div class="card-index">1</div>
                     <div>
                         <h2>核心指标课：财务报表演算</h2>
-                        <p>下面是一张虚拟单店月度财务报表。请根据给定公式填写核心指标，适合现场带大家练“先看数据，再推公式”的思路。</p>
+                        <p>这一部分改成分题卡演练。先只给业务数据，不直接露公式；每道题或每个情景点校验后，才展示公式、答案和经营解释。</p>
                     </div>
                 </div>
                 <div class="card-body">
@@ -669,72 +732,62 @@
                         </div>
                     </div>
 
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>指标</th>
-                                    <th>公式</th>
-                                    <th>你的答案</th>
-                                    <th>校验</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>净营收</td>
-                                    <td class="formula">GMV - 退款</td>
-                                    <td><div class="input-inline"><input type="number" id="e1i1" placeholder="填写数值"><span>元</span></div></td>
-                                    <td><span id="e1s1" class="status-chip">待校验</span></td>
-                                </tr>
-                                <tr>
-                                    <td>毛利率</td>
-                                    <td class="formula">(净营收 - 食材成本) / 净营收</td>
-                                    <td><div class="input-inline"><input type="number" id="e1i2" step="0.01" placeholder="填写比例"><span>%</span></div></td>
-                                    <td><span id="e1s2" class="status-chip">待校验</span></td>
-                                </tr>
-                                <tr>
-                                    <td>人效</td>
-                                    <td class="formula">净营收 / 员工人数</td>
-                                    <td><div class="input-inline"><input type="number" id="e1i3" placeholder="填写数值"><span>元/人</span></div></td>
-                                    <td><span id="e1s3" class="status-chip">待校验</span></td>
-                                </tr>
-                                <tr>
-                                    <td>坪效</td>
-                                    <td class="formula">净营收 / 面积</td>
-                                    <td><div class="input-inline"><input type="number" id="e1i4" step="0.1" placeholder="填写数值"><span>元/㎡</span></div></td>
-                                    <td><span id="e1s4" class="status-chip">待校验</span></td>
-                                </tr>
-                                <tr>
-                                    <td>客单价</td>
-                                    <td class="formula">净营收 / 订单数</td>
-                                    <td><div class="input-inline"><input type="number" id="e1i5" step="0.1" placeholder="填写数值"><span>元</span></div></td>
-                                    <td><span id="e1s5" class="status-chip">待校验</span></td>
-                                </tr>
-                                <tr>
-                                    <td>人力成本率</td>
-                                    <td class="formula">人力成本 / 净营收</td>
-                                    <td><div class="input-inline"><input type="number" id="e1i6" step="0.01" placeholder="填写比例"><span>%</span></div></td>
-                                    <td><span id="e1s6" class="status-chip">待校验</span></td>
-                                </tr>
-                                <tr>
-                                    <td>租金成本率</td>
-                                    <td class="formula">租金成本 / 净营收</td>
-                                    <td><div class="input-inline"><input type="number" id="e1i7" step="0.01" placeholder="填写比例"><span>%</span></div></td>
-                                    <td><span id="e1s7" class="status-chip">待校验</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <div class="quiz-grid">
+                        <div class="question-card" data-core-question="core1">
+                            <h3>小题 1：净营收</h3>
+                            <p>已知 GMV 187,500 元，退款 3,750 元。请算出本月净营收。</p>
+                            <div class="input-inline"><input type="number" id="e1i1" placeholder="填写数值"><span>元</span></div>
+                            <div class="question-actions">
+                                <button class="action-button" type="button" id="validateCore1Btn">校验本题</button>
+                                <span id="e1s1" class="status-chip">待校验</span>
+                            </div>
+                            <div class="reveal-box" id="answerCore1"><strong>答案：</strong>183,750 元。<br><strong>公式：</strong>GMV - 退款 = 187,500 - 3,750。</div>
+                        </div>
 
-                    <button class="answer-toggle" type="button" data-answer="answer1">查看参考答案与公式拆解</button>
-                    <div class="answer-content" id="answer1">
-                        <div><strong>净营收：</strong>183,750 元 = 187,500 - 3,750</div>
-                        <div><strong>毛利率：</strong>63.27% = (183,750 - 67,500) / 183,750</div>
-                        <div><strong>人效：</strong>36,750 元/人 = 183,750 / 5</div>
-                        <div><strong>坪效：</strong>1,837.5 元/㎡ = 183,750 / 100</div>
-                        <div><strong>客单价：</strong>73.5 元 = 183,750 / 2,500</div>
-                        <div><strong>人力成本率：</strong>15.31% = 28,125 / 183,750</div>
-                        <div><strong>租金成本率：</strong>10.20% = 18,750 / 183,750</div>
+                        <div class="question-card" data-core-question="core2">
+                            <h3>小题 2：毛利率</h3>
+                            <p>已知净营收和食材成本，算出本月毛利率。</p>
+                            <div class="input-inline"><input type="number" id="e1i2" step="0.01" placeholder="填写比例"><span>%</span></div>
+                            <div class="question-actions">
+                                <button class="action-button" type="button" id="validateCore2Btn">校验本题</button>
+                                <span id="e1s2" class="status-chip">待校验</span>
+                            </div>
+                            <div class="reveal-box" id="answerCore2"><strong>答案：</strong>63.27%。<br><strong>公式：</strong>(净营收 - 食材成本) ÷ 净营收 = (183,750 - 67,500) ÷ 183,750。</div>
+                        </div>
+
+                        <div class="question-card" data-core-question="core3">
+                            <h3>小题 3：客单价</h3>
+                            <p>已知净营收 183,750 元、订单总数 2,500 单，算出客单价。</p>
+                            <div class="input-inline"><input type="number" id="e1i3" step="0.1" placeholder="填写数值"><span>元</span></div>
+                            <div class="question-actions">
+                                <button class="action-button" type="button" id="validateCore3Btn">校验本题</button>
+                                <span id="e1s3" class="status-chip">待校验</span>
+                            </div>
+                            <div class="reveal-box" id="answerCore3"><strong>答案：</strong>73.5 元。<br><strong>公式：</strong>净营收 ÷ 订单数 = 183,750 ÷ 2,500。</div>
+                        </div>
+
+                        <div class="question-card" data-core-question="core4">
+                            <h3>小题 4：人效</h3>
+                            <p>月净营收 183,750 元，员工人数 5 人。请算出人效。</p>
+                            <div class="input-inline"><input type="number" id="e1i4" placeholder="填写数值"><span>元/人</span></div>
+                            <div class="question-actions">
+                                <button class="action-button" type="button" id="validateCore4Btn">校验本题</button>
+                                <span id="e1s4" class="status-chip">待校验</span>
+                            </div>
+                            <div class="reveal-box" id="answerCore4"><strong>答案：</strong>36,750 元/人。<br><strong>公式：</strong>净营收 ÷ 员工人数 = 183,750 ÷ 5。</div>
+                        </div>
+
+                        <div class="question-card" data-core-question="core5">
+                            <h3>小题 5：坪效</h3>
+                            <p>月净营收 183,750 元，店铺面积 100 ㎡。请算出坪效。</p>
+                            <div class="input-inline"><input type="number" id="e1i5" step="0.1" placeholder="填写数值"><span>元/㎡</span></div>
+                            <div class="question-actions">
+                                <button class="action-button" type="button" id="validateCore5Btn">校验本题</button>
+                                <span id="e1s5" class="status-chip">待校验</span>
+                            </div>
+                            <div class="reveal-box" id="answerCore5"><strong>答案：</strong>1,837.5 元/㎡。<br><strong>公式：</strong>净营收 ÷ 面积 = 183,750 ÷ 100。</div>
+                        </div>
+
                     </div>
                 </div>
             </article>
@@ -743,47 +796,26 @@
                 <div class="card-head">
                     <div class="card-index">2</div>
                     <div>
-                        <h2>Excel 公式课：虚拟订单表周报试算</h2>
-                        <p>用一张虚拟订单表练基础函数。题目覆盖 <code>SUM</code>、<code>COUNTIF</code>、<code>SUMIF</code>、<code>AVERAGEIF</code>、<code>MAX</code>、<code>MIN</code>、<code>SUMIFS</code>。</p>
+                        <h2>菜单成本分析：产品销售表演算</h2>
+                        <p>下面给一张简单产品销售表，让大家直接算几个产品的销售额贡献、单位毛利和总毛利，更贴近日常菜单分析。</p>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="info-panel">
-                        <div class="info-title">你会用到的基础公式</div>
-                        <div class="formula-tags">
-                            <span class="tag">SUM</span>
-                            <span class="tag">COUNTIF</span>
-                            <span class="tag">SUMIF</span>
-                            <span class="tag">AVERAGEIF</span>
-                            <span class="tag">MAX</span>
-                            <span class="tag">MIN</span>
-                            <span class="tag">SUMIFS</span>
-                        </div>
-                    </div>
-
                     <div class="table-wrap">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>日期</th>
-                                    <th>订单号</th>
-                                    <th>渠道</th>
-                                    <th>订单金额</th>
-                                    <th>状态</th>
-                                    <th>退款金额</th>
+                                    <th>产品</th>
+                                    <th>销量</th>
+                                    <th>售价</th>
+                                    <th>单位成本</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td>4/1</td><td>A001</td><td>堂食</td><td>68</td><td>完成</td><td>0</td></tr>
-                                <tr><td>4/1</td><td>A002</td><td>外卖</td><td>56</td><td>完成</td><td>0</td></tr>
-                                <tr><td>4/1</td><td>A003</td><td>团购</td><td>92</td><td>已退款</td><td>92</td></tr>
-                                <tr><td>4/2</td><td>A004</td><td>外卖</td><td>45</td><td>完成</td><td>0</td></tr>
-                                <tr><td>4/2</td><td>A005</td><td>堂食</td><td>128</td><td>完成</td><td>0</td></tr>
-                                <tr><td>4/3</td><td>A006</td><td>外卖</td><td>73</td><td>完成</td><td>0</td></tr>
-                                <tr><td>4/3</td><td>A007</td><td>堂食</td><td>88</td><td>已退款</td><td>88</td></tr>
-                                <tr><td>4/3</td><td>A008</td><td>外卖</td><td>64</td><td>完成</td><td>0</td></tr>
-                                <tr><td>4/4</td><td>A009</td><td>小程序</td><td>52</td><td>完成</td><td>0</td></tr>
-                                <tr><td>4/4</td><td>A010</td><td>外卖</td><td>110</td><td>完成</td><td>0</td></tr>
+                                <tr><td>草莓盒子</td><td>520</td><td>36 元</td><td>12 元</td></tr>
+                                <tr><td>芋泥蛋糕卷</td><td>310</td><td>42 元</td><td>16 元</td></tr>
+                                <tr><td>生巧切块</td><td>280</td><td>28 元</td><td>9 元</td></tr>
+                                <tr><td>榴莲千层</td><td>160</td><td>58 元</td><td>26 元</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -794,68 +826,54 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>统计项</th>
-                                    <th>建议公式</th>
+                                    <th>分析项</th>
+                                    <th>建议口径</th>
                                     <th>你的答案</th>
                                     <th>校验</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>总订单金额</td>
-                                    <td class="formula">SUM(订单金额)</td>
-                                    <td><div class="input-inline"><input type="number" id="e2i1" placeholder="填写数值"><span>元</span></div></td>
-                                    <td><span id="e2s1" class="status-chip">待校验</span></td>
+                                    <td>草莓盒子销售额贡献</td>
+                                    <td><span class="masked-formula" id="e8f1">校验后显示</span></td>
+                                    <td><div class="input-inline"><input type="number" id="e8i1" step="0.1" placeholder="填写比例"><span>%</span></div></td>
+                                    <td><span id="e8s1" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
-                                    <td>外卖订单数</td>
-                                    <td class="formula">COUNTIF(渠道,"外卖")</td>
-                                    <td><div class="input-inline"><input type="number" id="e2i2" placeholder="填写数值"><span>单</span></div></td>
-                                    <td><span id="e2s2" class="status-chip">待校验</span></td>
+                                    <td>榴莲千层销售额贡献</td>
+                                    <td><span class="masked-formula" id="e8f2">校验后显示</span></td>
+                                    <td><div class="input-inline"><input type="number" id="e8i2" step="0.1" placeholder="填写比例"><span>%</span></div></td>
+                                    <td><span id="e8s2" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
-                                    <td>退款总额</td>
-                                    <td class="formula">SUMIF(状态,"已退款",退款金额)</td>
-                                    <td><div class="input-inline"><input type="number" id="e2i3" placeholder="填写数值"><span>元</span></div></td>
-                                    <td><span id="e2s3" class="status-chip">待校验</span></td>
+                                    <td>草莓盒子单位毛利</td>
+                                    <td><span class="masked-formula" id="e8f3">校验后显示</span></td>
+                                    <td><div class="input-inline"><input type="number" id="e8i3" placeholder="填写数值"><span>元</span></div></td>
+                                    <td><span id="e8s3" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
-                                    <td>完成订单平均金额</td>
-                                    <td class="formula">AVERAGEIF(状态,"完成",订单金额)</td>
-                                    <td><div class="input-inline"><input type="number" id="e2i4" step="0.1" placeholder="填写数值"><span>元</span></div></td>
-                                    <td><span id="e2s4" class="status-chip">待校验</span></td>
+                                    <td>榴莲千层总毛利</td>
+                                    <td><span class="masked-formula" id="e8f4">校验后显示</span></td>
+                                    <td><div class="input-inline"><input type="number" id="e8i4" placeholder="填写数值"><span>元</span></div></td>
+                                    <td><span id="e8s4" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
-                                    <td>最高订单金额</td>
-                                    <td class="formula">MAX(订单金额)</td>
-                                    <td><div class="input-inline"><input type="number" id="e2i5" placeholder="填写数值"><span>元</span></div></td>
-                                    <td><span id="e2s5" class="status-chip">待校验</span></td>
-                                </tr>
-                                <tr>
-                                    <td>最低订单金额</td>
-                                    <td class="formula">MIN(订单金额)</td>
-                                    <td><div class="input-inline"><input type="number" id="e2i6" placeholder="填写数值"><span>元</span></div></td>
-                                    <td><span id="e2s6" class="status-chip">待校验</span></td>
-                                </tr>
-                                <tr>
-                                    <td>4 月 3 日外卖销售额</td>
-                                    <td class="formula">SUMIFS(订单金额,日期,"4/3",渠道,"外卖")</td>
-                                    <td><div class="input-inline"><input type="number" id="e2i7" placeholder="填写数值"><span>元</span></div></td>
-                                    <td><span id="e2s7" class="status-chip">待校验</span></td>
+                                    <td>四个产品综合毛利率</td>
+                                    <td><span class="masked-formula" id="e8f5">校验后显示</span></td>
+                                    <td><div class="input-inline"><input type="number" id="e8i5" step="0.1" placeholder="填写比例"><span>%</span></div></td>
+                                    <td><span id="e8s5" class="status-chip">待校验</span></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <button class="answer-toggle" type="button" data-answer="answer2">查看参考答案与公式拆解</button>
-                    <div class="answer-content" id="answer2">
-                        <div><strong>总订单金额：</strong>776 元</div>
-                        <div><strong>外卖订单数：</strong>5 单</div>
-                        <div><strong>退款总额：</strong>180 元</div>
-                        <div><strong>完成订单平均金额：</strong>74.5 元</div>
-                        <div><strong>最高订单金额：</strong>128 元</div>
-                        <div><strong>最低订单金额：</strong>45 元</div>
-                        <div><strong>4 月 3 日外卖销售额：</strong>137 元 = 73 + 64</div>
+                    <button class="answer-toggle" type="button" data-answer="answer8">查看参考答案与拆解</button>
+                    <div class="answer-content" id="answer8">
+                        <div><strong>草莓盒子销售额贡献：</strong>33.3% = 18,720 ÷ 56,160</div>
+                        <div><strong>榴莲千层销售额贡献：</strong>16.5% = 9,280 ÷ 56,160</div>
+                        <div><strong>草莓盒子单位毛利：</strong>24 元 = 36 - 12</div>
+                        <div><strong>榴莲千层总毛利：</strong>5,120 元 = (58 - 26) × 160</div>
+                        <div><strong>四个产品综合毛利率：</strong>57.3% = 32,160 ÷ 56,160</div>
                     </div>
                 </div>
             </article>
@@ -864,322 +882,165 @@
                 <div class="card-head">
                     <div class="card-index">3</div>
                     <div>
-                        <h2>周报 / 月报数据分析实战</h2>
-                        <p>这一部分改成餐饮经营复盘实战。每个情景都按“先看什么、再查什么、最后怎么改”分步判断，而且会刻意放入“也能做，但不是第一优先”的干扰项。</p>
+                        <h2>营业指标演算题：桌位效率与经营效率</h2>
+                        <p>这一部分改成门店营业指标演算。围绕桌位数、面积、坪效、人效、满座率、翻台率做 3 组模拟场景，让大家先读经营条件，再自己算出关键指标。</p>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="info-panel">
-                        <div class="info-title">统一用这 4 层看数据</div>
-                        <div class="hint-list">
-                            <span>结果层：营收、实收、订单数、新增、复购</span>
-                            <span>结构层：新老客类型、渠道分布、门店分布、产品类型分布</span>
-                            <span>效率层：客单价、转化率、人效</span>
-                            <span>动作层：下周 / 下月怎么改</span>
+                        <div class="info-title">你会用到的核心公式</div>
+                        <div class="formula-tags">
+                            <span class="tag">桌位数公式：校验后显示</span>
+                            <span class="tag">座位数公式：校验后显示</span>
+                            <span class="tag">坪效公式：校验后显示</span>
+                            <span class="tag">人效公式：校验后显示</span>
+                            <span class="tag">满座率公式：校验后显示</span>
+                            <span class="tag">翻台率公式：校验后显示</span>
                         </div>
                     </div>
 
                     <div class="info-panel">
-                        <div class="info-title">做题说明</div>
+                        <div class="info-title">情景 1：开店前桌位测算</div>
                         <div class="hint-list">
-                            <span>每个情景独立校验，先做完一组，再点该情景的校验按钮。</span>
-                            <span>有些选项不是完全错，而是“可以做，但不是第一优先”。</span>
-                            <span>校验结果会区分“优先答案”“次优可行”“偏离重点”。</span>
+                            <span>门店总面积：120 ㎡</span>
+                            <span>后厨 / 仓储 / 收银合计：30 ㎡</span>
+                            <span>单桌平均占地：5 ㎡</span>
+                            <span>每桌配置：4 座</span>
                         </div>
                     </div>
 
-                    <div class="info-panel">
-                        <div class="info-title">情景 1：商场店营收下滑</div>
-                        <div class="hint-list">
-                            <span>门店类型：购物中心轻正餐，面积 110 ㎡，客单 68 元</span>
-                            <span>本月日营收波动：12.8%（超过 10% 即异常）</span>
-                            <span>月营收：连续 2 个月下滑，晚市下滑明显</span>
-                            <span>外卖占比：从 32% 升到 49%，堂食单量下滑</span>
-                        </div>
-                    </div>
-
-                    <div class="table-wrap" data-report-scenario="report1">
+                    <div class="table-wrap">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>情景</th>
-                                    <th>步骤</th>
-                                    <th>实战问题</th>
+                                    <th>测算项</th>
+                                    <th>公式 / 口径</th>
                                     <th>你的答案</th>
                                     <th>校验</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>情景 1</td>
-                                    <td>先看什么</td>
-                                    <td>日营收波动 12.8%，按当前口径第一判断应是：</td>
-                                    <td>
-                                        <select id="e7i1">
-                                            <option value="">请选择</option>
-                                            <option value="正常波动">正常波动</option>
-                                            <option value="进入异常区">进入异常区</option>
-                                            <option value="先忽略不看">先忽略不看</option>
-                                        </select>
-                                    </td>
-                                    <td><span id="e7s1" class="status-chip">待校验</span></td>
+                                    <td>可排桌位数</td>
+                                    <td><span class="masked-formula" id="e2f1">校验后显示</span></td>
+                                    <td><div class="input-inline"><input type="number" id="e2i1" placeholder="填写数值"><span>桌</span></div></td>
+                                    <td><span id="e2s1" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
-                                    <td>情景 1</td>
-                                    <td>再查什么</td>
-                                    <td>正式分析前，最先排除的是：</td>
-                                    <td>
-                                        <select id="e7i2">
-                                            <option value="">请选择</option>
-                                            <option value="客观不可抗力因素">客观不可抗力因素</option>
-                                            <option value="晚市渠道和时段结构">晚市渠道和时段结构</option>
-                                            <option value="员工流失问题">员工流失问题</option>
-                                            <option value="会员权益问题">会员权益问题</option>
-                                        </select>
-                                    </td>
-                                    <td><span id="e7s2" class="status-chip">待校验</span></td>
-                                </tr>
-                                <tr>
-                                    <td>情景 1</td>
-                                    <td>最后怎么改</td>
-                                    <td>外卖占比快速升高、堂食单量下滑，下周更优先的动作是：</td>
-                                    <td>
-                                        <select id="e7i3">
-                                            <option value="">请选择</option>
-                                            <option value="先看渠道和时段结构，再调整晚市套餐与引流策略">先看渠道和时段结构，再调整晚市套餐与引流策略</option>
-                                            <option value="先做会员召回并测试晚市套餐">先做会员召回并测试晚市套餐</option>
-                                            <option value="直接全店打折">直接全店打折</option>
-                                            <option value="先砍掉外卖平台">先砍掉外卖平台</option>
-                                        </select>
-                                    </td>
-                                    <td><span id="e7s3" class="status-chip">待校验</span></td>
-                                </tr>
-                                <tr>
-                                    <td>情景 1</td>
-                                    <td>最后怎么改</td>
-                                    <td>如果资源只能先做 1 个动作，优先级更高的是：</td>
-                                    <td>
-                                        <select id="e7i4">
-                                            <option value="">请选择</option>
-                                            <option value="修正晚市产品与渠道策略">修正晚市产品与渠道策略</option>
-                                            <option value="补一轮会员召回">补一轮会员召回</option>
-                                            <option value="同步做一次储值促销">同步做一次储值促销</option>
-                                            <option value="先更换店长">先更换店长</option>
-                                        </select>
-                                    </td>
-                                    <td><span id="e7s4" class="status-chip">待校验</span></td>
+                                    <td>理论最大座位数</td>
+                                    <td><span class="masked-formula" id="e2f2">校验后显示</span></td>
+                                    <td><div class="input-inline"><input type="number" id="e2i2" placeholder="填写数值"><span>座</span></div></td>
+                                    <td><span id="e2s2" class="status-chip">待校验</span></td>
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-
-                    <button class="action-button" type="button" id="validateReport1Btn">校验情景 1</button>
-                    <div class="calc-result" id="report1Summary">请先完成情景 1 的 4 道题，再点击校验。</div>
-                    <button class="answer-toggle" type="button" data-answer="answer7a">查看情景 1 参考答案</button>
-                    <div class="answer-content" id="answer7a">
-                        <div><strong>分析思路：</strong>先确认结果异常，再排除客观因素，接着回到渠道和时段结构，最后落到晚市产品和渠道动作。晚市结构、会员召回这些都不是完全错，但在这组题里属于次优动作。</div>
-                        <div><strong>更优先答案：</strong>进入异常区 → 客观不可抗力因素 → 先看渠道和时段结构，再调整晚市套餐与引流策略 → 修正晚市产品与渠道策略。</div>
-                        <div><strong>次优可行：</strong>晚市渠道和时段结构、先做会员召回并测试晚市套餐、补一轮会员召回。</div>
                     </div>
 
                     <div style="height: 16px;"></div>
 
                     <div class="info-panel">
-                        <div class="info-title">情景 2：成本与效率失衡</div>
+                        <div class="info-title">情景 2：月度效率复盘</div>
                         <div class="hint-list">
-                            <span>食材成本率：44.6%，高损耗 SKU 主要集中在甜品和饮品</span>
-                            <span>人效：2.3 万 / 月，周末高峰排队，但平峰人力冗余</span>
-                            <span>后厨备料偏多，甜品报损明显</span>
+                            <span>门店面积：90 ㎡</span>
+                            <span>本月营收：486,000 元</span>
+                            <span>月均在岗人数：6 人</span>
+                            <span>本组重点看：坪效和人效</span>
                         </div>
                     </div>
 
-                    <div class="table-wrap" data-report-scenario="report2">
+                    <div class="table-wrap">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>情景</th>
-                                    <th>步骤</th>
-                                    <th>实战问题</th>
+                                    <th>测算项</th>
+                                    <th>公式 / 口径</th>
                                     <th>你的答案</th>
                                     <th>校验</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>情景 2</td>
-                                    <td>先看什么</td>
-                                    <td>面对 44.6% 的食材成本率，第一优先判断应是：</td>
-                                    <td>
-                                        <select id="e7i5">
-                                            <option value="">请选择</option>
-                                            <option value="已经进入异常区">已经进入异常区</option>
-                                            <option value="还在健康区间">还在健康区间</option>
-                                            <option value="只看营业额不看成本">只看营业额不看成本</option>
-                                        </select>
-                                    </td>
-                                    <td><span id="e7s5" class="status-chip">待校验</span></td>
+                                    <td>坪效</td>
+                                    <td><span class="masked-formula" id="e2f3">校验后显示</span></td>
+                                    <td><div class="input-inline"><input type="number" id="e2i3" placeholder="填写数值"><span>元/㎡</span></div></td>
+                                    <td><span id="e2s3" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
-                                    <td>情景 2</td>
-                                    <td>再查什么</td>
-                                    <td>甜品和饮品报损高，接下来最该查的是：</td>
-                                    <td>
-                                        <select id="e7i6">
-                                            <option value="">请选择</option>
-                                            <option value="损耗、备料和 SKU 去化">损耗、备料和 SKU 去化</option>
-                                            <option value="甜品饮品销量结构与报损时段">甜品饮品销量结构与报损时段</option>
-                                            <option value="先做会员储值">先做会员储值</option>
-                                            <option value="先上新品">先上新品</option>
-                                        </select>
-                                    </td>
-                                    <td><span id="e7s6" class="status-chip">待校验</span></td>
-                                </tr>
-                                <tr>
-                                    <td>情景 2</td>
-                                    <td>最后怎么改</td>
-                                    <td>周末高峰排队、平峰冗余，最合理的动作是：</td>
-                                    <td>
-                                        <select id="e7i7">
-                                            <option value="">请选择</option>
-                                            <option value="优化排班并重做高峰出餐动线">优化排班并重做高峰出餐动线</option>
-                                            <option value="先按时段微调排班">先按时段微调排班</option>
-                                            <option value="维持原排班不动">维持原排班不动</option>
-                                            <option value="先整体涨价">先整体涨价</option>
-                                        </select>
-                                    </td>
-                                    <td><span id="e7s7" class="status-chip">待校验</span></td>
-                                </tr>
-                                <tr>
-                                    <td>情景 2</td>
-                                    <td>最后怎么改</td>
-                                    <td>如果只能先落 1 个动作，优先级更高的是：</td>
-                                    <td>
-                                        <select id="e7i8">
-                                            <option value="">请选择</option>
-                                            <option value="先控损耗和排班">先控损耗和排班</option>
-                                            <option value="先控损耗再评估是否调价">先控损耗再评估是否调价</option>
-                                            <option value="先上更高价套餐">先上更高价套餐</option>
-                                            <option value="先开更多外卖平台">先开更多外卖平台</option>
-                                        </select>
-                                    </td>
-                                    <td><span id="e7s8" class="status-chip">待校验</span></td>
+                                    <td>人效</td>
+                                    <td><span class="masked-formula" id="e2f4">校验后显示</span></td>
+                                    <td><div class="input-inline"><input type="number" id="e2i4" step="0.1" placeholder="填写数值"><span>元/人</span></div></td>
+                                    <td><span id="e2s4" class="status-chip">待校验</span></td>
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-
-                    <button class="action-button" type="button" id="validateReport2Btn">校验情景 2</button>
-                    <div class="calc-result" id="report2Summary">请先完成情景 2 的 4 道题，再点击校验。</div>
-                    <button class="answer-toggle" type="button" data-answer="answer7b">查看情景 2 参考答案</button>
-                    <div class="answer-content" id="answer7b">
-                        <div><strong>分析思路：</strong>先判断成本已经异常，再顺着高损耗 SKU 去查损耗和备料，最后把动作落到排班和动线，而不是先做营销或价格动作。销量结构与报损时段、先控损耗后再看调价，也都能做，但顺序靠后。</div>
-                        <div><strong>更优先答案：</strong>已经进入异常区 → 损耗、备料和 SKU 去化 → 优化排班并重做高峰出餐动线 → 先控损耗和排班。</div>
-                        <div><strong>次优可行：</strong>甜品饮品销量结构与报损时段、先按时段微调排班、先控损耗再评估是否调价。</div>
                     </div>
 
                     <div style="height: 16px;"></div>
 
                     <div class="info-panel">
-                        <div class="info-title">情景 3：用户复购与竞品压力</div>
+                        <div class="info-title">情景 3：高峰时段经营诊断</div>
                         <div class="hint-list">
-                            <span>复购率：19%，会员储值转化低</span>
-                            <span>客诉率：3.2%，集中在“出餐慢、等位久”</span>
-                            <span>同商圈头部竞品本月上新双人套餐并投放短视频团购</span>
+                            <span>桌位数：18 桌</span>
+                            <span>理论可售座位：72 座</span>
+                            <span>晚高峰平均实占座位：64 座</span>
+                            <span>午市入座桌次：54 次</span>
+                            <span>晚市入座桌次：45 次</span>
                         </div>
                     </div>
 
-                    <div class="table-wrap" data-report-scenario="report3">
+                    <div class="table-wrap">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>情景</th>
-                                    <th>步骤</th>
-                                    <th>实战问题</th>
+                                    <th>测算项</th>
+                                    <th>公式 / 口径</th>
                                     <th>你的答案</th>
                                     <th>校验</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>情景 3</td>
-                                    <td>先看什么</td>
-                                    <td>复购率 19%，按当前口径第一判断应是：</td>
-                                    <td>
-                                        <select id="e7i9">
-                                            <option value="">请选择</option>
-                                            <option value="已经低于健康线">已经低于健康线</option>
-                                            <option value="表现优秀">表现优秀</option>
-                                            <option value="无需跟进">无需跟进</option>
-                                        </select>
-                                    </td>
-                                    <td><span id="e7s9" class="status-chip">待校验</span></td>
+                                    <td>晚高峰满座率</td>
+                                    <td><span class="masked-formula" id="e2f5">校验后显示</span></td>
+                                    <td><div class="input-inline"><input type="number" id="e2i5" step="0.1" placeholder="填写数值"><span>%</span></div></td>
+                                    <td><span id="e2s5" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
-                                    <td>情景 3</td>
-                                    <td>再查什么</td>
-                                    <td>客诉集中在“出餐慢、等位久”，优先排查：</td>
-                                    <td>
-                                        <select id="e7i10">
-                                            <option value="">请选择</option>
-                                            <option value="服务流程与出餐节点">服务流程与出餐节点</option>
-                                            <option value="等位时段分布与前后场衔接">等位时段分布与前后场衔接</option>
-                                            <option value="先扩店">先扩店</option>
-                                            <option value="先停掉外卖">先停掉外卖</option>
-                                        </select>
-                                    </td>
-                                    <td><span id="e7s10" class="status-chip">待校验</span></td>
+                                    <td>午市翻台率</td>
+                                    <td><span class="masked-formula" id="e2f6">校验后显示</span></td>
+                                    <td><div class="input-inline"><input type="number" id="e2i6" step="0.1" placeholder="填写数值"><span>次</span></div></td>
+                                    <td><span id="e2s6" class="status-chip">待校验</span></td>
                                 </tr>
                                 <tr>
-                                    <td>情景 3</td>
-                                    <td>最后怎么改</td>
-                                    <td>面对竞品套餐上新和团购投流，下周首要动作应是：</td>
-                                    <td>
-                                        <select id="e7i11">
-                                            <option value="">请选择</option>
-                                            <option value="先做会员召回，再同步优化套餐和门店出餐体验">先做会员召回，再同步优化套餐和门店出餐体验</option>
-                                            <option value="先优化套餐并小范围触达老会员">先优化套餐并小范围触达老会员</option>
-                                            <option value="什么都不做继续观察">什么都不做继续观察</option>
-                                            <option value="只发一条朋友圈">只发一条朋友圈</option>
-                                        </select>
-                                    </td>
-                                    <td><span id="e7s11" class="status-chip">待校验</span></td>
-                                </tr>
-                                <tr>
-                                    <td>情景 3</td>
-                                    <td>最后怎么改</td>
-                                    <td>以下两个方向都可以做，哪个更应该先做？</td>
-                                    <td>
-                                        <select id="e7i12">
-                                            <option value="">请选择</option>
-                                            <option value="先修出餐体验再放大营销">先修出餐体验再放大营销</option>
-                                            <option value="先小规模投流测试，同时盯体验指标">先小规模投流测试，同时盯体验指标</option>
-                                            <option value="先重投流量抢曝光">先重投流量抢曝光</option>
-                                            <option value="先取消会员活动">先取消会员活动</option>
-                                        </select>
-                                    </td>
-                                    <td><span id="e7s12" class="status-chip">待校验</span></td>
+                                    <td>全日翻台率</td>
+                                    <td><span class="masked-formula" id="e2f7">校验后显示</span></td>
+                                    <td><div class="input-inline"><input type="number" id="e2i7" step="0.1" placeholder="填写数值"><span>次</span></div></td>
+                                    <td><span id="e2s7" class="status-chip">待校验</span></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <button class="action-button" type="button" id="validateReport3Btn">校验情景 3</button>
-                    <div class="calc-result" id="report3Summary">请先完成情景 3 的 4 道题，再点击校验。</div>
-                    <button class="answer-toggle" type="button" data-answer="answer7c">查看情景 3 参考答案</button>
-                    <div class="answer-content" id="answer7c">
-                        <div><strong>分析思路：</strong>这组题里有两个方向都不是完全错，但更优先的是先修服务体验，再放大营销和会员动作，否则流量放大后只会继续放大差评。套餐优化和小范围触达可以做，但不该先于体验修复。</div>
-                        <div><strong>更优先答案：</strong>已经低于健康线 → 服务流程与出餐节点 → 先做会员召回，再同步优化套餐和门店出餐体验 → 先修出餐体验再放大营销。</div>
-                        <div><strong>次优可行：</strong>等位时段分布与前后场衔接、先优化套餐并小范围触达老会员、先小规模投流测试，同时盯体验指标。</div>
+                    <button class="answer-toggle" type="button" data-answer="answer2">查看参考答案与指标拆解</button>
+                    <div class="answer-content" id="answer2">
+                        <div><strong>可排桌位数：</strong>18 桌 = (120 - 30) ÷ 5</div>
+                        <div><strong>理论最大座位数：</strong>72 座 = 18 × 4</div>
+                        <div><strong>坪效：</strong>5,400 元/㎡ = 486,000 ÷ 90</div>
+                        <div><strong>人效：</strong>81,000 元/人 = 486,000 ÷ 6</div>
+                        <div><strong>晚高峰满座率：</strong>88.9% = 64 ÷ 72</div>
+                        <div><strong>午市翻台率：</strong>3.0 次 = 54 ÷ 18</div>
+                        <div><strong>全日翻台率：</strong>5.5 次 = (54 + 45) ÷ 18</div>
                     </div>
                 </div>
             </article>
+
         </section>
 
         <section class="section" id="advanced">
             <div class="progress-panel">
                 <div class="progress-head">
                     <strong>高阶级别完成度</strong>
-                    <span><span id="advancedDone">0</span> / <span id="advancedTotal">34</span></span>
+                    <span><span id="advancedDone">0</span> / <span id="advancedTotal">46</span></span>
                 </div>
                 <div class="progress-track">
                     <div class="progress-fill" id="advancedProgress"></div>
@@ -1520,6 +1381,320 @@
                     </div>
                 </div>
             </article>
+
+            <article class="exercise-card">
+                <div class="card-head">
+                    <div class="card-index">5</div>
+                    <div>
+                        <h2>经营诊断&amp;移动分析</h2>
+                        <p>这一部分聚焦线上蛋糕品牌营业额下滑。先判断到底是流量问题还是转化率问题，再决定该修入口还是修承接链路，每个情景都按独立诊断和独立校验来做。</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="info-panel">
+                        <div class="info-title">先用这 4 层拆线上营业额</div>
+                        <div class="hint-list">
+                            <span>结果层：营业额、支付订单数、客单价</span>
+                            <span>流量层：曝光、访客数、来源结构、活动入口</span>
+                            <span>转化层：详情页点击、加购率、支付转化率</span>
+                            <span>动作层：先修流量还是先修转化，再决定是否放量</span>
+                        </div>
+                    </div>
+
+                    <div class="info-panel">
+                        <div class="info-title">做题说明</div>
+                        <div class="hint-list">
+                            <span>每个情景独立校验，先做完一组，再点该情景的校验按钮。</span>
+                            <span>有些选项不是完全错，而是“可以做，但不是第一优先”。</span>
+                            <span>校验结果会区分“优先答案”“次优可行”“偏离重点”。</span>
+                        </div>
+                    </div>
+
+                    <div class="info-panel">
+                        <div class="info-title">情景 1：先判断是流量问题还是转化问题</div>
+                        <div class="hint-list">
+                            <span>线上蛋糕品牌月营业额：86 万 → 68 万</span>
+                            <span>访客数：24 万 → 17 万</span>
+                            <span>支付转化率：3.6% → 3.5%</span>
+                            <span>客单价基本持平，投放预算无明显增加</span>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap" data-report-scenario="report1">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>情景</th>
+                                    <th>步骤</th>
+                                    <th>实战问题</th>
+                                    <th>你的答案</th>
+                                    <th>校验</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>情景 1</td>
+                                    <td>先看什么</td>
+                                    <td>营业额下滑后，第一步更应该先做：</td>
+                                    <td>
+                                        <select id="e7i1">
+                                            <option value="">请选择</option>
+                                            <option value="先拆流量和转化率变化">先拆流量和转化率变化</option>
+                                            <option value="直接改首页视觉">直接改首页视觉</option>
+                                            <option value="先做促销冲营业额">先做促销冲营业额</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s1" class="status-chip">待校验</span></td>
+                                </tr>
+                                <tr>
+                                    <td>情景 1</td>
+                                    <td>再查什么</td>
+                                    <td>从当前数据看，这次下滑更接近哪种情况：</td>
+                                    <td>
+                                        <select id="e7i2">
+                                            <option value="">请选择</option>
+                                            <option value="流量下滑为主，转化率轻微波动">流量下滑为主，转化率轻微波动</option>
+                                            <option value="流量和转化都要跟，但先盯流量">流量和转化都要跟，但先盯流量</option>
+                                            <option value="转化率下滑为主">转化率下滑为主</option>
+                                            <option value="客单价下滑为主">客单价下滑为主</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s2" class="status-chip">待校验</span></td>
+                                </tr>
+                                <tr>
+                                    <td>情景 1</td>
+                                    <td>最后怎么改</td>
+                                    <td>如果要先确诊流量问题，最先看的明细应是：</td>
+                                    <td>
+                                        <select id="e7i3">
+                                            <option value="">请选择</option>
+                                            <option value="先看投放、自然搜索和活动入口分别掉了多少">先看投放、自然搜索和活动入口分别掉了多少</option>
+                                            <option value="先看新老客访客结构">先看新老客访客结构</option>
+                                            <option value="直接改价格带">直接改价格带</option>
+                                            <option value="先停投所有渠道">先停投所有渠道</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s3" class="status-chip">待校验</span></td>
+                                </tr>
+                                <tr>
+                                    <td>情景 1</td>
+                                    <td>最后怎么改</td>
+                                    <td>如果资源只能先做 1 个动作，优先级更高的是：</td>
+                                    <td>
+                                        <select id="e7i4">
+                                            <option value="">请选择</option>
+                                            <option value="先恢复高质量流量入口，再观察转化承接">先恢复高质量流量入口，再观察转化承接</option>
+                                            <option value="先做老客召回补量">先做老客召回补量</option>
+                                            <option value="直接全面降价">直接全面降价</option>
+                                            <option value="先换主视觉不看数据">先换主视觉不看数据</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s4" class="status-chip">待校验</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <button class="action-button" type="button" id="validateReport1Btn">校验情景 1</button>
+                    <div class="calc-result" id="report1Summary">请先完成情景 1 的 4 道题，再点击校验。</div>
+                    <button class="answer-toggle" type="button" data-answer="answer7a">查看情景 1 参考答案</button>
+                    <div class="answer-content" id="answer7a">
+                        <div><strong>分析思路：</strong>这组题的核心不是一上来做动作，而是先拆营业额 = 流量 × 转化 × 客单价。当前访客跌幅远大于转化率跌幅，所以优先按流量下滑来诊断。</div>
+                        <div><strong>更优先答案：</strong>先拆流量和转化率变化 → 流量下滑为主，转化率轻微波动 → 先看投放、自然搜索和活动入口分别掉了多少 → 先恢复高质量流量入口，再观察转化承接。</div>
+                        <div><strong>次优可行：</strong>流量和转化都要跟，但先盯流量、先看新老客访客结构、先做老客召回补量。</div>
+                    </div>
+
+                    <div style="height: 16px;"></div>
+
+                    <div class="info-panel">
+                        <div class="info-title">情景 2：如果确定是流量下滑，应该怎么处理</div>
+                        <div class="hint-list">
+                            <span>品牌访客数连续 3 周下滑，支付转化率基本稳定</span>
+                            <span>付费投放点击率下降，自然搜索访客也同步回落</span>
+                            <span>平台活动资源位从首页切到二级入口</span>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap" data-report-scenario="report2">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>情景</th>
+                                    <th>步骤</th>
+                                    <th>实战问题</th>
+                                    <th>你的答案</th>
+                                    <th>校验</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>情景 2</td>
+                                    <td>先看什么</td>
+                                    <td>如果转化率基本稳定，第一判断应是：</td>
+                                    <td>
+                                        <select id="e7i5">
+                                            <option value="">请选择</option>
+                                            <option value="优先按流量下滑处理">优先按流量下滑处理</option>
+                                            <option value="优先按转化率下滑处理">优先按转化率下滑处理</option>
+                                            <option value="先不拆来源直接打折">先不拆来源直接打折</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s5" class="status-chip">待校验</span></td>
+                                </tr>
+                                <tr>
+                                    <td>情景 2</td>
+                                    <td>再查什么</td>
+                                    <td>投放花费没有明显下降，但访客减少，优先排查：</td>
+                                    <td>
+                                        <select id="e7i6">
+                                            <option value="">请选择</option>
+                                            <option value="点击率、素材疲劳和投放定向">点击率、素材疲劳和投放定向</option>
+                                            <option value="内容种草是否断档">内容种草是否断档</option>
+                                            <option value="先把优惠券门槛降到底">先把优惠券门槛降到底</option>
+                                            <option value="先改支付页文案">先改支付页文案</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s6" class="status-chip">待校验</span></td>
+                                </tr>
+                                <tr>
+                                    <td>情景 2</td>
+                                    <td>最后怎么改</td>
+                                    <td>如果自然流量也同步下滑，接下来更该做的是：</td>
+                                    <td>
+                                        <select id="e7i7">
+                                            <option value="">请选择</option>
+                                            <option value="回看搜索词、类目排名和上新节奏">回看搜索词、类目排名和上新节奏</option>
+                                            <option value="同步补做内容种草">同步补做内容种草</option>
+                                            <option value="先上大额满减">先上大额满减</option>
+                                            <option value="先改客服话术">先改客服话术</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s7" class="status-chip">待校验</span></td>
+                                </tr>
+                                <tr>
+                                    <td>情景 2</td>
+                                    <td>最后怎么改</td>
+                                    <td>如果只能先落 1 个动作，优先级更高的是：</td>
+                                    <td>
+                                        <select id="e7i8">
+                                            <option value="">请选择</option>
+                                            <option value="先修流量入口质量，再决定是否追加预算">先修流量入口质量，再决定是否追加预算</option>
+                                            <option value="先发优惠券拉点击">先发优惠券拉点击</option>
+                                            <option value="先做直播硬冲流量">先做直播硬冲流量</option>
+                                            <option value="先把全部预算翻倍">先把全部预算翻倍</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s8" class="status-chip">待校验</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <button class="action-button" type="button" id="validateReport2Btn">校验情景 2</button>
+                    <div class="calc-result" id="report2Summary">请先完成情景 2 的 4 道题，再点击校验。</div>
+                    <button class="answer-toggle" type="button" data-answer="answer7b">查看情景 2 参考答案</button>
+                    <div class="answer-content" id="answer7b">
+                        <div><strong>分析思路：</strong>流量下滑时，不是直接加预算，而是先查入口质量有没有坏掉。投放看点击率、素材疲劳和定向，自然流量看搜索词、类目排名和上新节奏。</div>
+                        <div><strong>更优先答案：</strong>优先按流量下滑处理 → 点击率、素材疲劳和投放定向 → 回看搜索词、类目排名和上新节奏 → 先修流量入口质量，再决定是否追加预算。</div>
+                        <div><strong>次优可行：</strong>内容种草是否断档、同步补做内容种草、先发优惠券拉点击。</div>
+                    </div>
+
+                    <div style="height: 16px;"></div>
+
+                    <div class="info-panel">
+                        <div class="info-title">情景 3：如果确定是转化率下滑，应该怎么处理</div>
+                        <div class="hint-list">
+                            <span>访客数基本持平：18.2 万 → 18.6 万</span>
+                            <span>支付转化率：4.1% → 3.1%</span>
+                            <span>详情页跳失上升，用户评价里“配送慢、页面不清楚”增加</span>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap" data-report-scenario="report3">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>情景</th>
+                                    <th>步骤</th>
+                                    <th>实战问题</th>
+                                    <th>你的答案</th>
+                                    <th>校验</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>情景 3</td>
+                                    <td>先看什么</td>
+                                    <td>如果访客基本持平，但支付转化率下滑，第一判断应是：</td>
+                                    <td>
+                                        <select id="e7i9">
+                                            <option value="">请选择</option>
+                                            <option value="优先按转化率下滑处理">优先按转化率下滑处理</option>
+                                            <option value="优先按流量下滑处理">优先按流量下滑处理</option>
+                                            <option value="先扩投不看链路">先扩投不看链路</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s9" class="status-chip">待校验</span></td>
+                                </tr>
+                                <tr>
+                                    <td>情景 3</td>
+                                    <td>再查什么</td>
+                                    <td>这时更应该优先排查：</td>
+                                    <td>
+                                        <select id="e7i10">
+                                            <option value="">请选择</option>
+                                            <option value="商品详情页与下单链路">商品详情页与下单链路</option>
+                                            <option value="价格与优惠呈现">价格与优惠呈现</option>
+                                            <option value="先扩渠道">先扩渠道</option>
+                                            <option value="先加投放预算">先加投放预算</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s10" class="status-chip">待校验</span></td>
+                                </tr>
+                                <tr>
+                                    <td>情景 3</td>
+                                    <td>最后怎么改</td>
+                                    <td>如果加购率正常，但支付转化掉得更明显，首要动作应是：</td>
+                                    <td>
+                                        <select id="e7i11">
+                                            <option value="">请选择</option>
+                                            <option value="检查配送时效、运费门槛和支付流程">检查配送时效、运费门槛和支付流程</option>
+                                            <option value="补强优惠提示并做 AB 测试">补强优惠提示并做 AB 测试</option>
+                                            <option value="先把投放量翻倍">先把投放量翻倍</option>
+                                            <option value="先砍掉中高客单产品">先砍掉中高客单产品</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s11" class="status-chip">待校验</span></td>
+                                </tr>
+                                <tr>
+                                    <td>情景 3</td>
+                                    <td>最后怎么改</td>
+                                    <td>以下两个方向都可以做，哪个更应该先做？</td>
+                                    <td>
+                                        <select id="e7i12">
+                                            <option value="">请选择</option>
+                                            <option value="先修转化链路再放量">先修转化链路再放量</option>
+                                            <option value="先用促销托底">先用促销托底</option>
+                                            <option value="先重投流量抢曝光">先重投流量抢曝光</option>
+                                            <option value="先暂停分析继续观察">先暂停分析继续观察</option>
+                                        </select>
+                                    </td>
+                                    <td><span id="e7s12" class="status-chip">待校验</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <button class="action-button" type="button" id="validateReport3Btn">校验情景 3</button>
+                    <div class="calc-result" id="report3Summary">请先完成情景 3 的 4 道题，再点击校验。</div>
+                    <button class="answer-toggle" type="button" data-answer="answer7c">查看情景 3 参考答案</button>
+                    <div class="answer-content" id="answer7c">
+                        <div><strong>分析思路：</strong>转化率下滑时，要优先看详情页和支付链路有没有承接住流量。如果加购正常但支付掉得更厉害，说明问题更可能出在配送、运费、支付流程或临门一脚的转化说服力。</div>
+                        <div><strong>更优先答案：</strong>优先按转化率下滑处理 → 商品详情页与下单链路 → 检查配送时效、运费门槛和支付流程 → 先修转化链路再放量。</div>
+                        <div><strong>次优可行：</strong>价格与优惠呈现、补强优惠提示并做 AB 测试、先用促销托底。</div>
+                    </div>
+                </div>
+            </article>
         </section>
 
         <div class="footer">
@@ -1533,52 +1708,77 @@
     </div>
 
     <script>
-        const basicChecks = [
-            { inputId: "e1i1", statusId: "e1s1", type: "number", value: 183750 },
-            { inputId: "e1i2", statusId: "e1s2", type: "number", value: 63.27 },
-            { inputId: "e1i3", statusId: "e1s3", type: "number", value: 36750 },
-            { inputId: "e1i4", statusId: "e1s4", type: "number", value: 1837.5 },
-            { inputId: "e1i5", statusId: "e1s5", type: "number", value: 73.5 },
-            { inputId: "e1i6", statusId: "e1s6", type: "number", value: 15.31 },
-            { inputId: "e1i7", statusId: "e1s7", type: "number", value: 10.2 },
-            { inputId: "e2i1", statusId: "e2s1", type: "number", value: 776 },
-            { inputId: "e2i2", statusId: "e2s2", type: "number", value: 5 },
-            { inputId: "e2i3", statusId: "e2s3", type: "number", value: 180 },
-            { inputId: "e2i4", statusId: "e2s4", type: "number", value: 74.5 },
-            { inputId: "e2i5", statusId: "e2s5", type: "number", value: 128 },
-            { inputId: "e2i6", statusId: "e2s6", type: "number", value: 45 },
-            { inputId: "e2i7", statusId: "e2s7", type: "number", value: 137 }
+        const coreMetricQuestions = [
+            { key: "core1", inputId: "e1i1", statusId: "e1s1", answerId: "answerCore1", value: 183750 },
+            { key: "core2", inputId: "e1i2", statusId: "e1s2", answerId: "answerCore2", value: 63.27 },
+            { key: "core3", inputId: "e1i3", statusId: "e1s3", answerId: "answerCore3", value: 73.5 },
+            { key: "core4", inputId: "e1i4", statusId: "e1s4", answerId: "answerCore4", value: 36750 },
+            { key: "core5", inputId: "e1i5", statusId: "e1s5", answerId: "answerCore5", value: 1837.5 }
         ];
+
+        const coreMetricState = Object.fromEntries(
+            coreMetricQuestions.map((item) => [item.key, { validated: false, correct: false }])
+        );
+
+        const basicChecks = [
+            { inputId: "e8i1", statusId: "e8s1", type: "number", value: 33.3 },
+            { inputId: "e8i2", statusId: "e8s2", type: "number", value: 16.5 },
+            { inputId: "e8i3", statusId: "e8s3", type: "number", value: 24 },
+            { inputId: "e8i4", statusId: "e8s4", type: "number", value: 5120 },
+            { inputId: "e8i5", statusId: "e8s5", type: "number", value: 57.3 },
+            { inputId: "e2i1", statusId: "e2s1", type: "number", value: 18 },
+            { inputId: "e2i2", statusId: "e2s2", type: "number", value: 72 },
+            { inputId: "e2i3", statusId: "e2s3", type: "number", value: 5400 },
+            { inputId: "e2i4", statusId: "e2s4", type: "number", value: 81000 },
+            { inputId: "e2i5", statusId: "e2s5", type: "number", value: 88.9 },
+            { inputId: "e2i6", statusId: "e2s6", type: "number", value: 3 },
+            { inputId: "e2i7", statusId: "e2s7", type: "number", value: 5.5 }
+        ];
+
+        const metricFormulaMap = {
+            e8i1: { formulaId: "e8f1", text: "草莓盒子销售额 ÷ 总销售额" },
+            e8i2: { formulaId: "e8f2", text: "榴莲千层销售额 ÷ 总销售额" },
+            e8i3: { formulaId: "e8f3", text: "售价 - 单位成本" },
+            e8i4: { formulaId: "e8f4", text: "(售价 - 单位成本) × 销量" },
+            e8i5: { formulaId: "e8f5", text: "总毛利 ÷ 总销售额" },
+            e2i1: { formulaId: "e2f1", text: "(120 - 30) ÷ 5" },
+            e2i2: { formulaId: "e2f2", text: "桌位数 × 4" },
+            e2i3: { formulaId: "e2f3", text: "486,000 ÷ 90" },
+            e2i4: { formulaId: "e2f4", text: "486,000 ÷ 6" },
+            e2i5: { formulaId: "e2f5", text: "64 ÷ 72" },
+            e2i6: { formulaId: "e2f6", text: "54 ÷ 18" },
+            e2i7: { formulaId: "e2f7", text: "(54 + 45) ÷ 18" }
+        };
 
         const reportScenarios = {
             report1: {
                 summaryId: "report1Summary",
                 initialMessage: "请先完成情景 1 的 4 道题，再点击校验。",
                 checks: [
-                    { inputId: "e7i1", statusId: "e7s1", primaryValue: "进入异常区" },
-                    { inputId: "e7i2", statusId: "e7s2", primaryValue: "客观不可抗力因素", secondaryValues: ["晚市渠道和时段结构"] },
-                    { inputId: "e7i3", statusId: "e7s3", primaryValue: "先看渠道和时段结构，再调整晚市套餐与引流策略", secondaryValues: ["先做会员召回并测试晚市套餐"] },
-                    { inputId: "e7i4", statusId: "e7s4", primaryValue: "修正晚市产品与渠道策略", secondaryValues: ["补一轮会员召回"] }
+                    { inputId: "e7i1", statusId: "e7s1", primaryValue: "先拆流量和转化率变化" },
+                    { inputId: "e7i2", statusId: "e7s2", primaryValue: "流量下滑为主，转化率轻微波动", secondaryValues: ["流量和转化都要跟，但先盯流量"] },
+                    { inputId: "e7i3", statusId: "e7s3", primaryValue: "先看投放、自然搜索和活动入口分别掉了多少", secondaryValues: ["先看新老客访客结构"] },
+                    { inputId: "e7i4", statusId: "e7s4", primaryValue: "先恢复高质量流量入口，再观察转化承接", secondaryValues: ["先做老客召回补量"] }
                 ]
             },
             report2: {
                 summaryId: "report2Summary",
                 initialMessage: "请先完成情景 2 的 4 道题，再点击校验。",
                 checks: [
-                    { inputId: "e7i5", statusId: "e7s5", primaryValue: "已经进入异常区" },
-                    { inputId: "e7i6", statusId: "e7s6", primaryValue: "损耗、备料和 SKU 去化", secondaryValues: ["甜品饮品销量结构与报损时段"] },
-                    { inputId: "e7i7", statusId: "e7s7", primaryValue: "优化排班并重做高峰出餐动线", secondaryValues: ["先按时段微调排班"] },
-                    { inputId: "e7i8", statusId: "e7s8", primaryValue: "先控损耗和排班", secondaryValues: ["先控损耗再评估是否调价"] }
+                    { inputId: "e7i5", statusId: "e7s5", primaryValue: "优先按流量下滑处理" },
+                    { inputId: "e7i6", statusId: "e7s6", primaryValue: "点击率、素材疲劳和投放定向", secondaryValues: ["内容种草是否断档"] },
+                    { inputId: "e7i7", statusId: "e7s7", primaryValue: "回看搜索词、类目排名和上新节奏", secondaryValues: ["同步补做内容种草"] },
+                    { inputId: "e7i8", statusId: "e7s8", primaryValue: "先修流量入口质量，再决定是否追加预算", secondaryValues: ["先发优惠券拉点击"] }
                 ]
             },
             report3: {
                 summaryId: "report3Summary",
                 initialMessage: "请先完成情景 3 的 4 道题，再点击校验。",
                 checks: [
-                    { inputId: "e7i9", statusId: "e7s9", primaryValue: "已经低于健康线" },
-                    { inputId: "e7i10", statusId: "e7s10", primaryValue: "服务流程与出餐节点", secondaryValues: ["等位时段分布与前后场衔接"] },
-                    { inputId: "e7i11", statusId: "e7s11", primaryValue: "先做会员召回，再同步优化套餐和门店出餐体验", secondaryValues: ["先优化套餐并小范围触达老会员"] },
-                    { inputId: "e7i12", statusId: "e7s12", primaryValue: "先修出餐体验再放大营销", secondaryValues: ["先小规模投流测试，同时盯体验指标"] }
+                    { inputId: "e7i9", statusId: "e7s9", primaryValue: "优先按转化率下滑处理" },
+                    { inputId: "e7i10", statusId: "e7s10", primaryValue: "商品详情页与下单链路", secondaryValues: ["价格与优惠呈现"] },
+                    { inputId: "e7i11", statusId: "e7s11", primaryValue: "检查配送时效、运费门槛和支付流程", secondaryValues: ["补强优惠提示并做 AB 测试"] },
+                    { inputId: "e7i12", statusId: "e7s12", primaryValue: "先修转化链路再放量", secondaryValues: ["先用促销托底"] }
                 ]
             }
         };
@@ -1656,6 +1856,58 @@
             return ok;
         }
 
+        function checkSimpleSelectInput(inputId, statusId, correctValue) {
+            const input = document.getElementById(inputId);
+            if (!input.value) {
+                input.classList.remove("correct", "wrong");
+                setStatus(statusId, "", "待校验");
+                return false;
+            }
+
+            const ok = input.value === correctValue;
+            input.classList.toggle("correct", ok);
+            input.classList.toggle("wrong", !ok);
+            setStatus(statusId, ok ? "ok" : "bad", ok ? "正确" : "再选");
+            return ok;
+        }
+
+        function resetCoreMetricQuestion(questionKey) {
+            const question = coreMetricQuestions.find((item) => item.key === questionKey);
+            const input = document.getElementById(question.inputId);
+            const answer = document.getElementById(question.answerId);
+
+            coreMetricState[questionKey].validated = false;
+            coreMetricState[questionKey].correct = false;
+            input.classList.remove("correct", "wrong");
+            setStatus(question.statusId, "", "待校验");
+            answer.classList.remove("show");
+            updateBasicProgress();
+        }
+
+        function validateCoreMetricQuestion(questionKey) {
+            const question = coreMetricQuestions.find((item) => item.key === questionKey);
+            const ok = checkNumericInput(question.inputId, question.statusId, question.value);
+
+            coreMetricState[questionKey].validated = true;
+            coreMetricState[questionKey].correct = ok;
+            document.getElementById(question.answerId).classList.add("show");
+            updateBasicProgress();
+        }
+
+        function toggleMetricFormula(inputId) {
+            const config = metricFormulaMap[inputId];
+            if (!config) {
+                return;
+            }
+
+            const input = document.getElementById(inputId);
+            const formula = document.getElementById(config.formulaId);
+            const shouldReveal = input.value !== "";
+
+            formula.textContent = shouldReveal ? config.text : "校验后显示";
+            formula.classList.toggle("revealed", shouldReveal);
+        }
+
         function evaluateReportSelect(inputId, statusId, primaryValue, secondaryValues = []) {
             const input = document.getElementById(inputId);
             if (!input.value) {
@@ -1700,7 +1952,7 @@
             });
 
             document.getElementById(scenario.summaryId).textContent = scenario.initialMessage;
-            updateBasicProgress();
+            updateAdvancedProgress();
         }
 
         function validateReportScenario(scenarioKey) {
@@ -1714,7 +1966,7 @@
                 state.primaryCount = 0;
                 state.secondaryCount = 0;
                 document.getElementById(scenario.summaryId).textContent = `还有 ${unfilledCount} 道题没完成，先补齐情景题再校验。`;
-                updateBasicProgress();
+                updateAdvancedProgress();
                 return;
             }
 
@@ -1747,11 +1999,17 @@
                 document.getElementById(scenario.summaryId).innerHTML = `校验完成：可行答案 <strong>${primaryCount + secondaryCount}/${total}</strong>，其中优先答案 <strong>${primaryCount}</strong> 题，次优可行 <strong>${secondaryCount}</strong> 题，另有 <strong>${wrongCount}</strong> 题偏离重点。`;
             }
 
-            updateBasicProgress();
+            updateAdvancedProgress();
         }
 
         function updateBasicProgress() {
             let done = 0;
+
+            Object.values(coreMetricState).forEach((state) => {
+                if (state.validated && state.correct) {
+                    done += 1;
+                }
+            });
 
             basicChecks.forEach((item) => {
                 const ok = checkNumericInput(item.inputId, item.statusId, item.value);
@@ -1760,14 +2018,8 @@
                 }
             });
 
-            Object.values(reportScenarioState).forEach((state) => {
-                if (state.validated) {
-                    done += state.acceptedCount;
-                }
-            });
-
             document.getElementById("basicDone").textContent = String(done);
-            document.getElementById("basicProgress").style.width = `${done / 26 * 100}%`;
+            document.getElementById("basicProgress").style.width = `${done / 17 * 100}%`;
         }
 
         function updatePaybackExercise() {
@@ -1981,16 +2233,32 @@
             const menuCorrect = updateMenuModelValidation();
             const modelCorrect = updateExcellentModelValidation();
             const openingCorrect = updateOpeningValidation();
-            const total = 34;
-            const done = paybackCorrect + menuCorrect + modelCorrect + openingCorrect;
+            let reportAccepted = 0;
+
+            Object.values(reportScenarioState).forEach((state) => {
+                if (state.validated) {
+                    reportAccepted += state.acceptedCount;
+                }
+            });
+
+            const total = 46;
+            const done = paybackCorrect + menuCorrect + modelCorrect + openingCorrect + reportAccepted;
 
             document.getElementById("advancedDone").textContent = String(done);
             document.getElementById("advancedProgress").style.width = `${done / total * 100}%`;
         }
 
         function bindInputs() {
-            document.querySelectorAll("#basic input").forEach((input) => {
-                input.addEventListener("input", updateBasicProgress);
+            coreMetricQuestions.forEach((question) => {
+                document.getElementById(question.inputId).addEventListener("input", () => resetCoreMetricQuestion(question.key));
+                document.getElementById(`validate${question.key.charAt(0).toUpperCase()}${question.key.slice(1)}Btn`).addEventListener("click", () => validateCoreMetricQuestion(question.key));
+            });
+
+            document.querySelectorAll("#basic input[id^='e2'], #basic input[id^='e8']").forEach((input) => {
+                input.addEventListener("input", () => {
+                    toggleMetricFormula(input.id);
+                    updateBasicProgress();
+                });
             });
 
             document.querySelectorAll("[data-report-scenario] select").forEach((select) => {
