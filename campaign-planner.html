@@ -1,0 +1,2211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全渠道营销策划引擎</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&display=swap");
+
+        :root {
+            --bg: #f3f5fb;
+            --bg-soft: #edf1f8;
+            --panel: rgba(255, 255, 255, 0.84);
+            --panel-solid: rgba(255, 255, 255, 0.96);
+            --text: #0f1726;
+            --muted: #697184;
+            --line: rgba(15, 23, 38, 0.08);
+            --brand: #0057ff;
+            --brand-2: #6b5cff;
+            --cyan: #00c8ff;
+            --lime: #8ef035;
+            --orange: #ff8a1f;
+            --rose: #ff5f8b;
+            --shadow: 0 28px 80px rgba(15, 23, 38, 0.08);
+            --radius-xl: 30px;
+            --radius-lg: 22px;
+            --radius-md: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: "Manrope", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(107, 92, 255, 0.14), transparent 28%),
+                radial-gradient(circle at top right, rgba(0, 200, 255, 0.14), transparent 24%),
+                radial-gradient(circle at bottom right, rgba(142, 240, 53, 0.08), transparent 24%),
+                linear-gradient(180deg, #f9fbff 0%, #eef2f8 100%);
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.26;
+            background-image:
+                linear-gradient(rgba(15, 23, 38, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 38, 0.025) 1px, transparent 1px);
+            background-size: 24px 24px;
+            mask-image: radial-gradient(circle at center, black 32%, transparent 82%);
+        }
+
+        .page {
+            width: min(1500px, calc(100% - 28px));
+            margin: 0 auto;
+            padding: 18px 0 28px;
+        }
+
+        .header {
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.85fr);
+            gap: 18px;
+            padding: 18px;
+            border-radius: 30px;
+            background:
+                radial-gradient(circle at top right, rgba(0, 200, 255, 0.14), transparent 28%),
+                radial-gradient(circle at bottom left, rgba(142, 240, 53, 0.09), transparent 24%),
+                rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.82);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent 38%),
+                linear-gradient(115deg, transparent 56%, rgba(0, 87, 255, 0.08) 100%);
+            pointer-events: none;
+        }
+
+        .brand {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            min-width: 0;
+        }
+
+        .brand-mark {
+            flex: 0 0 auto;
+            display: grid;
+            gap: 8px;
+            padding-top: 2px;
+            padding-left: 0;
+            padding-right: 0;
+            padding-bottom: 0;
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .brand-mark span {
+            display: block;
+            width: 42px;
+            height: 6px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--brand), var(--cyan));
+            box-shadow: 0 10px 20px rgba(0, 87, 255, 0.14);
+            transform-origin: left center;
+            transition: transform 0.35s ease, opacity 0.35s ease;
+        }
+
+        .brand-mark span:nth-child(2) {
+            width: 26px;
+            opacity: 0.84;
+        }
+
+        .brand-mark.pulse span:first-child {
+            transform: scaleX(1.08);
+        }
+
+        .brand-mark.pulse span:nth-child(2) {
+            transform: scaleX(1.24);
+            opacity: 1;
+        }
+
+        .brand-copy {
+            min-width: 0;
+        }
+
+        .brand-copy small {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(15, 23, 38, 0.05);
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .brand h1 {
+            margin: 12px 0 4px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: clamp(28px, 4vw, 42px);
+            letter-spacing: -0.05em;
+            line-height: 1;
+        }
+
+        .brand-meta {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+            max-width: 620px;
+        }
+
+        .header-side {
+            position: relative;
+            display: grid;
+            gap: 12px;
+            align-content: stretch;
+        }
+
+        .header-matrix {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            min-height: 100%;
+        }
+
+        .header-stat {
+            padding: 14px 16px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.62);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .header-stat small {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .header-stat strong {
+            display: block;
+            margin-top: 10px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 22px;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+        }
+
+        .header-stat span {
+            display: block;
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+
+        .header-stat.highlight {
+            background:
+                radial-gradient(circle at top right, rgba(255, 255, 255, 0.25), transparent 38%),
+                linear-gradient(135deg, rgba(15, 23, 38, 0.98) 0%, rgba(25, 39, 84, 0.96) 46%, rgba(0, 87, 255, 0.92) 100%);
+            border-color: transparent;
+            color: #f4f7ff;
+        }
+
+        .header-stat.highlight small,
+        .header-stat.highlight span {
+            color: rgba(244, 247, 255, 0.72);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .header-chip,
+        .top-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 42px;
+            padding: 0 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border: 1px solid rgba(15, 23, 38, 0.08);
+            background: rgba(255, 255, 255, 0.76);
+            color: var(--muted);
+        }
+
+        .top-button {
+            cursor: pointer;
+            font-family: inherit;
+            text-transform: none;
+            letter-spacing: 0;
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        .top-button.primary {
+            color: #fff;
+            background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 56%, var(--cyan) 100%);
+            border-color: transparent;
+            box-shadow: 0 16px 44px rgba(0, 87, 255, 0.2);
+        }
+
+        .landing,
+        .workspace {
+            margin-top: 18px;
+        }
+
+        .landing {
+            display: grid;
+            place-items: center;
+            min-height: calc(100vh - 150px);
+        }
+
+        .control-panel,
+        .workspace-panel,
+        .view-card {
+            border-radius: var(--radius-xl);
+            background: var(--panel);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.78);
+            box-shadow: var(--shadow);
+        }
+
+        .control-panel {
+            width: min(920px, 100%);
+            padding: 22px;
+        }
+
+        .workspace {
+            display: none;
+        }
+
+        .workspace.active {
+            display: block;
+            animation: fadeIn 0.22s ease;
+        }
+
+        .panel-title {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .panel-title h2 {
+            margin: 0;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 26px;
+            letter-spacing: -0.04em;
+        }
+
+        .grid,
+        .grid-2,
+        .grid-3 {
+            display: grid;
+            gap: 12px;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .block {
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 1px solid var(--line);
+        }
+
+        .block:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: 0;
+        }
+
+        .block h3 {
+            margin: 0 0 14px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--brand);
+        }
+
+        label {
+            display: grid;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--muted);
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid rgba(15, 23, 38, 0.08);
+            background: rgba(255, 255, 255, 0.88);
+            border-radius: 16px;
+            padding: 12px 14px;
+            font: inherit;
+            color: var(--text);
+            outline: none;
+            transition: 0.16s ease;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: rgba(0, 87, 255, 0.28);
+            box-shadow: 0 0 0 4px rgba(0, 87, 255, 0.08);
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .chip {
+            position: relative;
+        }
+
+        .chip input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .chip span {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 13px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.76);
+            border: 1px solid rgba(15, 23, 38, 0.08);
+            color: #4d566a;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.18s ease;
+        }
+
+        .chip input:checked + span {
+            background: linear-gradient(135deg, rgba(0, 87, 255, 0.12), rgba(107, 92, 255, 0.16));
+            border-color: rgba(0, 87, 255, 0.18);
+            color: var(--brand);
+        }
+
+        .generate-wrap {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .workspace-panel {
+            padding: 18px;
+        }
+
+        .tabbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--line);
+        }
+
+        .tab {
+            border: 1px solid rgba(15, 23, 38, 0.08);
+            background: rgba(255, 255, 255, 0.72);
+            color: #555e72;
+            padding: 13px 20px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+            transition: 0.18s ease;
+        }
+
+        .tab.active {
+            color: #fff;
+            background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 58%, var(--cyan) 100%);
+            border-color: transparent;
+            box-shadow: 0 16px 40px rgba(0, 87, 255, 0.18);
+        }
+
+        .view {
+            display: none;
+            margin-top: 16px;
+        }
+
+        .view.active {
+            display: block;
+            animation: fadeIn 0.18s ease;
+        }
+
+        .overview-stack {
+            display: grid;
+            gap: 12px;
+        }
+
+        .overview-hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.9fr);
+            gap: 12px;
+        }
+
+        .strategy-hero {
+            min-height: 260px;
+            padding: 24px;
+            border-radius: 28px;
+            background:
+                radial-gradient(circle at top right, rgba(255, 255, 255, 0.18), transparent 30%),
+                linear-gradient(135deg, #10172f 0%, #18356f 46%, #0a7cff 100%);
+            color: #f5f8ff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .strategy-hero::after {
+            content: "";
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            right: -70px;
+            bottom: -90px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.24), transparent 65%);
+            pointer-events: none;
+        }
+
+        .strategy-hero small {
+            display: inline-flex;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .strategy-hero h3 {
+            margin: 18px 0 10px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: clamp(30px, 4vw, 44px);
+            line-height: 0.96;
+            letter-spacing: -0.06em;
+            max-width: 12ch;
+        }
+
+        .strategy-hero p {
+            margin: 0;
+            max-width: 60ch;
+            color: rgba(245, 248, 255, 0.8);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .strategy-hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .strategy-hero-tags span {
+            display: inline-flex;
+            align-items: center;
+            padding: 9px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            color: #f5f8ff;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .hero-side {
+            display: grid;
+            gap: 12px;
+        }
+
+        .quick-panel {
+            padding: 18px;
+            border-radius: 24px;
+            background: var(--panel-solid);
+            border: 1px solid rgba(15, 23, 38, 0.08);
+        }
+
+        .quick-panel h3 {
+            margin: 0;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 18px;
+            letter-spacing: -0.03em;
+        }
+
+        .quick-panel p {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .quick-panel-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .quick-cell {
+            padding: 14px;
+            border-radius: 18px;
+            background: rgba(15, 23, 38, 0.04);
+        }
+
+        .quick-cell small {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .quick-cell strong {
+            display: block;
+            margin-top: 10px;
+            font-size: 16px;
+            line-height: 1.35;
+        }
+
+        .quick-cell span {
+            display: block;
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        .logic-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .logic-card {
+            padding: 18px;
+            border-radius: 24px;
+            background: var(--panel-solid);
+            border: 1px solid rgba(15, 23, 38, 0.08);
+            min-height: 170px;
+        }
+
+        .logic-card small {
+            display: inline-flex;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(0, 87, 255, 0.08);
+            color: var(--brand);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .logic-card h4 {
+            margin: 16px 0 8px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 20px;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+        }
+
+        .logic-card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .strategy-card-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .strategy-card,
+        .metric-card,
+        .activity-row,
+        .phase,
+        .risk,
+        .view-card {
+            background: var(--panel-solid);
+            border: 1px solid rgba(15, 23, 38, 0.08);
+        }
+
+        .strategy-card {
+            position: relative;
+            padding: 18px;
+            border-radius: 24px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 22px 44px rgba(15, 23, 38, 0.08);
+            border-color: rgba(0, 87, 255, 0.14);
+        }
+
+        .strategy-card.expanded {
+            border-color: rgba(0, 87, 255, 0.18);
+            box-shadow: 0 26px 52px rgba(0, 87, 255, 0.12);
+        }
+
+        .strategy-card-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .strategy-card-title {
+            min-width: 0;
+        }
+
+        .strategy-card-title small {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .strategy-card-title h4 {
+            margin: 10px 0 0;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 24px;
+            line-height: 0.96;
+            letter-spacing: -0.05em;
+        }
+
+        .strategy-rank {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 42px;
+            height: 42px;
+            padding: 0 12px;
+            border-radius: 999px;
+            background: rgba(15, 23, 38, 0.06);
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--muted);
+        }
+
+        .strategy-card p {
+            margin: 14px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .strategy-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .strategy-tags span {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: rgba(0, 87, 255, 0.08);
+            color: var(--brand);
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .strategy-detail {
+            display: grid;
+            gap: 10px;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.24s ease, opacity 0.18s ease, margin-top 0.18s ease;
+            margin-top: 0;
+        }
+
+        .strategy-card.expanded .strategy-detail {
+            max-height: 360px;
+            opacity: 1;
+            margin-top: 16px;
+        }
+
+        .detail-block {
+            padding: 12px 14px;
+            border-radius: 18px;
+            background: rgba(15, 23, 38, 0.04);
+        }
+
+        .detail-block small {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .detail-block strong,
+        .detail-block span {
+            display: block;
+            margin-top: 7px;
+            font-size: 13px;
+            line-height: 1.65;
+            color: var(--text);
+        }
+
+        .detail-block span {
+            color: var(--muted);
+        }
+
+        .metric-card {
+            min-height: 132px;
+            padding: 18px;
+            border-radius: 24px;
+        }
+
+        .metric-card.primary {
+            background:
+                radial-gradient(circle at top right, rgba(0, 200, 255, 0.16), transparent 34%),
+                linear-gradient(135deg, rgba(15, 23, 38, 0.98) 0%, rgba(22, 31, 61, 0.97) 30%, rgba(0, 87, 255, 0.94) 100%);
+            color: #f6f8ff;
+            border: 0;
+        }
+
+        .metric-card small {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: inherit;
+            opacity: 0.7;
+        }
+
+        .metric-card strong {
+            display: block;
+            margin-top: 12px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 30px;
+            letter-spacing: -0.04em;
+            line-height: 1;
+        }
+
+        .metric-card span {
+            display: block;
+            margin-top: 10px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: inherit;
+            opacity: 0.84;
+        }
+
+        .activity-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .activity-row {
+            display: grid;
+            grid-template-columns: 118px 108px minmax(170px, 1.3fr) minmax(180px, 1.2fr) minmax(200px, 1.4fr);
+            gap: 10px;
+            align-items: start;
+            padding: 16px;
+            border-radius: 22px;
+        }
+
+        .activity-row small {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .activity-row strong {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .role-pill {
+            display: inline-flex;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(0, 87, 255, 0.1);
+            color: var(--brand);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .kanban {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .phase {
+            padding: 16px;
+            border-radius: 24px;
+        }
+
+        .phase h4 {
+            margin: 0 0 12px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 16px;
+        }
+
+        .phase-stack {
+            display: grid;
+            gap: 10px;
+        }
+
+        .phase-item {
+            padding: 13px;
+            border-radius: 16px;
+            color: #f7f9ff;
+            box-shadow: 0 14px 34px rgba(15, 23, 38, 0.12);
+        }
+
+        .phase-item strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .phase-item span {
+            display: block;
+            font-size: 12px;
+            line-height: 1.55;
+            color: rgba(247, 249, 255, 0.84);
+        }
+
+        .prepare .phase-item { background: linear-gradient(135deg, #304b86, #1d2a55); }
+        .water .phase-item { background: linear-gradient(135deg, #4b7d45, #274628); }
+        .spread .phase-item { background: linear-gradient(135deg, #ff8a1f, #9e4100); }
+        .peak .phase-item { background: linear-gradient(135deg, #ff5f8b, #7a2340); }
+        .tail .phase-item { background: linear-gradient(135deg, #6c5cff, #433497); }
+
+        .timeline-wrap,
+        .table-wrap {
+            overflow: auto;
+        }
+
+        .card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 18px 0;
+        }
+
+        .card-head h3 {
+            margin: 0;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 20px;
+            letter-spacing: -0.04em;
+        }
+
+        .card-head p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .timeline-grid {
+            min-width: 1020px;
+        }
+
+        .timeline-head,
+        .timeline-row {
+            display: grid;
+            grid-template-columns: 132px 220px 140px repeat(var(--week-count), minmax(74px, 1fr));
+            gap: 10px;
+            align-items: center;
+        }
+
+        .timeline-head {
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .timeline-row {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(15, 23, 38, 0.06);
+        }
+
+        .timeline-meta strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .timeline-meta span {
+            display: block;
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+
+        .week-slot {
+            height: 36px;
+            border-radius: 14px;
+            background: rgba(15, 23, 38, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .week-slot.active::before {
+            content: "";
+            position: absolute;
+            inset: 4px;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--cyan), var(--brand), var(--brand-2));
+        }
+
+        table {
+            width: 100%;
+            min-width: 1100px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 13px 12px;
+            text-align: left;
+            vertical-align: top;
+            border-bottom: 1px solid rgba(15, 23, 38, 0.06);
+        }
+
+        th {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        td {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 1260px) {
+            .header,
+            .overview-hero,
+            .logic-grid,
+            .strategy-card-grid,
+            .grid-3,
+            .kanban,
+            .activity-row,
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .page {
+                width: min(100%, calc(100% - 14px));
+            }
+
+            .header,
+            .control-panel,
+            .workspace-panel {
+                padding: 14px;
+                border-radius: 20px;
+            }
+
+            .brand h1 {
+                font-size: 24px;
+            }
+
+            .brand-meta {
+                display: none;
+            }
+
+            .header-matrix,
+            .quick-panel-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-actions {
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+
+            .generate-wrap {
+                justify-content: stretch;
+                flex-direction: column;
+            }
+
+            .tabbar {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="brand">
+                <button class="brand-mark" id="logoButton" aria-label="Brand mark">
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="brand-copy">
+                    <small>Campaign Logic System</small>
+                    <h1>全渠道营销策划引擎</h1>
+                    <p class="brand-meta" id="brandMeta">从品牌画像、渠道重心到主活动转化，把一场大活动拆成可执行的阶段策略。</p>
+                </div>
+            </div>
+            <div class="header-side">
+                <div class="header-matrix">
+                    <div class="header-stat highlight">
+                        <small>当前状态</small>
+                        <strong id="statusChip">Ready</strong>
+                        <span id="statusHint">等待输入品牌参数并生成活动方案。</span>
+                    </div>
+                    <div class="header-stat">
+                        <small>品牌 / 活动</small>
+                        <strong id="headerBrand">未生成方案</strong>
+                        <span id="headerCampaign">请选择品牌与活动类型</span>
+                    </div>
+                    <div class="header-stat">
+                        <small>主策略</small>
+                        <strong id="headerStrategy">待判断</strong>
+                        <span id="headerChannels">渠道与转化路径会在生成后出现</span>
+                    </div>
+                    <div class="header-stat">
+                        <small>活动窗口</small>
+                        <strong id="headerWindow">--</strong>
+                        <span id="headerWindowDetail">系统将按阶段自动拆分周次</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="top-button" id="editButton" style="display:none;">返回参数</button>
+                </div>
+            </div>
+        </header>
+
+        <section class="landing" id="landingSection">
+            <div class="control-panel">
+                <div class="panel-title">
+                    <h2>参数控制台</h2>
+                </div>
+
+                <div class="block">
+                    <h3>品牌基础</h3>
+                    <div class="grid">
+                        <label>
+                            品牌名称
+                            <input id="brandName" type="text" value="AFTERS LAN">
+                        </label>
+                        <div class="grid-2">
+                            <label>
+                                品牌类型
+                                <select id="brandType">
+                                    <option>线上蛋糕</option>
+                                    <option>综合烘焙</option>
+                                    <option>线上蛋糕+线下甜品</option>
+                                    <option>休闲餐</option>
+                                    <option>快餐</option>
+                                    <option>正餐</option>
+                                </select>
+                            </label>
+                            <label>
+                                城市等级
+                                <select id="cityTier">
+                                    <option>新一线以上</option>
+                                    <option selected>二三线</option>
+                                    <option>下沉</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="grid-3">
+                            <label>
+                                经营模式
+                                <select id="operationMode">
+                                    <option>工作室模式</option>
+                                    <option selected>线下单店</option>
+                                    <option>线下连锁店</option>
+                                </select>
+                            </label>
+                            <label>
+                                私域体量
+                                <select id="privateVolume">
+                                    <option>弱（<1k）</option>
+                                    <option selected>中（1k-10k）</option>
+                                    <option>强（10k+）</option>
+                                </select>
+                            </label>
+                            <label>
+                                门店数量
+                                <input id="storeCount" type="number" min="1" value="3">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="block">
+                    <h3>活动目标</h3>
+                    <div class="grid">
+                        <div class="grid-2">
+                            <label>
+                                活动类型
+                                <select id="campaignType">
+                                    <option selected>周年庆</option>
+                                    <option>年中大活动</option>
+                                    <option>年末大活动</option>
+                                    <option>节日营销</option>
+                                    <option>新店开业</option>
+                                </select>
+                            </label>
+                            <label>
+                                主目的
+                                <select id="mainGoal">
+                                    <option>拉新</option>
+                                    <option>锁客</option>
+                                    <option selected>营业额拉升</option>
+                                    <option>品牌力打造</option>
+                                    <option>新店开业</option>
+                                </select>
+                            </label>
+                        </div>
+                        <label>
+                            次目的
+                            <div class="chips" id="secondaryGoals"></div>
+                        </label>
+                        <label>
+                            当前问题
+                            <textarea id="painPoints">想提升周年庆声量，同时稳住月度营业额，老客活跃度也需要补回来。</textarea>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="block">
+                    <h3>资源约束</h3>
+                    <div class="grid">
+                        <div class="grid-2">
+                            <label>
+                                活动开始
+                                <input id="startDate" type="date" value="2026-06-03">
+                            </label>
+                            <label>
+                                活动结束
+                                <input id="endDate" type="date" value="2026-06-28">
+                            </label>
+                        </div>
+                        <div class="grid-2">
+                            <label>
+                                活动预算
+                                <select id="budgetLevel">
+                                    <option>8k以下</option>
+                                    <option selected>8k-20k</option>
+                                    <option>20k-50k</option>
+                                    <option>50k以上</option>
+                                </select>
+                            </label>
+                            <label>
+                                重点渠道
+                                <div class="chips" id="channelFocus"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="generate-wrap">
+                    <button class="top-button primary" id="generateBtn">生成规划看板</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="workspace" id="workspaceSection">
+            <div class="workspace-panel">
+                <div class="panel-title">
+                    <h2 id="resultTitle">规划看板</h2>
+                </div>
+
+                <div class="tabbar">
+                    <button class="tab active" data-view="overview">策略总览</button>
+                    <button class="tab" data-view="board">阶段看板</button>
+                    <button class="tab" data-view="timeline">周计划</button>
+                    <button class="tab" data-view="tasks">任务清单</button>
+                </div>
+
+                <section class="view active" id="view-overview">
+                    <div class="overview-stack">
+                        <div class="overview-hero">
+                            <div class="strategy-hero" id="strategyHero"></div>
+                            <div class="hero-side">
+                                <div class="quick-panel" id="summaryPanel"></div>
+                            </div>
+                        </div>
+                        <div class="logic-grid" id="logicGrid"></div>
+                        <div class="strategy-card-grid" id="strategyCardGrid"></div>
+                    </div>
+                </section>
+
+                <section class="view" id="view-board">
+                    <div class="kanban" id="phaseBoard"></div>
+                </section>
+
+                <section class="view" id="view-timeline">
+                    <div class="view-card">
+                        <div class="timeline-wrap">
+                            <div class="timeline-grid" id="timelineGrid"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="view" id="view-tasks">
+                    <div class="view-card">
+                        <div class="card-head">
+                            <div>
+                                <h3>任务清单</h3>
+                                <p>导出后可直接在 Excel 里继续调整。</p>
+                            </div>
+                            <button class="top-button" id="exportTasksBtn">导出 Excel</button>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>阶段</th>
+                                        <th>项目板块</th>
+                                        <th>标准任务</th>
+                                        <th>渠道归属</th>
+                                        <th>活动目的</th>
+                                        <th>时间节点</th>
+                                        <th>历时/天</th>
+                                        <th>责任人</th>
+                                        <th>备注</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="taskTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const secondaryGoalOptions = [
+            "回馈老用户",
+            "打造会员体系",
+            "抵御淡季下滑",
+            "打造运营体系",
+            "激活沉默用户",
+            "提升门店热度"
+        ];
+
+        const channelOptions = ["小红书", "抖音", "美团点评", "私域", "线下"];
+
+        const phaseMeta = {
+            "准备期": { className: "prepare" },
+            "蓄水期": { className: "water" },
+            "传播期": { className: "spread" },
+            "高峰期": { className: "peak" },
+            "长尾期": { className: "tail" }
+        };
+
+        const activityLibrary = [
+            { name: "私域拼团/砍价", phase: "蓄水期", role: "副活动", channels: ["私域"], intents: ["拉新", "激活沉默用户", "锁客"], affinity: { online: 3, private: 3 }, budget: 1 },
+            { name: "私域社群", phase: "蓄水期", role: "副活动", channels: ["私域"], intents: ["锁客", "打造会员体系", "回馈老用户"], affinity: { private: 3 }, budget: 1 },
+            { name: "私域传播裂变", phase: "蓄水期", role: "副活动", channels: ["私域"], intents: ["拉新", "营业额拉升", "激活沉默用户"], affinity: { private: 2, online: 2 }, budget: 1 },
+            { name: "DM卡传播", phase: "蓄水期", role: "副活动", channels: ["私域", "线下"], intents: ["营业额拉升", "提升门店热度"], affinity: { offline: 2 }, budget: 1 },
+            { name: "体验官/品鉴会", phase: "蓄水期", role: "副活动", channels: ["小红书", "私域", "线下"], intents: ["品牌力打造", "激活沉默用户"], affinity: { premium: 3, offline: 1 }, budget: 2 },
+            { name: "引流产品（公域）", phase: "传播期", role: "副活动", channels: ["抖音", "美团点评"], intents: ["拉新", "营业额拉升"], affinity: { food: 3 }, budget: 2 },
+            { name: "引流代金券", phase: "传播期", role: "副活动", channels: ["美团点评"], intents: ["拉新", "营业额拉升"], affinity: { food: 3, offline: 1 }, budget: 2 },
+            { name: "团购秒杀", phase: "传播期", role: "副活动", channels: ["抖音", "美团点评"], intents: ["拉新", "营业额拉升"], affinity: { food: 2 }, budget: 2 },
+            { name: "小红书博主探店", phase: "传播期", role: "副活动", channels: ["小红书"], intents: ["品牌力打造", "拉新"], affinity: { premium: 4 }, budget: 3 },
+            { name: "点评博主探店", phase: "传播期", role: "副活动", channels: ["美团点评"], intents: ["拉新", "提升门店热度"], affinity: { offline: 2 }, budget: 2 },
+            { name: "抖音直播", phase: "传播期", role: "副活动", channels: ["抖音"], intents: ["拉新", "营业额拉升", "品牌力打造"], affinity: { online: 3 }, budget: 3 },
+            { name: "抖音带货", phase: "传播期", role: "副活动", channels: ["抖音"], intents: ["营业额拉升", "拉新"], affinity: { online: 2, food: 1 }, budget: 3 },
+            { name: "推广通", phase: "传播期", role: "副活动", channels: ["抖音"], intents: ["拉新", "营业额拉升"], affinity: { online: 2 }, budget: 3 },
+            { name: "商户通", phase: "传播期", role: "副活动", channels: ["美团点评"], intents: ["拉新", "营业额拉升"], affinity: { offline: 1 }, budget: 3 },
+            { name: "公域传播裂变", phase: "传播期", role: "副活动", channels: ["小红书", "抖音", "美团点评"], intents: ["品牌力打造", "拉新"], affinity: { premium: 2, online: 1 }, budget: 2 },
+            { name: "点评打卡收藏", phase: "传播期", role: "副活动", channels: ["美团点评", "线下"], intents: ["提升门店热度", "拉新"], affinity: { offline: 2, food: 1 }, budget: 1 },
+            { name: "免费试", phase: "传播期", role: "副活动", channels: ["线下", "小红书"], intents: ["拉新", "品牌力打造"], affinity: { offline: 2 }, budget: 2 },
+            { name: "地推", phase: "传播期", role: "副活动", channels: ["线下"], intents: ["拉新", "提升门店热度"], affinity: { offline: 4, county: 4 }, budget: 2 },
+            { name: "线下广告铺设", phase: "传播期", role: "副活动", channels: ["线下"], intents: ["品牌力打造", "提升门店热度"], affinity: { offline: 3, county: 2 }, budget: 3 },
+            { name: "切大蛋糕", phase: "传播期", role: "副活动", channels: ["线下", "抖音", "小红书"], intents: ["品牌力打造", "拉新", "提升门店热度"], affinity: { offline: 3, premium: 1 }, budget: 2 },
+            { name: "私域快闪群", phase: "高峰期", role: "副活动", channels: ["私域"], intents: ["拉新", "营业额拉升"], affinity: { private: 4 }, budget: 1 },
+            { name: "线上抽奖", phase: "高峰期", role: "副活动", channels: ["私域", "抖音"], intents: ["品牌力打造", "拉新"], affinity: { online: 1 }, budget: 1 },
+            { name: "线下抽奖", phase: "高峰期", role: "副活动", channels: ["线下"], intents: ["提升门店热度", "锁客"], affinity: { offline: 4, county: 3 }, budget: 2 },
+            { name: "全场折扣/蛋糕折扣", phase: "高峰期", role: "副活动", channels: ["线下", "美团点评"], intents: ["营业额拉升", "回馈老用户"], affinity: { food: 3, county: 2 }, budget: 1 },
+            { name: "积分兑换", phase: "长尾期", role: "副活动", channels: ["私域"], intents: ["打造会员体系", "回馈老用户"], affinity: { private: 2 }, budget: 1 }
+        ];
+
+        const openingTasks = [
+            { phase: "准备期", lane: "营销方案", task: "制定新店营销计划", channel: "全渠道", goal: "梳理开业打法", days: 2, owner: "运营部", note: "包含地推、物料、推广计划和团购活动明细。" },
+            { phase: "准备期", lane: "线下物料", task: "围挡与广告资源确认", channel: "线下", goal: "线下预热", days: 4, owner: "督导 + 工程部", note: "确认工期、点位、尺寸和广告物料需求。" },
+            { phase: "准备期", lane: "建店", task: "美团 / 抖音 / 高德 / 开店宝建店", channel: "美团点评 / 抖音", goal: "开业前基建", days: 4, owner: "运营部", note: "同步跟进营业执照、食品经营许可证和门店资料。" },
+            { phase: "准备期", lane: "线上物料", task: "线上物料设计制作", channel: "美团点评 / 抖音", goal: "开业前露出", days: 4, owner: "设计部", note: "入口图、首图、新鲜事、团购图按阶段准备。" },
+            { phase: "蓄水期", lane: "私域", task: "企业微信配置与欢迎语测试", channel: "私域", goal: "加人承接", days: 2, owner: "运营部", note: "测试欢迎语、诱饵福利和加人流程。" },
+            { phase: "蓄水期", lane: "线下执行", task: "商场 / 门店周边地推加企微", channel: "线下", goal: "开业前蓄水", days: 5, owner: "门店 + 运营部", note: "设计加微信赠品与到店钩子，目标不少于 500 人。" },
+            { phase: "传播期", lane: "渠道投放", task: "小红书 / 抖音探店排期", channel: "小红书 / 抖音", goal: "开业声量", days: 5, owner: "投放对接", note: "提前审核稿件和脚本重点，避开高峰探店。" },
+            { phase: "传播期", lane: "线上活动", task: "点评 / 美团 / 抖音活动设置", channel: "美团点评 / 抖音", goal: "转化前置", days: 2, owner: "运营部", note: "同步核验券张数、效期、限购和收银键位。" },
+            { phase: "高峰期", lane: "线下执行", task: "门店折扣活动", channel: "线下", goal: "开业成交", days: 3, owner: "门店", note: "明确活动天数、折扣比例和物料进店时间。" },
+            { phase: "高峰期", lane: "线上推广", task: "平台推广通开启", channel: "抖音 / 美团点评", goal: "开业放量", days: 5, owner: "投放对接", note: "活动期间每天同步推广与成交数据。" },
+            { phase: "高峰期", lane: "私域", task: "企微 1v1 触达开业活动", channel: "私域", goal: "拉动到店", days: 1, owner: "运营部", note: "注意触达节奏，避免高频骚扰。" },
+            { phase: "长尾期", lane: "数据复盘", task: "线上推广 / 私域 / 营业额复盘", channel: "全渠道", goal: "复盘与优化", days: 3, owner: "企划 + 营运", note: "复盘曝光、加人、核销、营业额和门店反馈。" }
+        ];
+
+        const activityGuides = {
+            "权益卡": {
+                summary: "用低门槛产品和券包完成首轮成交，把新客尽快锁进后续复购路径。",
+                tips: "价格带要轻，权益结构要一眼看懂，门店和企微话术必须统一。"
+            },
+            "储值": {
+                summary: "把已认知品牌的老客与高意向用户集中转化成更深的现金流沉淀。",
+                tips: "储值档位不要过多，赠送逻辑要明确，优先对老客和高活跃人群售卖。"
+            },
+            "私域拼团/砍价": {
+                summary: "先在私域测试用户对价格和玩法的响应，再决定后续放大力度。",
+                tips: "测试款要简单，避免同时上太多 SKU，只保留转化更好的一个版本。"
+            },
+            "私域社群": {
+                summary: "把愿意参与活动的核心用户沉淀成稳定承接池，便于后续集中转化。",
+                tips: "先定群福利和互动节奏，再拉群，避免建群后长期沉默。"
+            },
+            "私域传播裂变": {
+                summary: "通过老客转介绍和分享扩散，为传播期准备更大的私域触达面。",
+                tips: "裂变利益点要直接，任务动作要单一，不要把流程做复杂。"
+            },
+            "DM卡传播": {
+                summary: "把门店周边与私域触点接起来，让线下到店前就理解活动入口。",
+                tips: "二维码、福利和落地承接要配套，避免只有发卡没有后续跟进。"
+            },
+            "体验官/品鉴会": {
+                summary: "用少量高质量用户先跑产品与口碑反馈，再反哺正式传播内容。",
+                tips: "样本人数不用太多，重点是筛选匹配人群并沉淀真实反馈。"
+            },
+            "引流产品（公域）": {
+                summary: "用低门槛试吃或试用产品，在传播期快速拉入新流量。",
+                tips: "引流品要和后续主活动有承接关系，不能只便宜不转化。"
+            },
+            "引流代金券": {
+                summary: "通过更易决策的券类产品降低首次消费门槛，放大新客进店率。",
+                tips: "效期、门槛和核销路径必须清晰，避免券发出去后承接混乱。"
+            },
+            "团购秒杀": {
+                summary: "制造限时成交感，帮助公域用户更快从浏览进入支付。",
+                tips: "时间窗要集中，库存要真实，避免长期挂着导致失去紧迫感。"
+            },
+            "小红书博主探店": {
+                summary: "用种草内容建立品牌印象和场景感，适合承担传播期的口碑扩散。",
+                tips: "先统一卖点脚本，再挑达人，避免每篇内容都在说不同重点。"
+            },
+            "点评博主探店": {
+                summary: "放大门店真实到店感受，帮助附近流量更快建立消费信心。",
+                tips: "更适合有门店承接能力的品牌，内容要突出位置、环境和爆款。"
+            },
+            "抖音直播": {
+                summary: "在传播期集中放大流量与讲解效率，为高潮期转化提前预热。",
+                tips: "直播脚本要围绕主活动，不能只做热闹，必须明确成交口。"
+            },
+            "抖音带货": {
+                summary: "把短视频流量和即时购买结合起来，适合做规模化放量。",
+                tips: "商品结构要少而准，页面利益点要和直播/短视频口径一致。"
+            },
+            "推广通": {
+                summary: "通过付费放大高意向流量，把传播动作推到更大的可见范围。",
+                tips: "不要先砸预算再修素材，先把素材和承接页测通。"
+            },
+            "商户通": {
+                summary: "用平台内流量工具推动门店曝光和订单转化，适合到店型生意。",
+                tips: "重点盯曝光、点击和核销三段数据，避免只看花费。"
+            },
+            "公域传播裂变": {
+                summary: "把公域内容从一次曝光，变成可持续扩散的多轮触达。",
+                tips: "种草内容、低价引流和主活动之间要有递进，不要各做各的。"
+            },
+            "点评打卡收藏": {
+                summary: "用轻动作提高门店在本地平台的可见度，适合作为辅助传播动作。",
+                tips: "更偏线下承接，门店店员要知道怎么引导用户完成动作。"
+            },
+            "免费试": {
+                summary: "用短期高吸引力动作制造体验门槛最低的一次接触机会。",
+                tips: "试用产品要有记忆点，并提前设计试后如何导向主活动。"
+            },
+            "地推": {
+                summary: "把线下真实人流转进企微或到店消费，是线下门店的强承接动作。",
+                tips: "场景、话术和赠品必须配套，不然只会消耗人力却难沉淀资产。"
+            },
+            "线下广告铺设": {
+                summary: "强化本地范围内的活动可见度，为传播期和高峰期持续造势。",
+                tips: "广告点位要服务门店半径，不要只追求声量而忽略到店转化。"
+            },
+            "切大蛋糕": {
+                summary: "制造强记忆点的线下事件，带动门店热度和内容拍摄素材。",
+                tips: "更适合需要现场氛围和传播感的节点，注意提前安排拍摄。"
+            },
+            "私域快闪群": {
+                summary: "在高潮期制造限时成交场，适合权益卡这类需要集中解释和催单的活动。",
+                tips: "群时长不要太长，玩法和成交窗口要压缩，避免拖成普通社群。"
+            },
+            "线上抽奖": {
+                summary: "用低门槛互动提升关注和参与度，适合配合作为成交前的小刺激。",
+                tips: "奖品别喧宾夺主，抽奖只是拉互动，不应替代主活动本身。"
+            },
+            "线下抽奖": {
+                summary: "增加门店到场感和即时参与感，适合作为高潮期现场氛围加成。",
+                tips: "奖池设置要可控，活动动线不要影响门店出餐和成交效率。"
+            },
+            "全场折扣/蛋糕折扣": {
+                summary: "快速推动高峰期成交，尤其适合复购导向或对价格敏感的品类。",
+                tips: "折扣力度要和毛利线匹配，避免压过主活动的价值感。"
+            },
+            "积分兑换": {
+                summary: "在活动结束后继续给老客一个回流理由，帮助把成交转成长期运营。",
+                tips: "兑换门槛要和会员体系联动，不建议单独作为活动主心智。"
+            }
+        };
+
+        let currentBundle = null;
+
+        function createChips(containerId, values, checkedValues) {
+            const host = document.getElementById(containerId);
+            host.innerHTML = "";
+            values.forEach(value => {
+                const label = document.createElement("label");
+                label.className = "chip";
+                label.innerHTML = `<input type="checkbox" value="${value}" ${checkedValues.includes(value) ? "checked" : ""}><span>${value}</span>`;
+                host.appendChild(label);
+            });
+        }
+
+        function getChecked(containerId) {
+            return [...document.querySelectorAll(`#${containerId} input:checked`)].map(node => node.value);
+        }
+
+        function shortDate(date) {
+            return `${String(date.getMonth() + 1).padStart(2, "0")}/${String(date.getDate()).padStart(2, "0")}`;
+        }
+
+        function weekLabel(range) {
+            return range.startWeek === range.endWeek ? `W${range.startWeek}` : `W${range.startWeek}-W${range.endWeek}`;
+        }
+
+        function budgetCap(level) {
+            if (level === "8k以下") return 3;
+            if (level === "8k-20k") return 6;
+            if (level === "20k-50k") return 9;
+            return 12;
+        }
+
+        function collectInput() {
+            return {
+                brandName: document.getElementById("brandName").value.trim() || "未命名品牌",
+                brandType: document.getElementById("brandType").value,
+                cityTier: document.getElementById("cityTier").value,
+                operationMode: document.getElementById("operationMode").value,
+                privateVolume: document.getElementById("privateVolume").value,
+                campaignType: document.getElementById("campaignType").value,
+                mainGoal: document.getElementById("mainGoal").value,
+                secondaryGoals: getChecked("secondaryGoals"),
+                painPoints: document.getElementById("painPoints").value.trim(),
+                startDate: new Date(document.getElementById("startDate").value),
+                endDate: new Date(document.getElementById("endDate").value),
+                budgetLevel: document.getElementById("budgetLevel").value,
+                storeCount: Number(document.getElementById("storeCount").value || 1),
+                channelFocus: getChecked("channelFocus")
+            };
+        }
+
+        function isOpeningFlow(input) {
+            return input.campaignType === "新店开业" &&
+                ["休闲餐", "快餐", "正餐"].includes(input.brandType) &&
+                input.mainGoal === "新店开业";
+        }
+
+        function channelWeights(input) {
+            const scores = { "小红书": 0, "抖音": 0, "美团点评": 0, "私域": 0, "线下": 0 };
+
+            if (["线上蛋糕", "线上蛋糕+线下甜品"].includes(input.brandType)) {
+                scores["私域"] += 4;
+                scores["小红书"] += 3;
+                scores["抖音"] += 3;
+            }
+
+            if (["综合烘焙", "休闲餐", "快餐", "正餐"].includes(input.brandType)) {
+                scores["线下"] += 3;
+                scores["美团点评"] += 3;
+                scores["抖音"] += 2;
+            }
+
+            if (input.cityTier === "新一线以上") {
+                scores["小红书"] += 3;
+                scores["抖音"] += 2;
+            } else if (input.cityTier === "二三线") {
+                scores["抖音"] += 2;
+                scores["私域"] += 1;
+                scores["美团点评"] += 2;
+            } else {
+                scores["线下"] += 4;
+                scores["抖音"] += 2;
+                scores["美团点评"] += 1;
+                scores["小红书"] -= 2;
+            }
+
+            if (input.operationMode === "工作室模式") {
+                scores["私域"] += 2;
+                scores["小红书"] += 2;
+            } else if (input.operationMode === "线下单店") {
+                scores["线下"] += 3;
+                scores["美团点评"] += 2;
+            } else {
+                scores["抖音"] += 2;
+                scores["私域"] += 2;
+                scores["美团点评"] += 2;
+            }
+
+            if (input.privateVolume.includes("强")) scores["私域"] += 4;
+            if (input.privateVolume.includes("中")) scores["私域"] += 2;
+            if (input.privateVolume.includes("弱")) scores["私域"] -= 1;
+
+            if (input.mainGoal === "品牌力打造") {
+                scores["小红书"] += 2;
+                scores["抖音"] += 2;
+            }
+
+            if (input.mainGoal === "营业额拉升") {
+                scores["私域"] += 1;
+                scores["抖音"] += 2;
+                scores["美团点评"] += 2;
+            }
+
+            if (input.mainGoal === "锁客") {
+                scores["私域"] += 3;
+            }
+
+            input.channelFocus.forEach(channel => {
+                scores[channel] += 2;
+            });
+
+            return Object.entries(scores)
+                .map(([channel, score]) => ({ channel, score: Math.max(0, score) }))
+                .sort((a, b) => b.score - a.score);
+        }
+
+        function mainActivityDecision(input) {
+            let primary = "权益卡";
+
+            if (input.mainGoal === "锁客") {
+                primary = "储值";
+            } else if (input.mainGoal === "营业额拉升") {
+                primary = ["综合烘焙", "休闲餐", "快餐", "正餐"].includes(input.brandType) ? "储值" : "权益卡";
+            } else if (input.mainGoal === "品牌力打造") {
+                primary = ["线上蛋糕", "线上蛋糕+线下甜品"].includes(input.brandType) ? "权益卡" : "储值";
+            }
+
+            let secondary = null;
+            const needDual = (
+                input.secondaryGoals.includes("打造会员体系") ||
+                input.secondaryGoals.includes("激活沉默用户") ||
+                input.privateVolume.includes("强") ||
+                input.storeCount >= 3
+            );
+
+            if (needDual) {
+                secondary = primary === "权益卡" ? "储值" : "权益卡";
+            }
+
+            const result = [{
+                phase: "高峰期",
+                role: "主活动",
+                name: primary,
+                intent: primary === "储值" ? "锁客 / 现金流沉淀" : "拉新 / 低门槛锁客",
+                route: primary === "储值" ? "私域 + 门店承接" : "私域 + 门店 + 快闪群承接"
+            }];
+
+            if (secondary) {
+                result.push({
+                    phase: "高峰期",
+                    role: "辅助主活动",
+                    name: secondary,
+                    intent: secondary === "储值" ? "补充锁客" : "补充拉新",
+                    route: secondary === "储值" ? "门店 + 私域补充售卖" : "门店 + 私域补充承接"
+                });
+            }
+
+            return result;
+        }
+
+        function activityScore(item, input, channels, mainRows) {
+            const channelMap = Object.fromEntries(channels.map(entry => [entry.channel, entry.score]));
+            let score = 2;
+
+            item.channels.forEach(channel => {
+                score += channelMap[channel] || 0;
+            });
+
+            if (item.intents.includes(input.mainGoal)) score += 5;
+            input.secondaryGoals.forEach(goal => {
+                if (item.intents.includes(goal)) score += 2;
+            });
+
+            if (input.cityTier === "下沉" && item.affinity.county) score += item.affinity.county;
+            if (input.cityTier === "新一线以上" && item.affinity.premium) score += item.affinity.premium;
+            if (input.privateVolume.includes("强") && item.affinity.private) score += item.affinity.private;
+            if (["线上蛋糕", "线上蛋糕+线下甜品"].includes(input.brandType) && item.affinity.online) score += item.affinity.online;
+            if (["综合烘焙", "休闲餐", "快餐", "正餐"].includes(input.brandType) && item.affinity.food) score += item.affinity.food;
+            if (input.operationMode !== "工作室模式" && item.affinity.offline) score += item.affinity.offline;
+            if (input.channelFocus.some(channel => item.channels.includes(channel))) score += 2;
+
+            if (mainRows[0].name === "权益卡" && item.name === "私域快闪群") score += 10;
+            if (mainRows[0].name === "储值" && item.name === "私域快闪群") score -= 8;
+            if (input.cityTier === "下沉" && item.name === "小红书博主探店") score -= 8;
+            if (input.cityTier === "下沉" && item.name === "体验官/品鉴会") score -= 5;
+            if (item.budget > budgetCap(input.budgetLevel)) score -= 8;
+
+            return score;
+        }
+
+        function phaseMap(totalWeeks) {
+            const phases = ["准备期", "蓄水期", "传播期", "高峰期", "长尾期"];
+            const ratios = [0.24, 0.18, 0.26, 0.18, 0.14];
+            const counts = ratios.map(ratio => Math.max(1, Math.floor(totalWeeks * ratio)));
+            let sum = counts.reduce((acc, value) => acc + value, 0);
+
+            while (sum < totalWeeks) {
+                counts[2] += 1;
+                sum += 1;
+            }
+
+            while (sum > totalWeeks) {
+                const index = counts.findIndex((value, i) => value > 1 && i !== 3);
+                if (index === -1) break;
+                counts[index] -= 1;
+                sum -= 1;
+            }
+
+            let cursor = 1;
+            const map = {};
+            phases.forEach((phase, index) => {
+                map[phase] = { startWeek: cursor, endWeek: cursor + counts[index] - 1 };
+                cursor += counts[index];
+            });
+            return map;
+        }
+
+        function scheduleMeta(input) {
+            const days = Math.max(1, Math.ceil((input.endDate - input.startDate) / 86400000) + 1);
+            const totalWeeks = Math.max(5, Math.min(8, Math.ceil(days / 7)));
+            const weeks = [];
+
+            for (let i = 0; i < totalWeeks; i += 1) {
+                const start = new Date(input.startDate);
+                start.setDate(start.getDate() + i * 7);
+                const end = new Date(start);
+                end.setDate(end.getDate() + 6);
+                weeks.push({ week: i + 1, label: `W${i + 1}`, range: `${shortDate(start)}-${shortDate(end)}` });
+            }
+
+            return { totalWeeks, weeks, map: phaseMap(totalWeeks) };
+        }
+
+        function selectActivities(input, channels, mainRows) {
+            const picked = [];
+            const limits = { "蓄水期": 3, "传播期": 5, "高峰期": 3, "长尾期": 1 };
+            let usedBudget = 0;
+
+            ["蓄水期", "传播期", "高峰期", "长尾期"].forEach(phase => {
+                const candidates = activityLibrary
+                    .filter(item => item.phase === phase)
+                    .map(item => ({ ...item, score: activityScore(item, input, channels, mainRows) }))
+                    .sort((a, b) => b.score - a.score);
+
+                let count = 0;
+                for (const item of candidates) {
+                    if (count >= limits[phase]) break;
+                    if (phase === "高峰期" && item.name === "私域快闪群" && mainRows[0].name !== "权益卡") continue;
+                    if (phase === "高峰期" && item.name === "全场折扣/蛋糕折扣" && input.mainGoal === "品牌力打造") continue;
+                    if (usedBudget + item.budget > budgetCap(input.budgetLevel) + 2 && phase !== "长尾期") continue;
+                    picked.push(item);
+                    usedBudget += item.budget;
+                    count += 1;
+                }
+            });
+
+            return picked;
+        }
+
+        function buildTasks(input, selected, mainRows, schedule) {
+            if (isOpeningFlow(input)) {
+                return openingTasks.map(task => ({ ...task, weeks: schedule.map[task.phase] }));
+            }
+
+            const selectedNames = new Set(selected.map(item => item.name));
+            const main = mainRows[0].name;
+            const tasks = [
+                { phase: "准备期", lane: "产品准备", task: main === "储值" ? "储值赠送伴手礼确认采购" : "权益卡产品研发", channel: "私域", goal: "主活动成型", days: 7, owner: "产品部 + 运营部", note: main === "储值" ? "储值建议最多 3 档。" : "权益卡建议控制在低门槛价格带。" },
+                { phase: "准备期", lane: "物料准备", task: "活动攻略海报设计制作（小红书 / 抖音 / 朋友圈）", channel: "全渠道", goal: "统一视觉口径", days: 5, owner: "设计部", note: "攻略长图和活动小海报同步准备。" },
+                { phase: "准备期", lane: "平台设置", task: main === "储值" ? "储值活动设置 & 测试" : "小程序活动配置", channel: "私域", goal: "上线前验证", days: 3, owner: "运营部", note: "活动前 3 天完成系统测试。" },
+                { phase: "蓄水期", lane: "私域", task: "私域 1v1 触达活动预告", channel: "私域", goal: "活动预热", days: 1, owner: "运营部", note: "活动期间总次数不超过 3 次。" },
+                { phase: "传播期", lane: "内容发布", task: "公众号发布活动攻略", channel: "私域 / 自媒体", goal: "统一活动信息", days: 1, owner: "运营部", note: "传播期统一攻略口径。" },
+                { phase: "高峰期", lane: "主活动", task: main === "储值" ? "储值活动" : "蛋糕卡 / 权益卡售卖", channel: "私域 / 门店", goal: "核心转化", days: 3, owner: "运营部 + 门店", note: main === "储值" ? "储值主推，档位清晰。" : "权益卡系主推，避免权益过于复杂。" },
+                { phase: "高峰期", lane: "私域", task: "私域 1v1 触达主活动开始", channel: "私域", goal: "放大成交", days: 1, owner: "运营部", note: "只围绕主活动触达。" },
+                { phase: "长尾期", lane: "数据复盘", task: "数据统计分析", channel: "全渠道", goal: "复盘表现", days: 3, owner: "运营部 + 企划", note: "复盘曝光、加人、核销和营业额。" },
+                { phase: "长尾期", lane: "复盘", task: "活动复盘", channel: "全渠道", goal: "沉淀模板", days: 2, owner: "运营部", note: "总结有效动作和低效动作。" }
+            ];
+
+            if (selectedNames.has("私域拼团/砍价")) {
+                tasks.push({ phase: "准备期", lane: "产品准备", task: "私域拼团/砍价产品研发", channel: "私域", goal: "蓄水测试", days: 5, owner: "产品部", note: "先测试，再只保留表现更好的一个。" });
+            }
+
+            if (selectedNames.has("DM卡传播")) {
+                tasks.push({ phase: "蓄水期", lane: "物料投放", task: "DM 卡单预发放", channel: "线下 / 私域", goal: "信息露出", days: 3, owner: "门店 + 运营部", note: "印刷前 3 人交叉核对二维码。" });
+            }
+
+            if (selectedNames.has("体验官/品鉴会")) {
+                tasks.push({ phase: "蓄水期", lane: "用户运营", task: "小红书 / 私域体验官招募", channel: "小红书 / 私域", goal: "真实反馈与预热", days: 4, owner: "运营部", note: "优先筛选真实用户。" });
+            }
+
+            if (selectedNames.has("私域社群") || selectedNames.has("私域传播裂变")) {
+                tasks.push({ phase: "蓄水期", lane: "私域", task: "核心粉丝群搭建", channel: "私域", goal: "建立承接池", days: 2, owner: "运营部", note: "后续用于活动承接。" });
+            }
+
+            if (selectedNames.has("小红书博主探店")) {
+                tasks.push({ phase: "传播期", lane: "渠道投放", task: "小红书博主探店", channel: "小红书", goal: "内容扩散", days: 5, owner: "投放对接", note: "高线城市更适用。" });
+                tasks.push({ phase: "传播期", lane: "渠道投放", task: "小红书博主发布（同步点评）", channel: "小红书 / 美团点评", goal: "放大种草", days: 3, owner: "投放对接", note: "内容重点统一。" });
+            }
+
+            if (selectedNames.has("抖音直播")) {
+                tasks.push({ phase: "传播期", lane: "线上推广", task: "抖音官号直播", channel: "抖音", goal: "传播放量", days: 3, owner: "运营部", note: "直播服务高峰期成交。" });
+            }
+
+            if (selectedNames.has("引流代金券") || selectedNames.has("团购秒杀")) {
+                tasks.push({ phase: "传播期", lane: "线上活动", task: "代金券秒杀活动", channel: "美团点评 / 抖音", goal: "拉新导流", days: 2, owner: "运营部", note: "价格不能打穿利润线。" });
+            }
+
+            if (selectedNames.has("切大蛋糕")) {
+                tasks.push({ phase: "传播期", lane: "线下活动", task: "门口大蛋糕制作 & 分发", channel: "线下", goal: "活动造势", days: 1, owner: "门店 + 运营部", note: "同步反哺内容传播。" });
+            }
+
+            if (selectedNames.has("私域快闪群")) {
+                tasks.push({ phase: "传播期", lane: "私域", task: "私域快闪群拉群（非必要）", channel: "私域", goal: "高峰期售卖预热", days: 2, owner: "运营部", note: "只服务权益卡系销售。" });
+            }
+
+            if (selectedNames.has("全场折扣/蛋糕折扣")) {
+                tasks.push({ phase: "高峰期", lane: "门店承接", task: "门店折扣活动", channel: "线下 / 美团点评", goal: "放大到店成交", days: 3, owner: "门店", note: "更适合综合烘焙和餐饮。" });
+            }
+
+            if (selectedNames.has("线上抽奖") || selectedNames.has("线下抽奖")) {
+                tasks.push({ phase: "高峰期", lane: "互动承接", task: "消费抽奖活动", channel: selectedNames.has("线下抽奖") ? "线下" : "私域 / 抖音", goal: "提升互动转化", days: 2, owner: "门店 + 运营部", note: "抽奖不能盖过主活动心智。" });
+            }
+
+            return tasks.map(task => ({ ...task, weeks: schedule.map[task.phase] }));
+        }
+
+        function buildPlan(input) {
+            const channels = channelWeights(input);
+            const mainRows = mainActivityDecision(input);
+            const schedule = scheduleMeta(input);
+            const selected = selectActivities(input, channels, mainRows);
+            const tasks = buildTasks(input, selected, mainRows, schedule);
+
+            const activities = [
+                ...mainRows.map(item => ({ ...item })),
+                ...selected.map(item => ({
+                    phase: item.phase,
+                    role: item.role,
+                    name: item.name,
+                    intent: item.intents.join(" / "),
+                    route: item.channels.join(" + ")
+                }))
+            ];
+
+            const groups = { "准备期": [], "蓄水期": [], "传播期": [], "高峰期": [], "长尾期": [] };
+            activities.forEach(activity => groups[activity.phase].push(activity));
+
+            return { channels, mainRows, schedule, selected, tasks, activities, groups };
+        }
+
+        function summarizeStrategy(input, plan) {
+            const topChannels = plan.channels.slice(0, 2).map(item => item.channel).join(" + ");
+            const mainName = plan.mainRows[0].name;
+            const behavior = mainName === "权益卡" ? "先降低成交门槛，再把新客往复购里带" : "先抓高意向老客，再放大现金流沉淀";
+            const channelBias = topChannels.includes("线下") ? "方案会更强调门店承接与现场热度。" : "方案会更强调线上转化链路和企微承接。";
+            return `${input.brandName} 本次更适合以 ${mainName} 作为高潮期主转化动作，前段先用 ${topChannels} 建立流量入口与信任，再把流量集中导入高峰期成交。${behavior}，${channelBias}`;
+        }
+
+        function phasePurpose(phase) {
+            if (phase === "准备期") return "先把活动产品、物料、页面和路径测通。";
+            if (phase === "蓄水期") return "重点做公域拉新和私域激活裂变，先沉淀一批可触达用户。";
+            if (phase === "传播期") return "放大曝光，配合低门槛引流产品或代金券把新客导入。";
+            if (phase === "高峰期") return "集中转化前面沉淀的流量，主推权益卡或储值。";
+            return "完成数据整理、尾款回收和复盘沉淀。";
+        }
+
+        function activityGuide(item) {
+            return activityGuides[item.name] || {
+                summary: `${item.phase} 的辅助动作，用于承接 ${item.intent}。`,
+                tips: `${phasePurpose(item.phase)} 这类动作应与主活动口径保持一致，避免信息分散。`
+            };
+        }
+
+        function activityDescriptor(item, plan) {
+            const guide = activityGuide(item);
+            const range = plan.schedule.map[item.phase];
+            const route = item.route || item.channels?.join(" + ") || "";
+            return {
+                summary: guide.summary,
+                detailPhase: `${item.phase} · ${weekLabel(range)}`,
+                detailPurpose: item.intent,
+                detailRoute: route || phasePurpose(item.phase),
+                detailTips: guide.tips
+            };
+        }
+
+        function logicCards(input, plan) {
+            const topChannels = plan.channels.slice(0, 2).map(item => item.channel).join(" + ");
+            return [
+                {
+                    step: "Step 01",
+                    title: "先判断品牌画像",
+                    body: `${input.brandType} / ${input.operationMode} / ${input.privateVolume} 决定了这次更适合走线上成交、门店承接，还是私域锁客。`
+                },
+                {
+                    step: "Step 02",
+                    title: "再确定流量入口",
+                    body: `当前更强的入口是 ${topChannels}，所以前半段活动会优先把预算和动作压在这几个渠道上。`
+                },
+                {
+                    step: "Step 03",
+                    title: "高潮期只保留主转化",
+                    body: `真正承担成交的是 ${plan.mainRows.map(item => item.name).join(" + ")}，其余玩法都是为高潮期转化做铺垫，不抢主心智。`
+                },
+                {
+                    step: "Step 04",
+                    title: "阶段节奏要前轻后重",
+                    body: "准备期先测通，蓄水期先聚人，传播期再放量，高峰期集中卖，避免一上来就直接硬卖。"
+                }
+            ];
+        }
+
+        function priorityLabel(index) {
+            return `TOP ${index + 1}`;
+        }
+
+        function escapeCsv(value) {
+            const text = String(value ?? "");
+            if (/[",\n]/.test(text)) {
+                return `"${text.replace(/"/g, "\"\"")}"`;
+            }
+            return text;
+        }
+
+        function exportTasks() {
+            if (!currentBundle) return;
+            const { input, plan } = currentBundle;
+            const rows = [
+                ["阶段", "项目板块", "标准任务", "渠道归属", "活动目的", "时间节点", "历时/天", "责任人", "备注"],
+                ...plan.tasks.map(task => [
+                    task.phase,
+                    task.lane,
+                    task.task,
+                    task.channel,
+                    task.goal,
+                    weekLabel(task.weeks),
+                    task.days,
+                    task.owner,
+                    task.note
+                ])
+            ];
+            const csv = "\ufeff" + rows.map(row => row.map(escapeCsv).join(",")).join("\n");
+            const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `${input.brandName}-${input.campaignType}-任务清单.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+        }
+
+        function render(input, plan) {
+            document.getElementById("resultTitle").textContent = `${input.brandName} · ${input.campaignType}`;
+            document.getElementById("statusChip").textContent = "Planned";
+            document.getElementById("statusHint").textContent = "策略已生成，可展开查看各活动的阶段与设置要点。";
+            document.getElementById("headerBrand").textContent = input.brandName;
+            document.getElementById("headerCampaign").textContent = `${input.campaignType} · ${input.mainGoal}`;
+            document.getElementById("headerStrategy").textContent = plan.mainRows.map(item => item.name).join(" + ");
+            document.getElementById("headerChannels").textContent = `主渠道：${plan.channels.slice(0, 3).map(item => item.channel).join(" / ")}`;
+            document.getElementById("headerWindow").textContent = `${plan.schedule.totalWeeks} 周`;
+            document.getElementById("headerWindowDetail").textContent = `${shortDate(input.startDate)} - ${shortDate(input.endDate)} · ${plan.schedule.weeks.length} 个周单元`;
+            document.getElementById("brandMeta").textContent = summarizeStrategy(input, plan);
+
+            document.getElementById("strategyHero").innerHTML = `
+                <small>${input.brandType} · ${input.campaignType}</small>
+                <h3>${plan.mainRows[0].name} 是这次的核心转化动作</h3>
+                <p>${summarizeStrategy(input, plan)}</p>
+                <div class="strategy-hero-tags">
+                    <span>主目的：${input.mainGoal}</span>
+                    <span>高峰期主推：${plan.mainRows.map(item => item.name).join(" + ")}</span>
+                    <span>优先渠道：${plan.channels.slice(0, 2).map(item => item.channel).join(" + ")}</span>
+                </div>
+            `;
+
+            document.getElementById("summaryPanel").innerHTML = `
+                <h3>策略总述</h3>
+                <p>这不是把玩法简单叠加，而是先确定高潮期卖什么，再反推前面每个阶段该做什么。</p>
+                <div class="quick-panel-grid">
+                    <div class="quick-cell">
+                        <small>主活动</small>
+                        <strong>${plan.mainRows.map(item => item.name).join(" + ")}</strong>
+                        <span>${plan.mainRows[0].intent}</span>
+                    </div>
+                    <div class="quick-cell">
+                        <small>核心渠道</small>
+                        <strong>${plan.channels.slice(0, 3).map(item => item.channel).join(" / ")}</strong>
+                        <span>按品牌能力和城市环境自动排序</span>
+                    </div>
+                    <div class="quick-cell">
+                        <small>活动结构</small>
+                        <strong>${plan.selected.length} 个辅助动作</strong>
+                        <span>围绕四个关键阶段逐步推进，不抢主心智</span>
+                    </div>
+                    <div class="quick-cell">
+                        <small>周期拆解</small>
+                        <strong>${plan.schedule.totalWeeks} 周</strong>
+                        <span>${Object.entries(plan.schedule.map).map(([phase, range]) => `${phase} ${weekLabel(range)}`).join(" · ")}</span>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById("logicGrid").innerHTML = logicCards(input, plan).map(card => `
+                <article class="logic-card">
+                    <small>${card.step}</small>
+                    <h4>${card.title}</h4>
+                    <p>${card.body}</p>
+                </article>
+            `).join("");
+
+            document.getElementById("strategyCardGrid").innerHTML = plan.activities.map((item, index) => {
+                const descriptor = activityDescriptor(item, plan);
+                return `
+                    <article class="strategy-card ${index === 0 ? "expanded" : ""}" data-activity-card>
+                        <div class="strategy-card-head">
+                            <div class="strategy-card-title">
+                                <small>${item.role}</small>
+                                <h4>${item.name}</h4>
+                            </div>
+                            <div class="strategy-rank">${priorityLabel(index)}</div>
+                        </div>
+                        <p>${descriptor.summary}</p>
+                        <div class="strategy-tags">
+                            <span>${item.phase}</span>
+                            <span>${weekLabel(plan.schedule.map[item.phase])}</span>
+                            <span>${item.route || item.channels?.join(" + ") || "全渠道"}</span>
+                        </div>
+                        <div class="strategy-detail">
+                            <div class="detail-block">
+                                <small>阶段</small>
+                                <strong>${descriptor.detailPhase}</strong>
+                            </div>
+                            <div class="detail-block">
+                                <small>目的</small>
+                                <strong>${descriptor.detailPurpose}</strong>
+                            </div>
+                            <div class="detail-block">
+                                <small>承接路径</small>
+                                <span>${descriptor.detailRoute}</span>
+                            </div>
+                            <div class="detail-block">
+                                <small>设置要点</small>
+                                <span>${descriptor.detailTips}</span>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join("");
+
+            document.getElementById("phaseBoard").innerHTML = Object.keys(phaseMeta).map(phase => `
+                <div class="phase ${phaseMeta[phase].className}">
+                    <h4>${phase}</h4>
+                    <div class="phase-stack">
+                        ${plan.groups[phase].map(item => `
+                            <div class="phase-item">
+                                <strong>${item.name}</strong>
+                                <span>${item.role} · ${item.intent}</span>
+                            </div>
+                        `).join("")}
+                    </div>
+                </div>
+            `).join("");
+
+            const timelineGrid = document.getElementById("timelineGrid");
+            timelineGrid.style.setProperty("--week-count", plan.schedule.totalWeeks);
+            timelineGrid.innerHTML = `
+                <div class="timeline-head">
+                    <div>阶段</div>
+                    <div>活动</div>
+                    <div>角色</div>
+                    ${plan.schedule.weeks.map(item => `<div>${item.label}<br>${item.range}</div>`).join("")}
+                </div>
+                ${plan.activities.map(item => {
+                    const range = plan.schedule.map[item.phase];
+                    return `
+                        <div class="timeline-row">
+                            <div class="timeline-meta"><strong>${item.phase}</strong></div>
+                            <div class="timeline-meta"><strong>${item.name}</strong></div>
+                            <div class="timeline-meta"><strong>${item.role}</strong></div>
+                            ${plan.schedule.weeks.map(week => `<div class="week-slot ${week.week >= range.startWeek && week.week <= range.endWeek ? "active" : ""}"></div>`).join("")}
+                        </div>
+                    `;
+                }).join("")}
+            `;
+
+            document.getElementById("taskTableBody").innerHTML = plan.tasks.map(task => `
+                <tr>
+                    <td>${task.phase}</td>
+                    <td>${task.lane}</td>
+                    <td>${task.task}</td>
+                    <td>${task.channel}</td>
+                    <td>${task.goal}</td>
+                    <td>${weekLabel(task.weeks)}</td>
+                    <td>${task.days}</td>
+                    <td>${task.owner}</td>
+                    <td>${task.note}</td>
+                </tr>
+            `).join("");
+        }
+
+        function generatePlan() {
+            const input = collectInput();
+            const plan = buildPlan(input);
+            currentBundle = { input, plan };
+            render(input, plan);
+            document.getElementById("landingSection").style.display = "none";
+            document.getElementById("workspaceSection").classList.add("active");
+            document.getElementById("editButton").style.display = "inline-flex";
+            activateTab("overview");
+            document.getElementById("workspaceSection").scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        function showEditor() {
+            document.getElementById("workspaceSection").classList.remove("active");
+            document.getElementById("landingSection").style.display = "grid";
+            document.getElementById("editButton").style.display = "none";
+            document.getElementById("statusChip").textContent = "Ready";
+            document.getElementById("statusHint").textContent = "等待输入品牌参数并生成活动方案。";
+            document.getElementById("headerBrand").textContent = "未生成方案";
+            document.getElementById("headerCampaign").textContent = "请选择品牌与活动类型";
+            document.getElementById("headerStrategy").textContent = "待判断";
+            document.getElementById("headerChannels").textContent = "渠道与转化路径会在生成后出现";
+            document.getElementById("headerWindow").textContent = "--";
+            document.getElementById("headerWindowDetail").textContent = "系统将按阶段自动拆分周次";
+            document.getElementById("brandMeta").textContent = "从品牌画像、渠道重心到主活动转化，把一场大活动拆成可执行的阶段策略。";
+            document.getElementById("landingSection").scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        function activateTab(name) {
+            document.querySelectorAll(".tab").forEach(tab => {
+                tab.classList.toggle("active", tab.dataset.view === name);
+            });
+            document.querySelectorAll(".view").forEach(view => {
+                view.classList.toggle("active", view.id === `view-${name}`);
+            });
+        }
+
+        document.querySelectorAll(".tab").forEach(tab => {
+            tab.addEventListener("click", () => activateTab(tab.dataset.view));
+        });
+
+        document.getElementById("generateBtn").addEventListener("click", generatePlan);
+        document.getElementById("editButton").addEventListener("click", showEditor);
+        document.getElementById("exportTasksBtn").addEventListener("click", exportTasks);
+
+        document.getElementById("strategyCardGrid").addEventListener("click", event => {
+            const card = event.target.closest("[data-activity-card]");
+            if (!card) return;
+            const shouldExpand = !card.classList.contains("expanded");
+            document.querySelectorAll("[data-activity-card]").forEach(node => node.classList.remove("expanded"));
+            if (shouldExpand) {
+                card.classList.add("expanded");
+            }
+        });
+
+        document.getElementById("logoButton").addEventListener("click", event => {
+            const button = event.currentTarget;
+            button.classList.remove("pulse");
+            void button.offsetWidth;
+            button.classList.add("pulse");
+            setTimeout(() => button.classList.remove("pulse"), 650);
+        });
+
+        createChips("secondaryGoals", secondaryGoalOptions, ["激活沉默用户", "提升门店热度"]);
+        createChips("channelFocus", channelOptions, ["私域", "抖音", "线下"]);
+    </script>
+</body>
+</html>
