@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c47900"/>
+    </marker>
+    <style>
+      .bg{fill:#fff9f0}
+      .box{fill:#fff;stroke:#e4c58f;stroke-width:3}
+      .box2{fill:#fff4dc;stroke:#f4a100;stroke-width:4}
+      .box3{fill:#fff;stroke:#d93838;stroke-width:4}
+      .title{font:800 52px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;fill:#1c1c1c}
+      .h{font:700 34px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;fill:#1e1e1e}
+      .p{font:500 25px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;fill:#333}
+      .note{font:600 25px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;fill:#b25a00}
+      .line{stroke:#c47900;stroke-width:5;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect class="bg" width="1600" height="900"/>
+  <text x="70" y="86" class="title">一堂运营模式雏型：重交付钩子课驱动的会员制生意</text>
+
+  <rect x="70" y="150" width="250" height="170" rx="20" class="box"/>
+  <text x="105" y="210" class="h">获客入口</text>
+  <text x="105" y="258" class="p">公众号尾部广告位</text>
+  <text x="105" y="298" class="p">9.9 元引流课</text>
+
+  <path class="line" d="M330 235 C385 235 400 235 455 235"/>
+  <rect x="470" y="135" width="330" height="200" rx="20" class="box2"/>
+  <text x="515" y="195" class="h">7 天钩子课程</text>
+  <text x="515" y="245" class="p">首尾 2 场直播，每场约 2 小时</text>
+  <text x="515" y="285" class="p">最高 10 节录播赠课</text>
+  <text x="515" y="325" class="note">先让用户觉得“超值”</text>
+
+  <path class="line" d="M810 235 C865 235 880 235 935 235"/>
+  <rect x="950" y="150" width="290" height="170" rx="20" class="box"/>
+  <text x="990" y="210" class="h">作业与解锁</text>
+  <text x="990" y="258" class="p">写作业解锁下一节课</text>
+  <text x="990" y="298" class="p">转介绍解锁奖励课</text>
+
+  <path class="line" d="M1250 235 C1305 235 1320 235 1375 235"/>
+  <rect x="1385" y="150" width="145" height="170" rx="20" class="box"/>
+  <text x="1418" y="210" class="h">转化</text>
+  <text x="1410" y="258" class="p">年会员</text>
+  <text x="1410" y="298" class="p">选课券</text>
+
+  <rect x="135" y="440" width="330" height="210" rx="20" class="box"/>
+  <text x="180" y="500" class="h">运营触达系统</text>
+  <text x="180" y="550" class="p">群公告、私聊提醒、AI 外呼</text>
+  <text x="180" y="590" class="p">排名、荣誉、小组竞争</text>
+  <text x="180" y="630" class="p">课后复盘与学习入口</text>
+
+  <rect x="635" y="440" width="330" height="210" rx="20" class="box"/>
+  <text x="680" y="500" class="h">信任资产沉淀</text>
+  <text x="680" y="550" class="p">作业数据、案例反馈、群氛围</text>
+  <text x="680" y="590" class="p">用户完成感与好感度</text>
+  <text x="680" y="630" class="p">后续销售阻力下降</text>
+
+  <rect x="1135" y="440" width="330" height="210" rx="20" class="box3"/>
+  <text x="1180" y="500" class="h">收入阶梯</text>
+  <text x="1180" y="550" class="p">1980 / 3380 / 5580 年会员</text>
+  <text x="1180" y="590" class="p">高阶集训营、私董会、咨询</text>
+  <text x="1180" y="630" class="p">续费与转介绍复利</text>
+
+  <path class="line" d="M300 430 C365 350 505 335 635 340"/>
+  <path class="line" d="M800 430 C800 370 830 330 940 305"/>
+  <path class="line" d="M1300 430 C1330 360 1390 330 1448 324"/>
+  <path class="line" d="M1300 670 C1100 785 555 790 300 660"/>
+</svg>

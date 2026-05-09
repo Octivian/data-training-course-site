@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="840" viewBox="0 0 1400 840">
+  <defs>
+    <style>
+      .bg{fill:#fff8ef}
+      .card{fill:#fff;stroke:#e6d6c2;stroke-width:2}
+      .hot{fill:#ffe2e6;stroke:#e02b2b;stroke-width:4}
+      .gray{fill:#efefef;stroke:#c9c9c9;stroke-width:3}
+      .title{font:700 48px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;fill:#1e1e1e}
+      .price{font:800 74px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;fill:#d71920}
+      .label{font:700 38px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;fill:#1e1e1e}
+      .muted{font:400 28px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;fill:#8a8a8a}
+      .body{font:500 30px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;fill:#222}
+      .red{fill:#e02b2b}
+      .small{font:500 24px -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;fill:#555}
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="840"/>
+  <text x="70" y="80" class="title">会员价格设计复原</text>
+  <text x="70" y="124" class="muted">依据用户截图整理：三档年会员 + 选课券；高阶 MBA 会员作为后续大单承接入口</text>
+
+  <rect x="70" y="170" width="380" height="470" rx="22" class="card"/>
+  <text x="110" y="230" class="label">入门版</text>
+  <text x="110" y="315" class="price">¥1980</text>
+  <text x="110" y="365" class="muted">一年会员学籍</text>
+  <text x="110" y="420" class="body">10 张年度选课券</text>
+  <text x="110" y="475" class="small">适合：先低风险体验课程体系</text>
+  <text x="110" y="525" class="small">作用：把 9.9 用户升级为付费会员</text>
+  <text x="110" y="575" class="small">心理锚点：门槛低、可继续学</text>
+
+  <rect x="510" y="145" width="380" height="520" rx="22" class="hot"/>
+  <text x="550" y="210" class="label">标准版</text>
+  <text x="550" y="295" class="price">¥3380</text>
+  <text x="550" y="345" class="muted">相当于单独买课 8 折</text>
+  <text x="550" y="405" class="body">一年会员学籍</text>
+  <text x="550" y="460" class="body red">20 张年度选课券</text>
+  <text x="550" y="520" class="small">适合：已有学习意愿的主流人群</text>
+  <text x="550" y="570" class="small">作用：作为核心成交档</text>
+  <text x="550" y="620" class="small">设计：用更多选课券放大感知价值</text>
+
+  <rect x="950" y="170" width="380" height="470" rx="22" class="card"/>
+  <text x="990" y="230" class="label">学霸版</text>
+  <text x="990" y="315" class="price">¥5580</text>
+  <text x="990" y="365" class="muted">相当于单独买课 7 折</text>
+  <text x="990" y="420" class="body">一年会员学籍</text>
+  <text x="990" y="475" class="body">40 张年度选课券</text>
+  <text x="990" y="525" class="small">适合：高学习密度/团队负责人</text>
+  <text x="990" y="575" class="small">作用：抬高客单价和价值锚点</text>
+
+  <rect x="70" y="700" width="1260" height="84" rx="18" class="gray"/>
+  <text x="110" y="754" class="body">MBA 会员：80 张年券 + 3 天 2 夜集训营 + S 级私董会 + 专属私房课</text>
+</svg>
