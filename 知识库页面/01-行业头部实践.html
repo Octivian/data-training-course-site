@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>行业头部实践 · 内部知识库</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f6f4ef;
+      --panel: #ffffff;
+      --line: #e6e1d4;
+      --line-soft: #efeadd;
+      --text: #1f2533;
+      --text-2: #3a4256;
+      --muted: #7c7a72;
+      --ink: #14171e;
+
+      /* 战略咨询 - 沉稳暖棕 */
+      --strat-bg: #efe5d3;
+      --strat-bg-soft: #f7f0e0;
+      --strat-border: #d4c098;
+      --strat-primary: #6b4d22;
+      --strat-accent: #8c5a2e;
+
+      /* 营销实战 - 暖橙 */
+      --mkt-bg: #f8e3d0;
+      --mkt-bg-soft: #fdeee1;
+      --mkt-border: #e8b88a;
+      --mkt-primary: #a3501a;
+      --mkt-accent: #c97b3f;
+
+      /* 研报/数据 - 浅蓝灰 */
+      --data-bg: #e1e9f0;
+      --data-bg-soft: #eef3f8;
+      --data-border: #b8c9d8;
+      --data-primary: #2a4a6a;
+      --data-accent: #4a6b8a;
+
+      /* PPT/视觉 - 浅紫 */
+      --ppt-bg: #ebe4f0;
+      --ppt-bg-soft: #f3edf6;
+      --ppt-border: #c8b8d2;
+      --ppt-primary: #4a2d6a;
+      --ppt-accent: #6e4a8a;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      font-family: 'Outfit', -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      background-image:
+        radial-gradient(at 0% 0%, rgba(107,77,34,.04) 0%, transparent 45%),
+        radial-gradient(at 100% 0%, rgba(74,107,138,.04) 0%, transparent 45%);
+      background-attachment: fixed;
+    }
+    * { text-wrap: pretty; }
+
+    .wrap { max-width: 1240px; margin: 0 auto; padding: 40px 28px 80px; }
+
+    /* Hero */
+    header.hero {
+      padding: 36px 40px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #f9f6ee, #ece6d6);
+      border: 1px solid var(--line);
+      margin-bottom: 28px;
+      box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 6px 24px -16px rgba(20,23,30,.12);
+    }
+    header.hero .eyebrow {
+      font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600;
+    }
+    header.hero h1 {
+      font-family: 'DM Serif Display', 'Source Han Serif SC', Georgia, serif;
+      font-size: 34px; font-weight: 400; line-height: 1.2; margin: 8px 0 12px;
+      color: var(--ink);
+    }
+    header.hero p {
+      color: var(--text-2); max-width: 820px; margin: 0; font-size: 15px;
+    }
+    header.hero .meta {
+      margin-top: 18px; display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    header.hero .meta .chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: 999px;
+      font-size: 12px; font-weight: 500;
+      background: rgba(255,255,255,.6);
+      border: 1px solid var(--line);
+      color: var(--text-2);
+    }
+
+    /* Section title */
+    .plate-header {
+      display: flex; align-items: center; gap: 14px;
+      padding: 18px 24px; border-radius: 14px;
+      margin: 40px 0 18px;
+    }
+    .plate-header.strat { background: var(--strat-bg); border: 1px solid var(--strat-border); }
+    .plate-header.mkt   { background: var(--mkt-bg);   border: 1px solid var(--mkt-border); }
+    .plate-header.data  { background: var(--data-bg);  border: 1px solid var(--data-border); }
+    .plate-header.ppt   { background: var(--ppt-bg);   border: 1px solid var(--ppt-border); }
+
+    .plate-header .icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; background: rgba(255,255,255,.6);
+      border: 1px solid rgba(0,0,0,.06);
+    }
+    .plate-header h2 {
+      margin: 0; font-size: 20px; font-weight: 600;
+    }
+    .plate-header.strat h2 { color: var(--strat-primary); }
+    .plate-header.mkt   h2 { color: var(--mkt-primary); }
+    .plate-header.data  h2 { color: var(--data-primary); }
+    .plate-header.ppt   h2 { color: var(--ppt-primary); }
+
+    .plate-header .desc {
+      margin-left: auto; font-size: 13px; color: var(--text-2);
+      max-width: 480px; text-align: right;
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+    .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 880px) {
+      .grid.cols-3, .grid.cols-2 { grid-template-columns: 1fr; }
+    }
+
+    /* Card */
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 22px 22px 20px;
+      box-shadow: 0 4px 14px -10px rgba(20,23,30,.06);
+      display: flex; flex-direction: column; gap: 10px;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -14px rgba(20,23,30,.12);
+    }
+    .card .head {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    }
+    .card .name {
+      font-size: 17px; font-weight: 600; color: var(--ink);
+    }
+    .card .tag {
+      font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 999px;
+      background: var(--line-soft); color: var(--text-2);
+      white-space: nowrap;
+    }
+    .card.strat .tag { background: var(--strat-bg); color: var(--strat-primary); }
+    .card.mkt   .tag { background: var(--mkt-bg);   color: var(--mkt-primary); }
+    .card.data  .tag { background: var(--data-bg);  color: var(--data-primary); }
+    .card.ppt   .tag { background: var(--ppt-bg);   color: var(--ppt-primary); }
+
+    .card .oneliner {
+      font-size: 13px; color: var(--text-2);
+      font-style: italic;
+      padding: 8px 12px;
+      background: var(--line-soft);
+      border-radius: 8px;
+      border-left: 3px solid var(--muted);
+    }
+    .card.strat .oneliner { border-left-color: var(--strat-accent); }
+    .card.mkt   .oneliner { border-left-color: var(--mkt-accent); }
+    .card.data  .oneliner { border-left-color: var(--data-accent); }
+    .card.ppt   .oneliner { border-left-color: var(--ppt-accent); }
+
+    .card .desc {
+      font-size: 13.5px; color: var(--text-2); line-height: 1.55;
+    }
+    .card .goodfor {
+      font-size: 12.5px; color: var(--text-2);
+      padding-top: 8px; border-top: 1px dashed var(--line);
+    }
+    .card .goodfor b { color: var(--ink); font-weight: 600; }
+
+    .card .links {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 4px;
+    }
+    .card .links a {
+      font-size: 12px; font-weight: 500;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      color: var(--text-2);
+      text-decoration: none;
+      transition: all .15s ease;
+    }
+    .card .links a:hover {
+      background: var(--ink); color: #fff; border-color: var(--ink);
+    }
+    .card.strat .links a:hover { background: var(--strat-primary); border-color: var(--strat-primary); }
+    .card.mkt   .links a:hover { background: var(--mkt-primary);   border-color: var(--mkt-primary); }
+    .card.data  .links a:hover { background: var(--data-primary);  border-color: var(--data-primary); }
+    .card.ppt   .links a:hover { background: var(--ppt-primary);   border-color: var(--ppt-primary); }
+
+    /* Tip box */
+    .tip {
+      margin-top: 36px;
+      padding: 18px 22px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--strat-accent);
+      border-radius: 12px;
+      font-size: 13.5px; color: var(--text-2);
+    }
+    .tip b { color: var(--ink); }
+
+    /* Footer */
+    footer {
+      margin-top: 60px; padding-top: 24px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      font-size: 12px; color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="hero">
+      <div class="eyebrow">Knowledge Base · Industry Practices</div>
+      <h1>行业头部实践</h1>
+      <p>一页收纳国内外头部咨询/营销/数据机构的方法论、案例库与模板素材。写方案、做汇报、找参考——从这里开始。</p>
+      <div class="meta">
+        <span class="chip">🧭 战略咨询</span>
+        <span class="chip">📣 营销实战</span>
+        <span class="chip">📊 研报与数据</span>
+        <span class="chip">🎨 视觉与模板</span>
+        <span class="chip">🔄 持续更新</span>
+      </div>
+    </header>
+
+    <!-- 战略咨询 -->
+    <div class="plate-header strat">
+      <div class="icon">🧭</div>
+      <h2>战略咨询 · 看懂顶级咨询公司怎么想问题</h2>
+      <div class="desc">方法论、思维框架、报告底稿——别从零造轮子</div>
+    </div>
+
+    <div class="grid cols-3">
+
+      <div class="card strat">
+        <div class="head">
+          <div class="name">麦肯锡 McKinsey</div>
+          <div class="tag">战略顶层</div>
+        </div>
+        <div class="oneliner">"结构化思考 + 事实驱动 + 老板视角"</div>
+        <div class="desc">全球最被引用的战略方法论集散地。核心套路：金字塔原理、MECE 拆解、7S、增长矩阵。报告质量被业内当行业基准抄。</div>
+        <div class="goodfor"><b>适合：</b>写战略汇报 / 行业研判 / 高管汇报结构 / 学框架套路</div>
+        <div class="links">
+          <a href="https://www.mckinsey.com/featured-insights" target="_blank">Insights 报告库</a>
+          <a href="https://www.mckinsey.com/quarterly" target="_blank">McKinsey Quarterly</a>
+        </div>
+      </div>
+
+      <div class="card strat">
+        <div class="head">
+          <div class="name">BCG 波士顿咨询</div>
+          <div class="tag">增长 & 矩阵</div>
+        </div>
+        <div class="oneliner">"BCG 矩阵、增长份额图、消费者洞察"</div>
+        <div class="desc">和麦肯锡同梯队的另一极，视觉化、模型化做得最系统。BCG Matrix（明星/金牛/问题/瘦狗）几乎所有商业 PPT 都用。</div>
+        <div class="goodfor"><b>适合：</b>品类分析 / 市场份额梳理 / 增长策略 / 业务诊断</div>
+        <div class="links">
+          <a href="https://www.bcg.com/publications" target="_blank">Publications</a>
+          <a href="https://www.bcg.com/zh-cn" target="_blank">BCG 中国</a>
+        </div>
+      </div>
+
+      <div class="card strat">
+        <div class="head">
+          <div class="name">贝恩 Bain & Company</div>
+          <div class="tag">NPS 鼻祖</div>
+        </div>
+        <div class="oneliner">"客户忠诚度、零售消费品、私募基金视角"</div>
+        <div class="desc">发明了 NPS（净推荐值）。消费品、零售、私募并购领域被引用最多。和凯度合作的中国消费者趋势报告非常实战。</div>
+        <div class="goodfor"><b>适合：</b>消费者洞察 / 品牌健康度 / 满意度诊断 / 零售研究</div>
+        <div class="links">
+          <a href="https://www.bain.com/insights/" target="_blank">Insights</a>
+          <a href="https://www.bain.cn/" target="_blank">贝恩中国</a>
+        </div>
+      </div>
+
+      <div class="card strat">
+        <div class="head">
+          <div class="name">罗兰贝格 Roland Berger</div>
+          <div class="tag">本土化</div>
+        </div>
+        <div class="oneliner">"欧洲底色 + 中国市场最深的咨询之一"</div>
+        <div class="desc">汽车、工业、制造业咨询强项。在中国市场深耕多年，报告对中国国情理解深，不像外资"水土不服"。</div>
+        <div class="goodfor"><b>适合：</b>汽车后市场 / 工业制造 / 出海策略 / 行业扫描</div>
+        <div class="links">
+          <a href="https://www.rolandberger.com/zh/Insights" target="_blank">罗兰贝格洞察</a>
+        </div>
+      </div>
+
+      <div class="card strat">
+        <div class="head">
+          <div class="name">埃森哲 Accenture</div>
+          <div class="tag">IT × 战略</div>
+        </div>
+        <div class="oneliner">"科技咨询 + 战略 + 数字化的综合方案"</div>
+        <div class="desc">全球最大的管理咨询 + 技术服务公司。《技术展望》年度报告被广泛引用，更偏数字化转型和 AI 落地视角。</div>
+        <div class="goodfor"><b>适合：</b>数字化转型 / AI 落地 / 客户体验 / IT 架构</div>
+        <div class="links">
+          <a href="https://www.accenture.com/cn-zh/insights" target="_blank">技术展望</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 营销实战 -->
+    <div class="plate-header mkt">
+      <div class="icon">📣</div>
+      <h2>本土操盘手 · 看国内大牛怎么打市场</h2>
+      <div class="desc">接地气的中国营销方法论 + 商业认知课，写方案直接抄作业</div>
+    </div>
+
+    <div class="grid cols-3">
+
+      <div class="card mkt">
+        <div class="head">
+          <div class="name">华与华</div>
+          <div class="tag">符号营销</div>
+        </div>
+        <div class="oneliner">"超级符号 = 降低传播成本"</div>
+        <div class="desc">西贝、蜜雪冰城、洽洽、得到都用他们的方法。一套符号 + 话语体系，从品牌到门店到包装一以贯之。《超级符号》必读。</div>
+        <div class="goodfor"><b>适合：</b>品牌命名 / Slogan 创作 / 门店物料 / 全年营销主题</div>
+        <div class="links">
+          <a href="https://www.huayuhua.com/" target="_blank">华与华官网</a>
+          <a href="https://weread.qq.com/book_detail/A0c8210811dc86e2b" target="_blank">《超级符号》</a>
+        </div>
+      </div>
+
+      <div class="card mkt">
+        <div class="head">
+          <div class="name">君智 · 战略定位</div>
+          <div class="tag">竞争战略</div>
+        </div>
+        <div class="oneliner">"打赢认知战 = 品类代名词"</div>
+        <div class="desc">飞鹤、波司登、雅迪背后的咨询团队。源自特劳特定位理论，但更本土化。强调"在顾客心智中占据一个词"。</div>
+        <div class="goodfor"><b>适合：</b>竞品对标 / 品类创新 / 品牌定位 / 战略答辩</div>
+        <div class="links">
+          <a href="https://www.junzhi.com/" target="_blank">君智战略</a>
+        </div>
+      </div>
+
+      <div class="card mkt">
+        <div class="head">
+          <div class="name">小马宋 · 营销咨询</div>
+          <div class="tag">实操派</div>
+        </div>
+        <div class="oneliner">"先卖货，再讲故事"</div>
+        <div class="desc">操盘过瑞幸、元气森林营销。极度务实的中国式增长方法论。公众号和书是新手营销人最快入门路径。</div>
+        <div class="goodfor"><b>适合：</b>新品牌 0→1 / 营销活动策划 / 创始人 IP / 增长冷启动</div>
+        <div class="links">
+          <a href="https://www.xiaomasong.com/" target="_blank">小马宋官网</a>
+          <a href="https://weread.qq.com/book_detail/C02322c0119.html" target="_blank">《营销笔记》</a>
+        </div>
+      </div>
+
+      <div class="card mkt">
+        <div class="head">
+          <div class="name">刘润 · 进化的力量</div>
+          <div class="tag">商业评论</div>
+        </div>
+        <div class="oneliner">"用商业基本功拆所有生意"</div>
+        <div class="desc">前微软战略总监，公众号"刘润"是商业类头部 IP。每年一度的《进化的力量》演讲是互联网圈必看内容。</div>
+        <div class="goodfor"><b>适合：</b>建立商业底层逻辑 / 跨行业迁移 / 趋势预判</div>
+        <div class="links">
+          <a href="https://www.liurun.com/" target="_blank">刘润公众号</a>
+          <a href="https://weread.qq.com/" target="_blank">《刘润年度演讲》</a>
+        </div>
+      </div>
+
+      <div class="card mkt">
+        <div class="head">
+          <div class="name">得到 App · 商业经典课</div>
+          <div class="tag">知识付费</div>
+        </div>
+        <div class="oneliner">"把咨询方法论翻译成普通人能懂的课"</div>
+        <div class="desc">刘润、宁向东、香帅、薛兆丰等老师把麦肯锡、波特的理论用大白话讲透。适合先建立认知框架，再去读原版报告。订阅得到后商业课几乎全覆盖。</div>
+        <div class="goodfor"><b>适合：</b>建立底层认知 / 跨部门沟通"黑话"对齐 / 入行扫盲</div>
+        <div class="links">
+          <a href="https://www.dedao.cn/" target="_blank">得到 App</a>
+          <a href="https://www.dedao.cn/course/2019" target="_blank">刘润·商业洞察力</a>
+        </div>
+      </div>
+
+      <div class="card mkt">
+        <div class="head">
+          <div class="name">刀法研究所</div>
+          <div class="tag">新消费</div>
+        </div>
+        <div class="oneliner">"新消费品牌的实操方法库"</div>
+        <div class="desc">专注研究新消费品牌的垂类媒体+咨询。拆解案例非常细，看完就能抄模板。适合做新品牌、消费品营销参考。</div>
+        <div class="goodfor"><b>适合：</b>新消费 / 私域运营 / 内容种草 / 渠道分销</div>
+        <div class="links">
+          <a href="https://www.dao-fan.com/" target="_blank">刀法研究所</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 研报与数据 -->
+    <div class="plate-header data">
+      <div class="icon">📊</div>
+      <h2>研报与数据 · 找数据、找案例的源头</h2>
+      <div class="desc">一手行业数据来源，写方案引用更有底气</div>
+    </div>
+
+    <div class="grid cols-3">
+
+      <div class="card data">
+        <div class="head">
+          <div class="name">QuestMobile / 易观</div>
+          <div class="tag">互联网数据</div>
+        </div>
+        <div class="oneliner">"App DAU、用户画像、流量分发数据"</div>
+        <div class="desc">做互联网行业必备数据源。DAU/MAU/留存/竞品对比一应俱全。QuestMobile 偏移动端，易观偏行业分析。</div>
+        <div class="goodfor"><b>适合：</b>App 行业分析 / 用户行为洞察 / 流量格局</div>
+        <div class="links">
+          <a href="https://www.questmobile.com.cn/" target="_blank">QuestMobile</a>
+          <a href="https://www.analysys.cn/" target="_blank">易观分析</a>
+        </div>
+      </div>
+
+      <div class="card data">
+        <div class="head">
+          <div class="name">艾瑞 / iResearch</div>
+          <div class="tag">行业研究</div>
+        </div>
+        <div class="oneliner">"覆盖最广的中文研报平台之一"</div>
+        <div class="desc">互联网、电商、文娱、教育、医疗……几乎每个赛道都有艾瑞报告。引用率最高的本土研报机构之一。</div>
+        <div class="goodfor"><b>适合：</b>行业白皮书 / 市场规模 / 趋势研判 / PPT 数据引用</div>
+        <div class="links">
+          <a href="https://www.iresearch.com.cn/" target="_blank">艾瑞咨询</a>
+        </div>
+      </div>
+
+      <div class="card data">
+        <div class="head">
+          <div class="name">晚点 LatePost / 36氪 / 虎嗅</div>
+          <div class="tag">深度报道</div>
+        </div>
+        <div class="oneliner">"一手商业故事 + 趋势观察"</div>
+        <div class="desc">三家的核心区别：晚点偏独家深度（公司内幕）、36氪偏创投和赛道、虎嗅偏观点和评论。一起订阅能拼出商业全景。</div>
+        <div class="goodfor"><b>适合：</b>找案例故事 / 行业内幕 / 趋势预判 / 写开篇引子</div>
+        <div class="links">
+          <a href="https://www.latepost.com/" target="_blank">晚点 LatePost</a>
+          <a href="https://36kr.com/" target="_blank">36氪</a>
+          <a href="https://www.huxiu.com/" target="_blank">虎嗅</a>
+        </div>
+      </div>
+
+      <div class="card data">
+        <div class="head">
+          <div class="name">巨量算数 / 蝉妈妈</div>
+          <div class="tag">内容平台数据</div>
+        </div>
+        <div class="oneliner">"抖音、视频号、小红书的内容数据"</div>
+        <div class="desc">做内容营销必看。巨量算数覆盖抖音内容趋势，蝉妈妈看抖音电商/带货，小红书的"灰豚"看小红书数据。</div>
+        <div class="goodfor"><b>适合：</b>短视频选题 / 直播带货分析 / 小红书种草 / 投流参考</div>
+        <div class="links">
+          <a href="https://trendinsight.oceanengine.com/" target="_blank">巨量算数</a>
+          <a href="https://www.chanmama.com/" target="_blank">蝉妈妈</a>
+        </div>
+      </div>
+
+      <div class="card data">
+        <div class="head">
+          <div class="name">国家统计局 / 行业年报</div>
+          <div class="tag">权威数据</div>
+        </div>
+        <div class="oneliner">"最硬的官方数据源，写报告必引"</div>
+        <div class="desc">GDP、人口、居民消费、CPI 一类的宏观数据，还有各行业协会的年度报告（餐饮、零售、文旅……）。在 PPT 里"压舱"用。</div>
+        <div class="goodfor"><b>适合：</b>宏观背景 / 政策合规 / 高管汇报"压舱石"</div>
+        <div class="links">
+          <a href="https://www.stats.gov.cn/" target="_blank">国家统计局</a>
+          <a href="http://www.canyin.org/" target="_blank">中国饭店协会</a>
+        </div>
+      </div>
+
+      <div class="card data">
+        <div class="head">
+          <div class="name">发现报告 / 萝卜投研</div>
+          <div class="tag">研报聚合</div>
+        </div>
+        <div class="oneliner">"一个站搜遍 90% 的券商研报"</div>
+        <div class="desc">聚合了中信、华泰、招商等头部券商的研报。还有上市公司公告、招股书、行业深度。免费版够用，付费版能看历史。</div>
+        <div class="goodfor"><b>适合：</b>公司研究 / 财务数据 / 行业研报 / 找二级市场视角</div>
+        <div class="links">
+          <a href="https://www.fxbaogao.com/" target="_blank">发现报告</a>
+          <a href="https://robo.datayes.com/" target="_blank">萝卜投研</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PPT模板与视觉 -->
+    <div class="plate-header ppt">
+      <div class="icon">🎨</div>
+      <h2>视觉与模板 · 直接拿来用的素材库</h2>
+      <div class="desc">PPT 模板、图表、配色——让方案"看起来像"专业团队做的</div>
+    </div>
+
+    <div class="grid cols-3">
+
+      <div class="card ppt">
+        <div class="head">
+          <div class="name">Slidesgo / 24Slides</div>
+          <div class="tag">PPT 模板</div>
+        </div>
+        <div class="oneliner">"麦肯锡风、苹果风、咨询风全都有"</div>
+        <div class="desc">免费 + 付费的精品 PPT 模板站。搜"McKinsey style" / "consulting pitch deck" 能找到专业级模板。</div>
+        <div class="goodfor"><b>适合：</b>汇报封面 / 季度复盘 / 路演 deck / 时间紧迫时</div>
+        <div class="links">
+          <a href="https://slidesgo.com/" target="_blank">Slidesgo</a>
+          <a href="https://24slides.com/presentaion-templates" target="_blank">24Slides</a>
+        </div>
+      </div>
+
+      <div class="card ppt">
+        <div class="head">
+          <div class="name">OfficePlus / 优品 PPT</div>
+          <div class="tag">中文模板</div>
+        </div>
+        <div class="oneliner">"微软官方 + 优品的本土模板库"</div>
+        <div class="desc">微软 OfficePlus 是官方模板站，质量保证。优品 PPT 是国内最大的免费 PPT 模板下载站，分类极细。</div>
+        <div class="goodfor"><b>适合：</b>中文汇报 / 工作总结 / 节日庆典 / 部门介绍</div>
+        <div class="links">
+          <a href="https://plus.office.com/" target="_blank">OfficePlus</a>
+          <a href="http://www.ypppt.com/" target="_blank">优品 PPT</a>
+        </div>
+      </div>
+
+      <div class="card ppt">
+        <div class="head">
+          <div class="name">图司机 / Canva 可画</div>
+          <div class="tag">设计素材</div>
+        </div>
+        <div class="oneliner">"做海报、做封面、抠图都不求人"</div>
+        <div class="desc">Canva 是全球通用设计工具，模板量大质量高。图司机对中文场景优化更好（带中文字体）。都能在浏览器里直接做。</div>
+        <div class="goodfor"><b>适合：</b>运营海报 / 公众号封面 / 朋友圈图 / 简单 banner</div>
+        <div class="links">
+          <a href="https://www.canva.cn/" target="_blank">Canva 可画</a>
+          <a href="https://www.tusij.com/" target="_blank">图司机</a>
+        </div>
+      </div>
+
+      <div class="card ppt">
+        <div class="head">
+          <div class="name">iconfont / Flaticon</div>
+          <div class="tag">图标库</div>
+        </div>
+        <div class="oneliner">"图标装饰 = 提升 PPT 高级感的低成本武器"</div>
+        <div class="desc">iconfont 是阿里出品的免费图标库（中文搜索友好）。Flaticon 是全球最大图标站。统一风格的图标能让 PPT 立刻显贵。</div>
+        <div class="goodfor"><b>适合：</b>PPT 图标 / 配图 / 海报装饰 / 产品功能点</div>
+        <div class="links">
+          <a href="https://www.iconfont.cn/" target="_blank">iconfont</a>
+          <a href="https://www.flaticon.com/" target="_blank">Flaticon</a>
+        </div>
+      </div>
+
+      <div class="card ppt">
+        <div class="head">
+          <div class="name">Pexels / Unsplash</div>
+          <div class="tag">图片素材</div>
+        </div>
+        <div class="oneliner">"免费高清图库，商用不侵权"</div>
+        <div class="desc">两个站都是 CC0 协议（免费商用、署名可选）。做汇报需要大图配图时直接搜，质量不输付费图库。</div>
+        <div class="goodfor"><b>适合：</b>PPT 背景图 / 公众号头图 / 视频封面 / 跨部门引用</div>
+        <div class="links">
+          <a href="https://www.pexels.com/zh-cn/" target="_blank">Pexels</a>
+          <a href="https://unsplash.com/" target="_blank">Unsplash</a>
+        </div>
+      </div>
+
+      <div class="card ppt">
+        <div class="head">
+          <div class="name">Coolors / 配色卡</div>
+          <div class="tag">配色工具</div>
+        </div>
+        <div class="oneliner">"不会配色？让工具帮你"</div>
+        <div class="desc">Coolors 一键生成配色方案，按空格切换。还支持从图片提取主色。配色搞定了，PPT/海报立刻上一个档次。</div>
+        <div class="goodfor"><b>适合：</b>PPT 主色定调 / 海报配色 / 图表配色 / 品牌延展</div>
+        <div class="links">
+          <a href="https://coolors.co/" target="_blank">Coolors</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip">
+      <b>💡 使用建议：</b>写方案的标准动作 ——
+      <br><br>
+      1️⃣ <b>先看</b>：从「晚点」「36氪」「刀法」找 1-2 个对标案例，了解行情；
+      <br>
+      2️⃣ <b>再查</b>：到「艾瑞」「QuestMobile」找数据，给观点"压舱"；
+      <br>
+      3️⃣ <b>后套</b>：去「Slidesgo」「OfficePlus」拉个咨询风模板，把框架套进去；
+      <br>
+      4️⃣ <b>升维</b>：实在没思路，去看「华与华」「小马宋」对应章节，能给你方法论兜底。
+    </div>
+
+    <footer>
+      内部知识库 · 行业头部实践 · 持续更新中
+    </footer>
+
+  </div>
+</body>
+</html>

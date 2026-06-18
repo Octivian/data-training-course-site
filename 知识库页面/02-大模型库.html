@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大模型库 · 内部知识库</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f6f4ef;
+      --panel: #ffffff;
+      --line: #e6e1d4;
+      --line-soft: #efeadd;
+      --text: #1f2533;
+      --text-2: #3a4256;
+      --muted: #7c7a72;
+      --ink: #14171e;
+
+      /* 5个场景主色 */
+      --ppt: #6e4a8a;     --ppt-bg: #ebe4f0;     --ppt-bd: #c8b8d2;     --ppt-soft: #f3edf6;
+      --poster: #c97b3f;  --poster-bg: #f8e3d0;  --poster-bd: #e8b88a;  --poster-soft: #fdeee1;
+      --copy: #2a4a6a;    --copy-bg: #e1e9f0;    --copy-bd: #b8c9d8;    --copy-soft: #eef3f8;
+      --plan: #4d6b3e;    --plan-bg: #e8f0e3;     --plan-bd: #b9c9af;     --plan-soft: #f1f6ec;
+      --data: #a3501a;    --data-bg: #f8e3d0;     --data-bd: #e8b88a;     --data-soft: #fdeee1;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      font-family: 'Outfit', -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      background-image:
+        radial-gradient(at 0% 0%, rgba(110,74,138,.05) 0%, transparent 45%),
+        radial-gradient(at 100% 100%, rgba(42,74,106,.05) 0%, transparent 45%);
+      background-attachment: fixed;
+    }
+    * { text-wrap: pretty; }
+
+    .wrap { max-width: 1240px; margin: 0 auto; padding: 40px 28px 80px; }
+
+    /* Hero */
+    header.hero {
+      padding: 36px 40px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #f3edf6 0%, #eef3f8 100%);
+      border: 1px solid var(--line);
+      margin-bottom: 28px;
+      box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 6px 24px -16px rgba(20,23,30,.12);
+    }
+    header.hero .eyebrow {
+      font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600;
+    }
+    header.hero h1 {
+      font-family: 'DM Serif Display', 'Source Han Serif SC', Georgia, serif;
+      font-size: 34px; font-weight: 400; line-height: 1.2; margin: 8px 0 12px;
+      color: var(--ink);
+    }
+    header.hero p {
+      color: var(--text-2); max-width: 820px; margin: 0; font-size: 15px;
+    }
+    header.hero .meta {
+      margin-top: 18px; display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    header.hero .meta .chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: 999px;
+      font-size: 12px; font-weight: 500;
+      background: rgba(255,255,255,.6);
+      border: 1px solid var(--line);
+      color: var(--text-2);
+    }
+
+    /* Scenario grid - top入口 */
+    .scenario-nav {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
+      margin-bottom: 36px;
+    }
+    @media (max-width: 880px) { .scenario-nav { grid-template-columns: repeat(2, 1fr); } }
+    .scenario-card {
+      padding: 20px 18px;
+      border-radius: 14px;
+      text-align: center;
+      text-decoration: none;
+      transition: all .2s ease;
+      cursor: pointer;
+      border: 1px solid;
+    }
+    .scenario-card .icon { font-size: 28px; margin-bottom: 6px; }
+    .scenario-card .name {
+      font-size: 14px; font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .scenario-card .sub {
+      font-size: 11px; color: var(--text-2);
+    }
+    .scenario-card.ppt { background: var(--ppt-soft); border-color: var(--ppt-bd); }
+    .scenario-card.ppt .name { color: var(--ppt); }
+    .scenario-card.ppt:hover { background: var(--ppt-bg); transform: translateY(-2px); }
+
+    .scenario-card.poster { background: var(--poster-soft); border-color: var(--poster-bd); }
+    .scenario-card.poster .name { color: var(--poster); }
+    .scenario-card.poster:hover { background: var(--poster-bg); transform: translateY(-2px); }
+
+    .scenario-card.copy { background: var(--copy-soft); border-color: var(--copy-bd); }
+    .scenario-card.copy .name { color: var(--copy); }
+    .scenario-card.copy:hover { background: var(--copy-bg); transform: translateY(-2px); }
+
+    .scenario-card.plan { background: var(--plan-soft); border-color: var(--plan-bd); }
+    .scenario-card.plan .name { color: var(--plan); }
+    .scenario-card.plan:hover { background: var(--plan-bg); transform: translateY(-2px); }
+
+    .scenario-card.data { background: var(--data-soft); border-color: var(--data-bd); }
+    .scenario-card.data .name { color: var(--data); }
+    .scenario-card.data:hover { background: var(--data-bg); transform: translateY(-2px); }
+
+    /* Section */
+    .section { margin-bottom: 36px; }
+    .section-head {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 16px;
+      padding: 0 4px;
+    }
+    .section-head .num {
+      width: 28px; height: 28px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #fff;
+    }
+    .section-head.ppt .num { background: var(--ppt); }
+    .section-head.poster .num { background: var(--poster); }
+    .section-head.copy .num { background: var(--copy); }
+    .section-head.plan .num { background: var(--plan); }
+    .section-head.data .num { background: var(--data); }
+
+    .section-head h2 {
+      margin: 0; font-size: 22px; font-weight: 600;
+    }
+    .section-head.ppt h2 { color: var(--ppt); }
+    .section-head.poster h2 { color: var(--poster); }
+    .section-head.copy h2 { color: var(--copy); }
+    .section-head.plan h2 { color: var(--plan); }
+    .section-head.data h2 { color: var(--data); }
+
+    .section-head .tagline {
+      margin-left: auto; font-size: 12px; color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Model card */
+    .models {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+    }
+    @media (max-width: 880px) { .models { grid-template-columns: 1fr; } }
+
+    .model {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px 22px 18px;
+      box-shadow: 0 4px 14px -10px rgba(20,23,30,.06);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .model:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -14px rgba(20,23,30,.12);
+    }
+    .model .head {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+      margin-bottom: 8px;
+    }
+    .model .name {
+      font-size: 18px; font-weight: 700; color: var(--ink);
+    }
+    .model .name .dev {
+      font-size: 12px; font-weight: 500; color: var(--muted);
+      margin-left: 6px;
+    }
+    .model .badges {
+      display: flex; gap: 4px; flex-shrink: 0;
+    }
+    .model .badge {
+      font-size: 10px; font-weight: 600;
+      padding: 2px 7px; border-radius: 4px;
+      background: var(--line-soft); color: var(--text-2);
+    }
+    .model .badge.free { background: #d4ead0; color: #2d5a1f; }
+    .model .badge.paid { background: #fde2e2; color: #a23a3a; }
+    .model .badge.cn { background: #fff3cf; color: #8a5a00; }
+    .model .badge.intl { background: #e3eef9; color: #2a5a8a; }
+
+    .model .oneliner {
+      font-size: 13px; color: var(--text-2);
+      font-style: italic;
+      padding: 8px 12px;
+      background: var(--line-soft);
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+    .model .row {
+      display: grid; grid-template-columns: 70px 1fr; gap: 10px;
+      font-size: 13px; margin-bottom: 6px;
+      line-height: 1.55;
+    }
+    .model .row .k {
+      color: var(--muted); font-weight: 500;
+      padding-top: 1px;
+    }
+    .model .row .v { color: var(--text-2); }
+
+    .model .row .v.good { color: #2d5a1f; }
+    .model .row .v.bad { color: #a23a3a; }
+
+    .model .links {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 12px; padding-top: 12px;
+      border-top: 1px dashed var(--line);
+    }
+    .model .links a {
+      font-size: 12px; font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      color: var(--text-2);
+      text-decoration: none;
+      transition: all .15s ease;
+    }
+    .model .links a:hover {
+      background: var(--ink); color: #fff; border-color: var(--ink);
+    }
+    .model .links a.primary {
+      background: var(--ink); color: #fff; border-color: var(--ink);
+    }
+
+    /* Tip */
+    .tip {
+      margin-top: 30px;
+      padding: 18px 22px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--ppt);
+      border-radius: 12px;
+      font-size: 13.5px; color: var(--text-2);
+    }
+    .tip b { color: var(--ink); }
+    .tip .emoji { margin-right: 4px; }
+
+    footer {
+      margin-top: 60px; padding-top: 24px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      font-size: 12px; color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="hero">
+      <div class="eyebrow">Knowledge Base · LLM Toolbox</div>
+      <h1>大模型库 · 工作场景一键直达</h1>
+      <p>工作遇到难题，点对应场景就能知道找谁、怎么用。覆盖 PPT、海报、文案、方案策划、数据分析 5 大高频场景。</p>
+      <div class="meta">
+        <span class="chip">🎯 场景化</span>
+        <span class="chip">🌐 国内 + 国外</span>
+        <span class="chip">💬 人话讲解</span>
+        <span class="chip">🔗 直达链接</span>
+        <span class="chip">🔄 持续更新</span>
+      </div>
+    </header>
+
+    <!-- 场景入口 -->
+    <div class="scenario-nav">
+      <a class="scenario-card ppt" href="#sec-ppt">
+        <div class="icon">📊</div>
+        <div class="name">做 PPT</div>
+        <div class="sub">汇报 · 路演 · 培训</div>
+      </a>
+      <a class="scenario-card poster" href="#sec-poster">
+        <div class="icon">🎨</div>
+        <div class="name">做海报</div>
+        <div class="sub">运营图 · 朋友圈 · 配图</div>
+      </a>
+      <a class="scenario-card copy" href="#sec-copy">
+        <div class="icon">✍️</div>
+        <div class="name">写文案</div>
+        <div class="sub">公众号 · 短视频 · 邮件</div>
+      </a>
+      <a class="scenario-card plan" href="#sec-plan">
+        <div class="icon">📋</div>
+        <div class="name">做方案策划</div>
+        <div class="sub">立项 · 复盘 · 调研</div>
+      </a>
+      <a class="scenario-card data" href="#sec-data">
+        <div class="icon">📈</div>
+        <div class="name">数据分析</div>
+        <div class="sub">Excel · BI · 报表</div>
+      </a>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- 1. PPT -->
+    <!-- ============================================== -->
+    <section class="section" id="sec-ppt">
+      <div class="section-head ppt">
+        <div class="num">1</div>
+        <h2>做 PPT</h2>
+        <div class="tagline">// from blank to deck in 10 min</div>
+      </div>
+
+      <div class="models">
+
+        <div class="model">
+          <div class="head">
+            <div class="name">Minimax<span class="dev">自家 PPT 神器</span></div>
+            <div class="badges">
+              <span class="badge cn">国内</span>
+              <span class="badge free">免费</span>
+            </div>
+          </div>
+          <div class="oneliner">"一句话需求 → 整套成稿 → 直接演示，国产 PPT 一键生成"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">输入主题或一句话需求，AI 自动生成结构化 PPT + 配图 + 演讲备注，一站式出稿</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 工作汇报 / 内部周会 / 临时路演 / 中文场景</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 极端精修设计（需手动二次排版）</div></div>
+          <div class="row"><div class="k">怎么用</div><div class="v">登录 → 选 "AI 生成 PPT" → 输主题/粘大纲 → 30 秒出稿 → 导出</div></div>
+          <div class="links">
+            <a class="primary" href="https://agent.minimax.io/" target="_blank">→ 打开 Minimax</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">腾讯 ima<span class="dev">搜读写一体的 AI</span></div>
+            <div class="badges">
+              <span class="badge cn">国内</span>
+              <span class="badge free">免费</span>
+            </div>
+          </div>
+          <div class="oneliner">"上传资料 → 总结要点 → 直接生成演示稿"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">搜索 + 读资料 + 写稿 + 生成演示文档四合一，腾讯生态打通</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 读研报后做总结稿 / 内部知识沉淀 / 微信生态</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 视觉设计要求高的对外发布</div></div>
+          <div class="row"><div class="k">怎么用</div><div class="v">小程序或 PC 端 → 丢 5 份资料 → 让它"基于这些写一份 10 页演示"</div></div>
+          <div class="links">
+            <a class="primary" href="https://ima.qq.com/" target="_blank">→ 打开 ima</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">智谱 Agent<span class="dev">多步执行</span></div>
+            <div class="badges">
+              <span class="badge cn">国内</span>
+              <span class="badge free">免费额度</span>
+            </div>
+          </div>
+          <div class="oneliner">"给它一个目标，自己拆解步骤直到 PPT 出炉"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">Agent 模式：自动拆任务 → 查资料 → 写大纲 → 搜配图 → 拼 PPT，全流程无人值守</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 复杂主题（需查资料） / 多步骤任务 / 想"放手让它干"</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 时间卡很死（Agent 跑几分钟到十几分钟）</div></div>
+          <div class="row"><div class="k">怎么用</div><div class="v">智谱清言 → 切到 "Agent" 模式 → 说"做一份关于 XX 的 12 页 PPT"</div></div>
+          <div class="links">
+            <a class="primary" href="https://chatglm.cn/" target="_blank">→ 打开智谱</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">腾讯 marvis<span class="dev">演示文稿专家</span></div>
+            <div class="badges">
+              <span class="badge cn">国内</span>
+              <span class="badge free">免费</span>
+            </div>
+          </div>
+          <div class="oneliner">"腾讯出品的 PPT 专用 AI，演示场景深度优化"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">输主题或大纲 → 自动生成演示文稿，对中文字体、版式、行距细节优化好</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 中文正式汇报 / 路演 / 模板质量要求高</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 创意设计 / 异形版式</div></div>
+          <div class="row"><div class="k">怎么用</div><div class="v">marvis.qq.com → 微信登录 → 输主题 → 选风格 → 导出</div></div>
+          <div class="links">
+            <a class="primary" href="https://marvis.qq.com/" target="_blank">→ 打开 marvis</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">豆包 · 专家版<span class="dev">字节深度推理</span></div>
+            <div class="badges">
+              <span class="badge cn">国内</span>
+              <span class="badge free">免费</span>
+            </div>
+          </div>
+          <div class="oneliner">"豆包切到'专家模式'，复杂主题的深度推理 PPT"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">App/网页切到"专家模式"，调豆包大模型 2.0 Pro 做深度推理 → 写大纲 → 出 PPT，逻辑和内容质量上一个档</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 行业洞察 / 数据分析 / 长文本报告 / 需要"动脑子"的稿</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 纯视觉设计（用 Minimax / marvis 更合适）</div></div>
+          <div class="row"><div class="k">怎么用</div><div class="v">打开豆包 → 顶部切"专家模式"→ "给我做一份 XX 主题的 12 页 PPT 大纲 + 关键页内容"</div></div>
+          <div class="links">
+            <a class="primary" href="https://www.doubao.com/" target="_blank">→ 打开豆包</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">ChatGPT + 提示词<span class="dev">万能底座</span></div>
+            <div class="badges">
+              <span class="badge intl">海外</span>
+              <span class="badge paid">付费版</span>
+            </div>
+          </div>
+          <div class="oneliner">"不直接出 PPT，但能 100% 定制结构和文案"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">先让 ChatGPT 输出完整大纲 + 每页文案 + 图表建议，再粘到任意 PPT 工具里</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 内容质量要求高 / 逻辑严密 / 行业洞察类</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 时间紧急（需手动排版）</div></div>
+          <div class="row"><div class="k">提示词</div><div class="v">"我要做一份关于 XX 的汇报，给听众是 XX，希望达到 XX 效果。请按'问题—洞察—方案—收益'四段式输出每页标题和核心要点。"</div></div>
+          <div class="links">
+            <a class="primary" href="https://chat.openai.com/" target="_blank">→ 打开 ChatGPT</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- 2. 海报 -->
+    <!-- ============================================== -->
+    <section class="section" id="sec-poster">
+      <div class="section-head poster">
+        <div class="num">2</div>
+        <h2>做海报 / 配图</h2>
+        <div class="tagline">// pics > 1k words</div>
+      </div>
+
+      <div class="models">
+
+        <div class="model">
+          <div class="head">
+            <div class="name">Midjourney<span class="dev">出图天花板</span></div>
+            <div class="badges">
+              <span class="badge intl">海外</span>
+              <span class="badge paid">$10/月起</span>
+            </div>
+          </div>
+          <div class="oneliner">"AI 画图界的天花板，效果最顶"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">输英文提示词，4 步生成艺术级图片，支持风格化（写实/插画/3D/赛博）</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 高质量主视觉 / 品牌 KV / 概念图 / 跨文化主题</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 中文海报（排文字会乱）/ 需要精确排版</div></div>
+          <div class="row"><div class="k">怎么用</div><div class="v">Discord 加 Midjourney bot → /imagine + 英文 prompt → 选图变体</div></div>
+          <div class="row"><div class="k">小贴士</div><div class="v">提示词模板：<i>"A [主题], [风格], [光线], [镜头], --ar 16:9"</i></div></div>
+          <div class="links">
+            <a class="primary" href="https://www.midjourney.com/" target="_blank">→ 打开 Midjourney</a>
+            <a href="https://docs.midjourney.com/docs/prompting" target="_blank">提示词指南</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">即梦 AI / 文心一格<span class="dev">国产替代</span></div>
+            <div class="badges">
+              <span class="badge cn">国内</span>
+              <span class="badge free">免费额度</span>
+            </div>
+          </div>
+          <div class="oneliner">"国产版 Midjourney，中文友好，秒出图"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">直接输中文，秒出多张图。即梦（字节系）效果最好，文心一格（百度）偏稳</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 国内工作流 / 快速出素材 / 中文场景</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 极致艺术风格（不如 MJ 风格化强）</div></div>
+          <div class="row"><div class="k">怎么用</div><div class="v">即梦微信小程序 / 字节官网 / 文心一格官网直接生成</div></div>
+          <div class="links">
+            <a class="primary" href="https://jimeng.jianying.com/" target="_blank">→ 打开即梦</a>
+            <a href="https://yige.baidu.com/" target="_blank">→ 文心一格</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">Canva 可画 AI<span class="dev">设计 + AI</span></div>
+            <div class="badges">
+              <span class="badge cn">国内</span>
+              <span class="badge free">免费</span>
+            </div>
+          </div>
+          <div class="oneliner">"一键抠图、扩图、文生图，运营图全流程"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">在 Canva 模板基础上调用 AI 做扩图、抠图、文生图，运营物料一条龙</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 公众号封面 / 朋友圈九宫格 / 营销 banner / 抠图</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 高端品牌 KV（仍需 PS 精修）</div></div>
+          <div class="row"><div class="k">怎么用</div><div class="v">canva.cn 注册 → 选模板 → 左侧"魔法"工具 → 文字/图片 AI</div></div>
+          <div class="links">
+            <a class="primary" href="https://www.canva.cn/" target="_blank">→ 打开 Canva</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">稿定 AI / 图司机<span class="dev">运营专场</span></div>
+            <div class="badges">
+              <span class="badge cn">国内</span>
+              <span class="badge free">免费</span>
+            </div>
+          </div>
+          <div class="oneliner">"营销场景的模板最全，AI 出图 + 海报"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">模板按电商、朋友圈、公众号、小红书分类，输入主题秒出</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 日常运营 / 节日海报 / 不用动脑</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 个性化创意 / 高定风格</div></div>
+          <div class="links">
+            <a class="primary" href="https://www.gaoding.com/" target="_blank">→ 稿定设计</a>
+            <a href="https://www.tusij.com/" target="_blank">图司机</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- 3. 文案 -->
+    <!-- ============================================== -->
+    <section class="section" id="sec-copy">
+      <div class="section-head copy">
+        <div class="num">3</div>
+        <h2>写文案</h2>
+        <div class="tagline">// 文字是基本功</div>
+      </div>
+
+      <div class="models">
+
+        <div class="model">
+          <div class="head">
+            <div class="name">ChatGPT<span class="dev">综合最强</span></div>
+            <div class="badges">
+              <span class="badge intl">海外</span>
+              <span class="badge paid">付费版</span>
+            </div>
+          </div>
+          <div class="oneliner">"综合能力天花板，中英文都强"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">写所有类型文案：营销文案、邮件、汇报、公关稿、社交媒体</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 逻辑严密的商业文案 / 英文 / 多轮对话迭代</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 国内访问不便 / 长上下文场景（用 Claude）</div></div>
+          <div class="row"><div class="k">万能提示词</div><div class="v">"你是 XX 领域的资深文案。请为一篇关于 [主题] 的 [类型] 写 3 版不同风格的稿子：① 理性派 ② 感性派 ③ 段子手派。每版 200 字。"</div></div>
+          <div class="links">
+            <a class="primary" href="https://chat.openai.com/" target="_blank">→ 打开 ChatGPT</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">Claude<span class="dev">长文之神</span></div>
+            <div class="badges">
+              <span class="badge intl">海外</span>
+              <span class="badge free">免费额度</span>
+            </div>
+          </div>
+          <div class="oneliner">"长文写作 + 风格最像人话"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">长文写作（报告、深度文章、邮件）、对风格/语气控制好</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 公众号长文 / 邮件 / 报告 / 中文文风细腻的稿</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 实时信息（无联网）</div></div>
+          <div class="links">
+            <a class="primary" href="https://claude.ai/" target="_blank">→ 打开 Claude</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">Kimi (月之暗面)<span class="dev">国内长文</span></div>
+            <div class="badges">
+              <span class="badge cn">国内</span>
+              <span class="badge free">免费</span>
+            </div>
+          </div>
+          <div class="oneliner">"国产长文之王，能直接读 PDF"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">上传 PDF/Word/网页，AI 帮你读 + 总结 + 写稿。20 万字上下文</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 读研报/合同/财报 / 写基于资料的长文</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 复杂推理 / 创意写作</div></div>
+          <div class="row"><div class="k">杀手级用法</div><div class="v">丢 5 份行业报告进去 → "基于这些资料，写一篇行业分析" → 比 GPT 准</div></div>
+          <div class="links">
+            <a class="primary" href="https://kimi.moonshot.cn/" target="_blank">→ 打开 Kimi</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">豆包 / 通义千问 / 文心一言<span class="dev">国产综合</span></div>
+            <div class="badges">
+              <span class="badge cn">国内</span>
+              <span class="badge free">免费</span>
+            </div>
+          </div>
+          <div class="oneliner">"字节/阿里/百度出品，够用 + 速度快"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">豆包（字节）：风格最像小红书/抖音；通义（阿里）：综合稳；文心（百度）：偏稳</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 国内不卡 / 公司合规场景 / 短视频脚本（豆包）</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 极致质量要求（综合不如 GPT/Claude）</div></div>
+          <div class="links">
+            <a href="https://www.doubao.com/" target="_blank">→ 豆包</a>
+            <a href="https://tongyi.aliyun.com/" target="_blank">→ 通义</a>
+            <a href="https://yiyan.baidu.com/" target="_blank">→ 文心一言</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- 4. 方案策划 -->
+    <!-- ============================================== -->
+    <section class="section" id="sec-plan">
+      <div class="section-head plan">
+        <div class="num">4</div>
+        <h2>做方案策划</h2>
+        <div class="tagline">// 调研 + 框架 + 立项</div>
+      </div>
+
+      <div class="models">
+
+        <div class="model">
+          <div class="head">
+            <div class="name">秘塔 AI 搜索<span class="dev">国产搜索</span></div>
+            <div class="badges">
+              <span class="badge cn">国内</span>
+              <span class="badge free">免费</span>
+            </div>
+          </div>
+          <div class="oneliner">"做调研、查竞品、找对标 → 首选"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">输关键词，AI 自动搜全网、整合成结构化答案 + 引用源</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 行业调研 / 竞品分析 / 政策检索 / 学术资料</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 创意发散 / 跨领域联想</div></div>
+          <div class="row"><div class="k">怎么用</div><div class="v">搜"XX 行业 2024 趋势" → 选"研究"模式 → 一键生成脑图</div></div>
+          <div class="links">
+            <a class="primary" href="https://metaso.cn/" target="_blank">→ 打开秘塔</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">Perplexity<span class="dev">海外搜索</span></div>
+            <div class="badges">
+              <span class="badge intl">海外</span>
+              <span class="badge free">免费额度</span>
+            </div>
+          </div>
+          <div class="oneliner">"全球版秘塔，信息源更广"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">类似秘塔，但信息源覆盖全球。Pro 版能调用主流大模型</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 海外行业研究 / 跨语言信息 / 学术论文</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 国内政策细节（信息源少）</div></div>
+          <div class="links">
+            <a class="primary" href="https://www.perplexity.ai/" target="_blank">→ 打开 Perplexity</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">ChatGPT 强推理版<span class="dev">强逻辑</span></div>
+            <div class="badges">
+              <span class="badge intl">海外</span>
+              <span class="badge paid">付费版</span>
+            </div>
+          </div>
+          <div class="oneliner">"逻辑严密、推理强，复杂方案必备"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">复杂问题拆解、多变量决策、商业推演。思考链更长，输出更准</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 商业建模 / 复杂决策 / 数学优化 / 战略推演</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 简单文案 / 速度要求高（推理慢）</div></div>
+          <div class="row"><div class="k">提示词套路</div><div class="v">"问题：XX。可选方案：A / B / C。请用决策树列出每条路径的概率和收益，给出推荐。"</div></div>
+          <div class="links">
+            <a class="primary" href="https://chat.openai.com/" target="_blank">→ 打开 ChatGPT</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">ima (腾讯) / 天工 AI<span class="dev">国产大脑</span></div>
+            <div class="badges">
+              <span class="badge cn">国内</span>
+              <span class="badge free">免费</span>
+            </div>
+          </div>
+          <div class="oneliner">"国产搜索 + 知识库 + 写作合体"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">类似秘塔，腾讯 ima 还能建个人知识库（共享盘概念）</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 团队知识沉淀 / 内部资料检索 + 总结</div></div>
+          <div class="links">
+            <a href="https://ima.qq.com/" target="_blank">→ ima 腾讯</a>
+            <a href="https://www.tiangong.cn/" target="_blank">→ 天工 AI</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- 5. 数据分析 -->
+    <!-- ============================================== -->
+    <section class="section" id="sec-data">
+      <div class="section-head data">
+        <div class="num">5</div>
+        <h2>数据分析</h2>
+        <div class="tagline">// tables → insights</div>
+      </div>
+
+      <div class="models">
+
+        <div class="model">
+          <div class="head">
+            <div class="name">WPS AI<span class="dev">国民办公</span></div>
+            <div class="badges">
+              <span class="badge cn">国内</span>
+              <span class="badge free">免费</span>
+            </div>
+          </div>
+          <div class="oneliner">"Excel/WPS 里直接调用 AI，写公式、做透视、出图"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">在 WPS 表格里直接说"按 XX 分组求和 / 做成柱状图 / 解释这个公式"，AI 现场改</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 日常表格 / 写复杂公式 / 数据透视 / 出图</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 千万级数据 / 跨表复杂建模</div></div>
+          <div class="row"><div class="k">怎么用</div><div class="v">WPS 客户端 → 表格里点右上角"WPS AI"按钮 → 输指令</div></div>
+          <div class="links">
+            <a class="primary" href="https://www.wps.cn/" target="_blank">→ 打开 WPS AI</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">办公小浣熊 / ChatExcel<span class="dev">说话式 Excel</span></div>
+            <div class="badges">
+              <span class="badge cn">国内</span>
+              <span class="badge free">免费</span>
+            </div>
+          </div>
+          <div class="oneliner">"用说话的方式操作 Excel，不写公式"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">上传 Excel → 用人话告诉它"按 XX 排序/筛选/求和" → 自动改表</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 不会 VLOOKUP 的人 / 简单统计 / 数据整理</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 复杂建模 / 大数据量</div></div>
+          <div class="row"><div class="k">小贴士</div><div class="v">办公小浣熊背后是商汤，识图表和复杂公式更稳；ChatExcel 极简上手</div></div>
+          <div class="links">
+            <a class="primary" href="https://raccoon.sjtu.edu.cn/" target="_blank">→ 办公小浣熊</a>
+            <a href="https://chatexcel.com/" target="_blank">ChatExcel</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">通义晓蜜 / 通义点金<span class="dev">阿里出品</span></div>
+            <div class="badges">
+              <span class="badge cn">国内</span>
+              <span class="badge free">免费</span>
+            </div>
+          </div>
+          <div class="oneliner">"上传数据 → 对话式分析 → 一键生成报告"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">丢数据文件进去 → 说"分析销售趋势 / 找出异常点" → 出图表 + 结论 + PPT 大纲</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 业务分析 / 老板要结论 / 不会 Python 也能跑数</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 严格 BI 报表场景（仍需专业 BI）</div></div>
+          <div class="links">
+            <a class="primary" href="https://tongyi.aliyun.com/" target="_blank">→ 打开通义</a>
+          </div>
+        </div>
+
+        <div class="model">
+          <div class="head">
+            <div class="name">腾讯问卷 AI / 问卷星 AI<span class="dev">问卷 + 分析</span></div>
+            <div class="badges">
+              <span class="badge cn">国内</span>
+              <span class="badge free">免费额度</span>
+            </div>
+          </div>
+          <div class="oneliner">"做问卷 → AI 自动汇总 + 出洞察报告"</div>
+          <div class="row"><div class="k">做什么</div><div class="v">发问卷 → 收完数据 AI 自动做交叉分析 + 词云 + 关键发现</div></div>
+          <div class="row"><div class="k">适合</div><div class="v good">✓ 用户调研 / 内部 NPS / 活动反馈</div></div>
+          <div class="row"><div class="k">不适合</div><div class="v bad">✗ 业务数据库分析</div></div>
+          <div class="links">
+            <a href="https://wj.qq.com/" target="_blank">→ 腾讯问卷</a>
+            <a href="https://www.wjx.cn/" target="_blank">问卷星</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- 速查决策树 -->
+    <!-- ============================================== -->
+    <div class="tip">
+      <span class="emoji">🧭</span><b>30 秒速查决策树：</b><br><br>
+      <b>Q：我要做一份汇报 PPT，今天就要。</b><br>
+      A：先 <b>Gamma</b> 出初稿 → 用 <b>ChatGPT</b> 优化文案 → 套 <b>Slidesgo 咨询风模板</b> 收尾。<br><br>
+
+      <b>Q：我要画一张主视觉海报，要够"高级"。</b><br>
+      A：<b>Midjourney</b> 出底图（英文 prompt）→ <b>Canva</b> 加中文文字 → 微调导出。<br><br>
+
+      <b>Q：我要写一篇 2000 字的深度公众号。</b><br>
+      A：用 <b>Kimi</b> 读完 5 份参考 → 让 <b>Claude</b> 写初稿（人话最像）→ 自己改 20%。<br><br>
+
+      <b>Q：我要做一份行业调研报告，3 天后交。</b><br>
+      A：<b>秘塔</b> 搜全网 → 整理到 <b>Notion/飞书</b> → 用 <b>ChatGPT 强推理版</b> 梳理框架 → 配艾瑞/QuestMobile 数据。<br><br>
+
+      <b>Q：领导丢我一份 Excel，让我出结论。</b><br>
+      A：国内直接用 <b>WPS AI</b> 或 <b>办公小浣熊</b> 丢上去跑分析 + 出图 → 复制结论到 PPT。<br>
+      （海外版用 <b>ChatGPT</b> 数据分析功能）
+    </div>
+
+    <footer>
+      内部知识库 · 大模型库 · 持续更新中 · 发现新工具可在群里 @ 知识库管理员
+    </footer>
+
+  </div>
+</body>
+</html>
