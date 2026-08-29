@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <title>MiniMax 智能配音</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">M</span>
+          <div>
+            <strong>MiniMax 智能配音</strong>
+            <span>阿里云百炼 · 公司内部工具</span>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <span id="api-status" class="status-pill" data-state="offline">未连接</span>
+          <button id="sync-voices" class="button secondary small" type="button">刷新音色</button>
+          <button id="open-settings" class="button secondary small" type="button">API 设置</button>
+          <button id="logout" class="button secondary small" type="button" hidden>退出</button>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <aside class="voice-sidebar" aria-label="音色库">
+          <div class="sidebar-heading">
+            <div>
+              <span class="eyebrow">VOICE LIBRARY</span>
+              <h2>共享音色</h2>
+            </div>
+            <span id="voice-count" class="count-badge">0</span>
+          </div>
+          <div id="voice-list" class="voice-list"></div>
+          <div id="voice-empty" class="empty-state">
+            <span>暂无音色</span>
+            <button class="text-button" type="button" data-open-clone>创建第一个音色</button>
+          </div>
+        </aside>
+
+        <main class="main-content">
+          <nav class="view-tabs" aria-label="功能视图">
+            <button class="tab-button active" type="button" data-tab="synthesize">生成配音</button>
+            <button class="tab-button" type="button" data-tab="clone">克隆音色</button>
+          </nav>
+
+          <section id="panel-synthesize" class="panel active" aria-labelledby="synthesize-title">
+            <div class="section-heading">
+              <div>
+                <span class="eyebrow">TEXT TO SPEECH</span>
+                <h1 id="synthesize-title">生成配音</h1>
+              </div>
+              <div class="selected-voice">
+                <span>当前音色</span>
+                <strong id="selected-voice-name">未选择</strong>
+              </div>
+            </div>
+
+            <form id="synthesize-form" class="tool-form">
+              <div class="text-editor">
+                <textarea id="speech-text" name="text" maxlength="9999" placeholder="输入需要生成的配音文字" required></textarea>
+                <div class="editor-footer">
+                  <span id="text-count">0 / 9999</span>
+                  <span id="cost-estimate">预计 ¥0.000</span>
+                </div>
+              </div>
+
+              <div class="control-band">
+                <div class="field model-field">
+                  <label>模型</label>
+                  <div class="segmented-control" role="group" aria-label="模型">
+                    <button class="segment active" type="button" data-model="speech-2.8-hd">HD 质感</button>
+                    <button class="segment" type="button" data-model="speech-2.8-turbo">Turbo 经济</button>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="emotion">情绪</label>
+                  <select id="emotion" name="emotion">
+                    <option value="">自动判断</option>
+                    <option value="calm">中性</option>
+                    <option value="fluent">生动</option>
+                    <option value="happy">高兴</option>
+                    <option value="sad">悲伤</option>
+                    <option value="angry">愤怒</option>
+                    <option value="fearful">害怕</option>
+                    <option value="surprised">惊讶</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="language">语言</label>
+                  <select id="language" name="language">
+                    <option value="auto">自动识别</option>
+                    <option value="Chinese">普通话</option>
+                    <option value="Chinese,Yue">粤语</option>
+                    <option value="English">英语</option>
+                    <option value="Japanese">日语</option>
+                    <option value="Korean">韩语</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="format">格式</label>
+                  <select id="format" name="format">
+                    <option value="mp3">MP3</option>
+                    <option value="wav">WAV</option>
+                    <option value="flac">FLAC</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="range-controls">
+                <div class="range-field">
+                  <div class="range-label"><label for="speed">语速</label><output id="speed-value">1.0×</output></div>
+                  <input id="speed" name="speed" type="range" min="0.5" max="2" step="0.1" value="1" />
+                </div>
+                <div class="range-field">
+                  <div class="range-label"><label for="pitch">语调</label><output id="pitch-value">0</output></div>
+                  <input id="pitch" name="pitch" type="range" min="-12" max="12" step="1" value="0" />
+                </div>
+                <div class="range-field">
+                  <div class="range-label"><label for="volume">音量</label><output id="volume-value">1.0</output></div>
+                  <input id="volume" name="volume" type="range" min="0.5" max="2" step="0.1" value="1" />
+                </div>
+              </div>
+
+              <div class="action-row">
+                <div id="generation-meta" class="generation-meta" aria-live="polite"></div>
+                <button id="generate-button" class="button primary" type="submit">生成配音</button>
+              </div>
+            </form>
+
+            <div id="audio-result" class="audio-result" hidden>
+              <div>
+                <span class="eyebrow">LATEST OUTPUT</span>
+                <strong id="audio-title">配音已生成</strong>
+              </div>
+              <audio id="audio-player" controls preload="metadata"></audio>
+              <a id="download-audio" class="button secondary" download>下载音频</a>
+            </div>
+          </section>
+
+          <section id="panel-clone" class="panel" aria-labelledby="clone-title">
+            <div class="section-heading">
+              <div>
+                <span class="eyebrow">VOICE CLONING</span>
+                <h1 id="clone-title">克隆音色</h1>
+              </div>
+              <span class="price-note">首次正式使用约 ¥9.9 / 音色</span>
+            </div>
+
+            <form id="clone-form" class="tool-form">
+              <div id="drop-zone" class="upload-zone">
+                <input id="clone-audio" name="audio" type="file" accept=".mp3,.m4a,.wav,audio/mpeg,audio/mp4,audio/wav" required />
+                <div class="upload-copy">
+                  <strong id="upload-title">选择或拖入声音样本</strong>
+                  <span id="upload-meta">MP3、M4A、WAV · 10 秒至 5 分钟 · 20 MB 以内</span>
+                </div>
+                <button class="button secondary" type="button" id="choose-audio">选择文件</button>
+              </div>
+
+              <div class="form-grid two-columns">
+                <div class="field">
+                  <label for="voice-name">音色名称</label>
+                  <input id="voice-name" name="name" type="text" maxlength="40" placeholder="例如：我的口播音色" required />
+                </div>
+                <div class="field">
+                  <label for="voice-id">音色 ID</label>
+                  <input id="voice-id" name="voiceId" type="text" minlength="8" maxlength="256" spellcheck="false" required />
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="activation-text">激活试听文字</label>
+                <textarea id="activation-text" name="activationText" class="compact-textarea" maxlength="500">你好，这是我的专属声音。欢迎再次听见我。由此刻开始，让声音替我表达。</textarea>
+              </div>
+
+              <div class="option-row">
+                <label class="check-option"><input id="noise-reduction" type="checkbox" checked /> <span>自动降噪</span></label>
+                <label class="check-option"><input id="volume-normalization" type="checkbox" checked /> <span>音量归一化</span></label>
+                <label class="check-option consent"><input id="voice-consent" type="checkbox" required /> <span>已获得声音本人授权</span></label>
+              </div>
+
+              <div class="activation-notice">
+                <span class="notice-dot" aria-hidden="true"></span>
+                <span>复刻会生成收费试听；随后自动首次合成并收取约 9.9 元音色解锁费。</span>
+              </div>
+
+              <div class="action-row">
+                <div id="clone-progress" class="generation-meta" aria-live="polite"></div>
+                <button id="clone-button" class="button primary" type="submit">克隆并激活</button>
+              </div>
+            </form>
+
+            <div id="clone-result" class="audio-result" hidden>
+              <div>
+                <span class="eyebrow">ACTIVATED VOICE</span>
+                <strong id="clone-result-title">音色已保存</strong>
+              </div>
+              <audio id="clone-player" controls preload="metadata"></audio>
+              <button id="use-cloned-voice" class="button secondary" type="button">用于配音</button>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <dialog id="access-dialog" class="settings-dialog access-dialog">
+      <form id="access-form" method="dialog">
+        <div class="dialog-heading">
+          <div>
+            <span class="eyebrow">INTERNAL ACCESS</span>
+            <h2>公司内部访问</h2>
+          </div>
+        </div>
+        <p class="access-copy">输入公司内部访问口令后即可使用，百炼 API Key 已由服务器统一配置。</p>
+        <div class="field">
+          <label for="access-code">访问口令</label>
+          <input id="access-code" name="accessCode" type="password" autocomplete="current-password" required />
+        </div>
+        <div class="dialog-actions single-action">
+          <button id="access-submit" class="button primary" type="submit">进入工具</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="settings-dialog" class="settings-dialog">
+      <form id="settings-form" method="dialog">
+        <div class="dialog-heading">
+          <div>
+            <span class="eyebrow">LOCAL SETTINGS</span>
+            <h2>阿里云百炼 API</h2>
+          </div>
+          <button id="close-settings" class="icon-button" type="button" aria-label="关闭">×</button>
+        </div>
+        <div class="field">
+          <label for="api-key">API Key</label>
+          <input id="api-key" name="apiKey" type="password" autocomplete="off" placeholder="粘贴华北 2（北京）地域百炼 API Key" />
+        </div>
+        <div class="key-state">
+          <span id="saved-key-state">尚未保存</span>
+          <a href="https://help.aliyun.com/zh/model-studio/get-api-key" target="_blank" rel="noreferrer">获取百炼 API Key</a>
+        </div>
+        <div class="security-note">密钥仅保存在服务器权限受限的配置中，只用于调用阿里云百炼 API，不会返回给浏览器页面。</div>
+        <div class="dialog-actions">
+          <button id="clear-key" class="button danger" type="button">清除密钥</button>
+          <button id="save-key" class="button primary" type="submit">验证并保存</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

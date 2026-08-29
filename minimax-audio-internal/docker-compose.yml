@@ -1,0 +1,18 @@
+services:
+  minimax-audio:
+    build: .
+    restart: unless-stopped
+    environment:
+      BAILIAN_API_KEY: ${BAILIAN_API_KEY:-}
+      APP_ACCESS_CODE: ${APP_ACCESS_CODE:-}
+      SESSION_SECRET: ${SESSION_SECRET:-}
+      HOST: 0.0.0.0
+      PORT: 4173
+      DATA_DIR: /app/.data
+    ports:
+      - "4173:4173"
+    volumes:
+      - minimax_audio_data:/app/.data
+
+volumes:
+  minimax_audio_data:

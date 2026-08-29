@@ -1,0 +1,10 @@
+.git
+.gitignore
+.env
+.env.*
+.data/*.json
+node_modules
+output
+.playwright-cli
+*.command
+.DS_Store

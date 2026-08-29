@@ -1,0 +1,13 @@
+{
+  "name": "minimax-audio-internal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "通过阿里云百炼调用 MiniMax 的公司内部音色克隆与配音工具",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

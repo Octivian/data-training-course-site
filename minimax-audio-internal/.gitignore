@@ -1,0 +1,10 @@
+.data/*.json
+.data/*.tmp
+!.data/.gitkeep
+node_modules/
+.env
+.env.*
+!.env.example
+output/
+.playwright-cli/
+.DS_Store
