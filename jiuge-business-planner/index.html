@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#171815">
+  <title>九格经营｜蛋糕品牌月度经营规划</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css?v=20260828b">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-lockup">
+        <p class="brand-mark">九格经营</p>
+        <span class="demo-badge" id="demoBadge" hidden>演示案例 · 拾味蛋糕</span>
+      </div>
+      <span class="step-count" id="stepCount">01 / 04</span>
+    </header>
+
+    <nav class="progress-nav" aria-label="规划进度">
+      <span class="progress-item is-active" data-progress="diagnosis">诊断</span>
+      <span class="progress-item" data-progress="strategy">策略</span>
+      <span class="progress-item" data-progress="engines">引擎</span>
+      <span class="progress-item" data-progress="plan">计划</span>
+    </nav>
+
+    <main>
+      <section class="screen is-active" data-screen="diagnosis">
+        <div class="screen-heading">
+          <h1>蛋糕品牌经营诊断</h1>
+        </div>
+
+        <form id="diagnosisForm" data-demo-form>
+          <fieldset class="question-block">
+            <legend><span>01</span> 经营城市</legend>
+            <label class="text-field">
+              <span>城市名称</span>
+              <input id="cityInput" name="city" type="text" placeholder="请输入城市名称" autocomplete="address-level2" required data-demo-city>
+            </label>
+          </fieldset>
+
+          <fieldset class="question-block">
+            <legend><span>02</span> 品牌规模</legend>
+            <div class="sub-question">
+              <p>品牌月营业额</p>
+              <div class="option-grid five">
+                <label class="choice"><input type="radio" name="revenue" value="under10"><span><strong>10 万以内</strong></span></label>
+                <label class="choice"><input type="radio" name="revenue" value="10to30"><span><strong>10–30 万</strong></span></label>
+                <label class="choice"><input type="radio" name="revenue" value="30to50"><span><strong>30–50 万</strong></span></label>
+                <label class="choice"><input type="radio" name="revenue" value="50to100"><span><strong>50–100 万</strong></span></label>
+                <label class="choice"><input type="radio" name="revenue" value="over100"><span><strong>100 万以上</strong></span></label>
+              </div>
+            </div>
+            <div class="sub-question">
+              <p>经营形态</p>
+              <div class="option-grid three">
+                <label class="choice"><input type="radio" name="operation" value="single"><span><strong>非连锁</strong><small>单店或工作室</small></span></label>
+                <label class="choice"><input type="radio" name="operation" value="smallChain"><span><strong>小型连锁</strong><small>2–3 家门店</small></span></label>
+                <label class="choice"><input type="radio" name="operation" value="chain"><span><strong>连锁</strong><small>4 家及以上</small></span></label>
+              </div>
+            </div>
+            <div class="sub-question">
+              <p>门店数</p>
+              <label class="text-field compact-field">
+                <span>当前门店</span>
+                <input name="storeCount" type="number" min="1" max="999" step="1" placeholder="请输入门店数" required data-demo-store-count>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="question-block">
+            <legend><span>03</span> 渠道开发水平</legend>
+            <div class="sub-question">
+              <div class="input-title-row">
+                <p>营业额占比估算</p>
+                <strong id="channelTotal">合计 0%</strong>
+              </div>
+              <div class="range-list">
+                <label class="range-field"><span class="range-label">自有小程序</span><output for="miniProgram">0%</output><input id="miniProgram" name="miniProgram" type="range" min="0" max="100" step="1" value="0"></label>
+                <label class="range-field"><span class="range-label">美团外卖</span><output for="meituanDelivery">0%</output><input id="meituanDelivery" name="meituanDelivery" type="range" min="0" max="100" step="1" value="0"></label>
+                <label class="range-field"><span class="range-label">闪购外卖</span><output for="instantDelivery">0%</output><input id="instantDelivery" name="instantDelivery" type="range" min="0" max="100" step="1" value="0"></label>
+                <label class="range-field"><span class="range-label">美团团购</span><output for="meituanDeal">0%</output><input id="meituanDeal" name="meituanDeal" type="range" min="0" max="100" step="1" value="0"></label>
+                <label class="range-field"><span class="range-label">抖音团购</span><output for="douyinDeal">0%</output><input id="douyinDeal" name="douyinDeal" type="range" min="0" max="100" step="1" value="0"></label>
+                <label class="range-field"><span class="range-label">其他渠道</span><output for="otherChannel">0%</output><input id="otherChannel" name="otherChannel" type="range" min="0" max="100" step="1" value="0"></label>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="question-block priority-question">
+            <legend><span>04</span> 当前最影响经营结果的问题是什么？</legend>
+            <div class="issue-grid">
+              <label class="choice issue-choice"><input type="radio" name="priorityIssue" value="traffic"><span><strong>新客和进店客流不足</strong></span></label>
+              <label class="choice issue-choice"><input type="radio" name="priorityIssue" value="launch"><span><strong>上新有曝光但销售不理想</strong></span></label>
+              <label class="choice issue-choice"><input type="radio" name="priorityIssue" value="repeat"><span><strong>老客不少，但复购和再次触达较弱</strong></span></label>
+              <label class="choice issue-choice"><input type="radio" name="priorityIssue" value="channel"><span><strong>渠道已上线，但成交或核销较差</strong></span></label>
+              <label class="choice issue-choice"><input type="radio" name="priorityIssue" value="fulfillment"><span><strong>节日订单、产能和交付容易失控</strong></span></label>
+              <label class="choice issue-choice"><input type="radio" name="priorityIssue" value="profit"><span><strong>营业额尚可，但利润或现金压力较大</strong></span></label>
+              <label class="choice issue-choice"><input type="radio" name="priorityIssue" value="execution"><span><strong>人手、排班或门店执行跟不上</strong></span></label>
+              <label class="choice issue-choice"><input type="radio" name="priorityIssue" value="none"><span><strong>当前没有明显紧急问题</strong></span></label>
+              <label class="choice issue-choice"><input type="radio" name="priorityIssue" value="other"><span><strong>其他具体问题</strong></span></label>
+            </div>
+            <label class="text-field other-issue-field" id="otherIssueField" hidden>
+              <span>具体问题</span>
+              <input name="otherIssue" type="text" maxlength="80" placeholder="请简要说明">
+            </label>
+          </fieldset>
+
+          <p class="form-error" id="formError" role="alert"></p>
+          <button class="primary-action full" type="submit" data-demo-submit>生成经营定位</button>
+        </form>
+      </section>
+
+      <section class="screen" data-screen="strategy">
+        <div class="screen-heading">
+          <h1>品牌经营九宫格</h1>
+        </div>
+
+        <div class="diagnosis-strip" id="diagnosisStrip"></div>
+
+        <div class="matrix-wrap" aria-label="品牌经营九宫格">
+          <div class="matrix-grid" id="strategyMatrix"></div>
+        </div>
+
+        <div class="strategy-detail" aria-live="polite">
+          <p class="detail-label" id="strategyPosition"></p>
+          <h2 id="strategyTitle"></h2>
+          <p id="strategyDescription"></p>
+          <div class="strategy-tags" id="strategyTags"></div>
+        </div>
+
+        <div class="action-row">
+          <button class="secondary-action" type="button" data-back="diagnosis">返回修改</button>
+          <button class="primary-action" type="button" id="toEngines" data-demo-to-engines>查看经营引擎</button>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="engines">
+        <div class="screen-heading">
+          <h1>本月经营引擎</h1>
+        </div>
+
+        <div class="engine-visual" id="engineVisual"></div>
+
+        <section class="engine-detail" id="engineDetail" aria-live="polite">
+          <div class="engine-detail-heading">
+            <h2 id="engineDetailTitle"></h2>
+            <span id="engineDetailPriority"></span>
+          </div>
+          <div class="task-tags" id="engineTaskTags"></div>
+        </section>
+
+        <div class="action-row engine-actions">
+          <button class="secondary-action" type="button" data-back="strategy">返回九宫格</button>
+          <div class="plan-output-actions">
+            <button class="primary-action" type="button" id="toPlan" data-demo-to-plan>生成次月计划</button>
+            <div class="other-plan-wrap">
+              <button class="secondary-action other-plan-toggle" type="button" id="otherPlanToggle" aria-expanded="false" aria-controls="otherPlanMenu">其他</button>
+              <div class="other-plan-menu" id="otherPlanMenu" hidden>
+                <button type="button" data-plan-offset="0">当月计划</button>
+                <button type="button" data-plan-offset="2">下下月计划</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="plan">
+        <div class="screen-heading">
+          <h1 id="planTitle">2026 年 10 月经营工作计划</h1>
+        </div>
+
+        <div class="plan-summary" id="planSummary"></div>
+
+        <section class="top-actions-section">
+          <h2>本月核心</h2>
+          <ol class="top-actions" id="topActions"></ol>
+        </section>
+
+        <section class="checklist-section">
+          <h2>完整任务清单</h2>
+          <div class="checklist" id="planChecklist"></div>
+        </section>
+
+        <div class="action-row plan-actions">
+          <button class="secondary-action" type="button" data-back="engines">返回调整</button>
+          <button class="primary-action" type="button" id="downloadPlan" data-demo-download>下载甘特图 Excel</button>
+        </div>
+        <p class="download-status" id="downloadStatus" role="status"></p>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js?v=20260828b"></script>
+</body>
+</html>
