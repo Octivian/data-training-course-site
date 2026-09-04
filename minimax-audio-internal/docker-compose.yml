@@ -10,7 +10,7 @@ services:
       PORT: 4173
       DATA_DIR: /app/.data
     ports:
-      - "4173:4173"
+      - "127.0.0.1:4173:4173"
     volumes:
       - minimax_audio_data:/app/.data
 
